@@ -35,7 +35,7 @@ describe KingDta::Dtaus do
     @dtaus.set_checksums
     @dtaus.sum_bank_account_numbers.should == 2787777
     @dtaus.sum_bank_numbers.should == 37040044
-    @dtaus.sumBetrag.should == 22025
+    @dtaus.sum_values.should == 22025
   end
 
   it "should create c-sektion with booking text at 19" do
@@ -102,5 +102,12 @@ describe KingDta::Dtaus do
           "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
           "0128E     0000006000000000000000000000016726662000000002222402640000000132150                                                   "
     str.should == out
+  end
+
+  xit "should create file" do
+		@dtaus.default_text = 'Default Verwendungszweck'
+		6.times { @dtaus.add(@booking) }
+    file = @dtaus.create_file
+
   end
 end

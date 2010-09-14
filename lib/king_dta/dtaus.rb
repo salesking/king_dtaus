@@ -2,41 +2,40 @@
 #Typ ist 'LK' (Lastschrift Kunde) oder 'GK' (Gutschrift Kunde)
 #
 #Infos zu DTAUS: http://www.infodrom.org/projects/dtaus/dtaus.php3
-#
-#Die Methoden müssen in der Reihenfolge:
-#- account	(definieren des eigenen Kontos)
-#- bookings
-#- dtaDatei/begleitblatt
-#abgearbeitet werden.
-#
-#Kontodaten verwalten mit Name des Inhabers und Bank, Bankleitzahl und Kontonummer.
+
 module KingDta
   class Dtaus
     include KingDta::Helper
-    attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sumBetrag, :default_text
+    attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values, :default_text
 
-    #Zieldatei und Datum der Datei werden definiert
+    # Create a new dtaus file/string.
     # ==== Parameter
-    def initialize( typ, datum=Date.today )
-      raise "Wrong date format. Make it a Time or Date object with yyyy-mm-dd" unless datum.respond_to?(:strftime)
+    # typ<String>:: valid strings are 'LK' (Lastschrift Kunde) and 'GK' (Gutschrift Kunde)
+    # typ<Date>:: date when the the transfer is to be created
+    def initialize( typ, date=Date.today )
+      raise "Wrong date format. Make it a Time or Date object with yyyy-mm-dd" unless date.respond_to?(:strftime)
       raise "Unknown order type: #{typ}. Allowed Values are LK, GK" unless ['LK','GK'].include?(typ)
-      @datum 		= datum
-      @typ		= typ
-      @value_pos	= true	#alle Beträge sind positiv. Variable wird mit erstem Eintrag geändert      
-      @closed		= false
+      @date = date
+      @typ	= typ
+      @value_pos  = true	#all values are positive by default. Variable changes with first booking entry
+      @closed     = false
       @default_text = '' # default verwendungzweck
     end
     
-    #	Übergabe der eigenen Kontodaten als Objekt der Klasse Konto
+    #	Set the sending account(you own)
+    # === Parameter
+    # account<Account>:: the sending account, must be an instance of class
+    # KingDta::Account
     def account=( account )
-      raise "Come on i need an Account object" unless account.kind_of?( Account )
+      raise "Come on, i need an Account object" unless account.kind_of?( Account )
       @account = account
     end
 
-    # The dtaus format as string. all data is appended to it during creation
+    # The dtaus format as string. All data is appended to it during creation
     def dta_string
       @dta_string ||= ''
     end
+    # Array of bookings
     def bookings
       @bookings ||= []
     end
@@ -45,17 +44,23 @@ module KingDta
       @default_text = convert_text( text )
     end
 
-    #Eine Buchung hinzufügen. Es wird geprüft, ob das Vorzeichen identisch mit den bisherigen Vorzeichen ist.
+    # Add a booking. The prefix (pos/neg) is beeing checked if it is identical
+    # with the last one
+    # === Parameter
+    # booking<Booking>:: KingDta::Booking object
+    # === Raises
+    # error if the prefix within the bookings has changed
     def add ( booking )
       raise "The file has alreay been closed, cannot add new booking" if @closed
-      #Die erste Buchung bestimmt, ob alle Beträge positiv oder negativ sind.
-      #alle Beträge sind positiv. Variable wird mit erstem Eintrag geändert
-      @value_pos	= booking.pos?	if bookings.empty? == []
+      #the first booking decides wether all values are po or negative
+      @value_pos = booking.pos?	if bookings.empty?
       raise "The prefix within bookings changed from #{@value_pos} to #{booking.pos?}" if @value_pos != booking.pos?
       bookings << booking
     end
 
     # Creates the whole dta string(in the right order) and returns it
+    # === Raises
+    # error if there are no bookings
     def create
       raise "Cannot create DTAUS without bookings" if bookings.empty?
       @closed = true
@@ -69,20 +74,22 @@ module KingDta
     end
 
     def set_checksums
-      @sum_bank_account_numbers, @sum_bank_numbers, @sumBetrag	= 0,0,0 
+      @sum_bank_account_numbers, @sum_bank_numbers, @sum_values	= 0,0,0
       bookings.each do |b|
         @sum_bank_account_numbers	+= b.account.bank_account_number
-        @sum_bank_numbers   += b.account.bank_number
-        @sumBetrag+= b.value
+        @sum_bank_numbers += b.account.bank_number
+        @sum_values += b.value
       end
     end
 
-    #Create a DTA-File
+    # Create a DTA-File, from current dta information
+    # === Parameter
+    # filename<String>:: defaults to DTAUS0.TXT
     def create_file(filename ='DTAUS0.TXT')
       file = open( filename, 'w')
       file	<< create
       file.close()
-      print "#{filename} erstellt , #{@bookings.size} Einträge\n"
+      print "#{filename} created containing #{@bookings.size} bookings\n"
     end
 
 
@@ -117,12 +124,12 @@ module KingDta
       data += '%8i' % @account.bank_number #.rjust(8)	#bank_number
       data += '%08i' % 0                 #belegt, wenn Bank
       data += '%-27.27s' % @account.owner
-      data += @datum.strftime("%d%m%y")	#aktuelles Datum im Format DDMMJJ
+      data += @date.strftime("%d%m%y")	#aktuelles Datum im Format DDMMJJ
       data += ' ' * 4  #bankinternes Feld
       data += '%010i' % @account.bank_account_number
       data += '%010i' % 0 #Referenznummer
       data += ' '  * 15  #Reserve
-      data += '%8s' % @datum.strftime("%d%m%Y")	   #Ausführungsdatum (ja hier 8 Stellen, Erzeugungsdat. hat 6 Stellen)
+      data += '%8s' % @date.strftime("%d%m%Y")	   #Ausführungsdatum (ja hier 8 Stellen, Erzeugungsdat. hat 6 Stellen)
       data += ' ' * 24   #Reserve
       data += '1'   #Kennzeichen Euro
       raise "DTAUS: Längenfehler A (#{data.size} <> 128)\n" if data.size != 128
@@ -183,7 +190,7 @@ module KingDta
     # booking<Object>::Booking object to be written to c-sektion
     # ==== Returns
     # <String>:: The current dta_string
-    def add_c( booking)
+    def add_c( booking )
       zahlungsart = if @typ == 'LK'
                       booking.schluessel || Booking::LASTSCHRIFT_EINZUGSERMAECHTIGUNG
                     elsif @typ == 'GK'
@@ -269,7 +276,7 @@ module KingDta
       str +=	"%2.2s%-27.27s" % format_ext( ext[1][0], ext[1][1] )
       str +=	"%2.2s%-27.27s" % format_ext( ext[2][0], ext[2][1] )
       str +=	"%2.2s%-27.27s" % format_ext( ext[3][0], ext[3][1] )
-      # Trennzeichen 12 blanks
+      # devider 12 blanks
       str += ' ' * 12
       unless  str !~ /\S/ # only add if something is in there .. only whitespace => same as str.blank?
         raise "DTAUS: Längenfehler C/3 #{str.size} " if str.size != 128
@@ -298,11 +305,11 @@ module KingDta
       str += '0' * 13 #Reserve
       str += '%017i' % @sum_bank_account_numbers
       str += '%017i' % @sum_bank_numbers
-      str += '%013i' % @sumBetrag
+      str += '%013i' % @sum_values
       str += ' '  * 51 #Abgrenzung Datensatz
       raise "DTAUS: Längenfehler E #{str.size} <> 128" if str.size != 128
       dta_string << str
     end
-#    private	:dataA, :dataC, :dataE
+    
   end	#class dtaus
 end	

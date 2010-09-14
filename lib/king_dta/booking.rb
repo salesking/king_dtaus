@@ -16,24 +16,24 @@ module KingDta
 		def initialize( account, value, text=nil, schluessel=nil )
       raise "Hey, a booking should have an Account" unless account.kind_of?( Account )
 			@account = account
-			@text  = text ? convert_text( text ) : text
+			@text = text ? convert_text( text ) : text
 			@schluessel = schluessel
 			if value.is_a?(String)
 				value = BigDecimal.new value.sub(',', '.')
 			elsif value.is_a?(Numeric)
 			  value = BigDecimal.new value.to_s
 			else
-				raise "Übergabefehler: Betrag ist kein String/Numeric"
+				raise "Gimme a value as a String or Numeric. You gave me a #{value.class}"
 			end
 			value = ( value * 100 ).to_i	#€-Cent
 			if value == 0
-				raise "Booking Value is 0"
+				raise "A booking of 0.00 € makes no sence"
 			elsif value > 0
-				@value	= value
-				@pos	= true
+				@value = value
+				@pos	 = true
 			else
-				@value	= - value
-				@pos	= false
+				@value = -value
+				@pos	 = false
 			end
 		end
     
