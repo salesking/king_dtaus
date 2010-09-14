@@ -24,8 +24,8 @@ describe KingDta::Booking do
 
   it "should set pos to false with negative value" do
     b = KingDta::Booking.new(@account, -1)
-    b.value.should == -100
-    b.pos?.should be_false
+    b.value.should == 100
+    b.should_not be_pos
   end
   
   it "should have no rounding error for float" do
