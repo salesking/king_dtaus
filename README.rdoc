@@ -1,24 +1,44 @@
 = Dtaus
 
-DTAUS is a format for german bank transfers and is short for 
+DTAUS is a format for German bank transfers and is short for 
 "Datenträgeraustausch". The format itself totally sucks because it was 
 established in the last century, to be used on floppy disks. Still almost 
-all german banks use it(they only seem innovative at robbing), and it is 
+all German banks use it(they only seem innovative at robbing), and it is 
 therefore supported in common banking programs too.
 
 This gem saves you all the trouble when generating dtaus-text. 
 
 == Install
 
-gem install king_dtaus
+  gem install king_dtaus
 
 == Features
+ 
+* create lastschrift
+* create gutschrift
 
 
+== Example
+  
+  #create a new dtaus object
+  dta = KingDta::Dtaus.new('LK')
+  # set sender account
+  dta.account = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner")
+  # the following should be done in a loop to add multiple bookings
+  # create receiving account
+  rec_acnt = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner" )
+  # create booking
+  booking = KingDta::Booking.new(rec_acnt, 100.00 )
+  # set booking text if you want to
+  booking.text = "Thanks for your purchase"
+  # add booking
+  dta.add( booking )
+  # end loop
 
-== Example 
+  # create datausstring and do with it whatever fits your workflow
+  my_str = dta.create
 
-TODO - read the specs
+also make sure to read the specs
 
 
 == Credits
