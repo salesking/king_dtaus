@@ -1,0 +1,32 @@
+= Dtaus
+
+DTAUS is a format for german bank transfers and is short for 
+"Datenträgeraustausch". The format itself totally sucks because it was 
+established in the last century, to be used on floppy disks. Still almost 
+all german banks use it(they only seem innovative at robbing), and it is 
+therefore supported in common banking programs too.
+
+This gem saves you all the trouble when generating dtaus-text. 
+
+== Install
+
+gem install king_dtaus
+
+== Features
+
+
+
+== Example 
+
+TODO - read the specs
+
+
+== Credits
+
+This gem used https://rubygems.org/gems/DTAUS as a starting point. 
+It was disected, turned into a real class structure, bugs where fixed and 
+of course a full test suite ensures its functionality.
+
+Copyright (c) 2009-2010 Georg Leciejewski, 
+Bugfixes and enhancements by Georg Ledermann 
+released under the MIT license
