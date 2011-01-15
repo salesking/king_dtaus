@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "init.rb",
      "lib/king_dta/account.rb",
      "lib/king_dta/booking.rb",
      "lib/king_dta/dtaus.rb",
