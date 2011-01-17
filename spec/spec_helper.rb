@@ -1,5 +1,5 @@
+# encoding: utf-8
 require 'rubygems'
-require 'spec'
 require 'ostruct'
 require 'date'
 require "#{File.dirname(__FILE__)}/../lib/king_dtaus"
