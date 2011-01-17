@@ -40,7 +40,7 @@ describe KingDta::Dtaus do
 
   it "should create c-sektion with booking text at 19" do
     @dtaus.add(@booking)
-		@dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
+    @dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
     @dtaus.add_c(@booking)
     str = @dtaus.dta_string
     str.length.should == 256
@@ -50,7 +50,7 @@ describe KingDta::Dtaus do
   end
 
   it "should create c-sektion with default booking text" do
-		@dtaus.default_text = 'Default verwendungszweck'
+    @dtaus.default_text = 'Default verwendungszweck'
     @dtaus.add_c(@booking)
     str = @dtaus.dta_string
     str.length.should == 256
@@ -60,7 +60,7 @@ describe KingDta::Dtaus do
   end
 
   it "should create the whole dta string with a single booking" do
-		@dtaus.default_text = 'Default verwendungszweck'
+    @dtaus.default_text = 'Default verwendungszweck'
     @dtaus.add(@booking)
     str = @dtaus.create
     str.length.should == 512
@@ -75,7 +75,7 @@ describe KingDta::Dtaus do
 
   it "should create whole dta string with long booking text in extension" do
     @dtaus.add(@booking)
-		@dtaus.bookings.first.text = 'Rgn R-3456-0102220 Monatsbeitrag 08/10 Freelancer Version Vielen Dank Ihre SalesKing GmbH'
+    @dtaus.bookings.first.text = 'Rgn R-3456-0102220 Monatsbeitrag 08/10 Freelancer Version Vielen Dank Ihre SalesKing GmbH'
     str = @dtaus.create
     str.length.should == 640
     str.should include(@kto2.name.upcase)
@@ -86,8 +86,8 @@ describe KingDta::Dtaus do
   end
 
   it "should create the whole dta string with a lot of bookings" do
-		@dtaus.default_text = 'Default Verwendungszweck'
-		6.times { @dtaus.add(@booking) }
+    @dtaus.default_text = 'Default Verwendungszweck'
+    6.times { @dtaus.add(@booking) }
     str = @dtaus.create
     str.length.should == 1792
     str.should include(@kto1.name.upcase)
@@ -105,9 +105,9 @@ describe KingDta::Dtaus do
   end
 
   xit "should create file" do
-		@dtaus.default_text = 'Default Verwendungszweck'
-		6.times { @dtaus.add(@booking) }
+    @dtaus.default_text = 'Default Verwendungszweck'
+    6.times { @dtaus.add(@booking) }
     file = @dtaus.create_file
-
   end
+
 end
