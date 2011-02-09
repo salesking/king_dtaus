@@ -32,6 +32,22 @@ describe KingDta::Dtaus do
   it "should deny invalid accounts" do
     lambda{ @dtaus.account = "account" }.should raise_error(KingDta::Exception)
   end
+  
+  it "should not add a booking if closed" do
+    @dtaus.add(@booking)
+    @dtaus.create
+    lambda{ @dtaus.add(@booking) }.should raise_error(KingDta::Exception)
+  end
+
+  it "should not add a booking if closed" do
+    @dtaus.add(@booking)
+    negative_booking = KingDta::Booking.new(KingDta::Account.new( @kto2.nr, @kto2.blz, @kto2.name, @kto2.bank ), -120.25 )
+    lambda{ @dtaus.add(negative_booking) }.should raise_error(KingDta::Exception)
+  end
+  
+  it "should not create if there are no bookings" do
+    lambda{ @dtaus.create}.should raise_error(KingDta::Exception)
+  end
 
   it "should create header" do
     str = @dtaus.add_a

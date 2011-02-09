@@ -52,10 +52,10 @@ module KingDta
     # === Raises
     # error if the prefix within the bookings has changed
     def add ( booking )
-      raise "The file has alreay been closed, cannot add new booking" if @closed
+      raise Exception.new("The file has alreay been closed, cannot add new booking") if @closed
       #the first booking decides wether all values are po or negative
       @value_pos = booking.pos?  if bookings.empty?
-      raise "The prefix within bookings changed from #{@value_pos} to #{booking.pos?}" if @value_pos != booking.pos?
+      raise Exception.new("The prefix within bookings changed from #{@value_pos} to #{booking.pos?}") if @value_pos != booking.pos?
       bookings << booking
     end
 
@@ -63,7 +63,7 @@ module KingDta
     # === Raises
     # error if there are no bookings
     def create
-      raise "Cannot create DTAUS without bookings" if bookings.empty?
+      raise Exception.new("Cannot create DTAUS without bookings") if bookings.empty?
       @closed = true
       # cleanup before we start
       @dta_string = dta_string.empty? ? dta_string : ''
