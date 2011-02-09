@@ -5,7 +5,7 @@ module KingDta
     def convert_text( text)
       text = text.to_s
       return text if text.empty?
-      raise "Text kein String >#{text}< (#{text.class})" unless text.kind_of?( String )
+      raise "Text kein String >#{text}< (#{text.class})" unless text.kind_of?( String ) # not possible
       text.gsub!('Ä', 'AE')
       text.gsub!('Ü', 'UE')
       text.gsub!('Ö', 'OE')
