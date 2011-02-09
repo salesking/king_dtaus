@@ -14,8 +14,8 @@ module KingDta
     # typ<String>:: valid strings are 'LK' (Lastschrift Kunde) and 'GK' (Gutschrift Kunde)
     # typ<Date>:: date when the the transfer is to be created
     def initialize( typ, date=Date.today )
-      raise "Wrong date format. Make it a Time or Date object with yyyy-mm-dd" unless date.respond_to?(:strftime)
-      raise "Unknown order type: #{typ}. Allowed Values are LK, GK" unless ['LK','GK'].include?(typ)
+      raise ArgumentError.new("Wrong date format. Make it a Time or Date object with yyyy-mm-dd") unless date.respond_to?(:strftime)
+      raise ArgumentError.new("Unknown order type: #{typ}. Allowed Values are LK, GK") unless ['LK','GK'].include?(typ)
       @date = date
       @typ  = typ
       @value_pos  = true  #all values are positive by default. Variable changes with first booking entry
@@ -28,7 +28,7 @@ module KingDta
     # account<Account>:: the sending account, must be an instance of class
     # KingDta::Account
     def account=( account )
-      raise "Come on, i need an Account object" unless account.kind_of?( Account )
+      raise Exception.new("Come on, i need an Account object") unless account.kind_of?( Account )
       @account = account
     end
 

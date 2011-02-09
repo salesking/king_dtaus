@@ -16,8 +16,21 @@ describe KingDta::Dtaus do
   it "should not init without values" do
     lambda{ KingDta::Dtaus.new }.should raise_error(ArgumentError)
   end
+  
   it "should init with valid values" do
     lambda{ KingDta::Dtaus.new('LK', Date.today) }.should_not raise_error(ArgumentError)
+  end
+  
+  it "should not init with an unknown type" do
+    lambda{ KingDta::Dtaus.new('UNKNOWN', "date") }.should raise_error(ArgumentError)
+  end
+
+  it "should not init with an invalid date" do
+    lambda{ KingDta::Dtaus.new('LK', "date") }.should raise_error(ArgumentError)
+  end
+  
+  it "should deny invalid accounts" do
+    lambda{ @dtaus.account = "account" }.should raise_error(KingDta::Exception)
   end
 
   it "should create header" do
