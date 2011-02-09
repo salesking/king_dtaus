@@ -10,9 +10,12 @@ describe KingDta::Account do
     lambda{ KingDta::Account.new(@bank_account.nr, @bank_account.blz, @bank_account.name, @bank_account.bank) }.should_not raise_error
   end
 
-  it "should fail if missing init parameter" do
-    lambda{ KingDta::Account.new("", @bank_account.blz, @bank_account.name, @bank_account.bank) }.should raise_error
-    lambda{ KingDta::Account.new(@bank_account.nr, "", @bank_account.name, @bank_account.bank) }.should raise_error
+  it "should fail if bank account number is invalid" do
+    lambda{ KingDta::Account.new(0, @bank_account.blz, @bank_account.name, @bank_account.bank) }.should raise_error(KingDta::Exception)
   end
 
+  it "should fail if bank number is invalid" do
+    lambda{ KingDta::Account.new(@bank_account.nr, 0, @bank_account.name, @bank_account.bank) }.should raise_error(KingDta::Exception)
+  end
+  
 end
