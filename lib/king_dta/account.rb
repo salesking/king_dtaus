@@ -12,9 +12,9 @@ module KingDta
       @owner= convert_text( owner )
       @kunnr  = kunnr.gsub(/\s/, '').to_i
       
-      raise KingDta::Exception.new("Invalid bank account number #{ban}")  if @bank_account_number == 0
-      raise KingDta::Exception.new("BLZnummer #{bank_number} ungültig")   if @bank_number == 0
-      raise KingDta::Exception.new("Invalid account owner #{owner}")      unless @owner.kind_of?(String) # not possible
+      raise Exception.new("Invalid bank account number #{ban}")  if @bank_account_number == 0
+      raise Exception.new("BLZnummer #{bank_number} ungültig")   if @bank_number == 0
+      raise Exception.new("Invalid account owner #{owner}")      unless @owner.kind_of?(String) # not possible
       # @dtakunnr  = convert_text( @kunnr )
     end
     

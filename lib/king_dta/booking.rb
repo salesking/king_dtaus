@@ -15,7 +15,7 @@ module KingDta
     #  Der Betrag kann , oder . als Dezimaltrenner enthalten.
     #- optional Buchungstext
     def initialize( account, value, text=nil, schluessel=nil )
-      raise "Hey, a booking should have an Account" unless account.kind_of?( Account )
+      raise Exception.new("Hey, a booking should have an Account") unless account.kind_of?( Account )
       @account = account
       @text = text ? convert_text( text ) : text
       @schluessel = schluessel
@@ -24,11 +24,11 @@ module KingDta
       elsif value.is_a?(Numeric)
         value = BigDecimal.new value.to_s
       else
-        raise "Gimme a value as a String or Numeric. You gave me a #{value.class}"
+        raise Exception.new("Gimme a value as a String or Numeric. You gave me a #{value.class}")
       end
       value = ( value * 100 ).to_i  #€-Cent
       if value == 0
-        raise "A booking of 0.00 € makes no sence"
+        raise Exception.new("A booking of 0.00 € makes no sence")
       elsif value > 0
         @value = value
         @pos   = true

@@ -13,13 +13,17 @@ describe KingDta::Booking do
     booking.value.should == 15973
   end
 
-  it "should raise if initialized with wrong value tpye" do
-    lambda{ KingDta::Booking.new(@account, Date.today) }.should raise_error
+  it "should raise if initialized without an account" do
+    lambda{ KingDta::Booking.new("account", Date.today) }.should raise_error(KingDta::Exception)
+  end
+
+  it "should raise if initialized with wrong value type" do
+    lambda{ KingDta::Booking.new(@account, Date.today) }.should raise_error(KingDta::Exception)
   end
 
   it "should raise if initialized with 0 value" do
-    lambda{ KingDta::Booking.new(@account, 0) }.should raise_error
-    lambda{ KingDta::Booking.new(@account, 0.00) }.should raise_error
+    lambda{ KingDta::Booking.new(@account, 0) }.should raise_error(KingDta::Exception)
+    lambda{ KingDta::Booking.new(@account, 0.00) }.should raise_error(KingDta::Exception)
   end
 
   it "should set pos to false with negative value" do
