@@ -10,7 +10,7 @@ module KingDta
     attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values, :default_text
 
     # Create a new dtaus file/string.
-    # ==== Parameter
+    # === Parameter
     # typ<String>:: valid strings are 'LK' (Lastschrift Kunde) and 'GK' (Gutschrift Kunde)
     # typ<Date>:: date when the the transfer is to be created
     def initialize( typ, date=Date.today )
@@ -110,11 +110,11 @@ module KingDta
     # 7   50    6 Zeichen    aktuelles Datum im Format DDMMJJ
     # 8   56    4 Zeichen    CST, "    " (Blanks)
     # 9   60    10 Zeichen  Kontonummer des Auftraggebers
-    # 10   70    10 Zeichen  Optionale Referenznummer
+    # 10  70    10 Zeichen  Optionale Referenznummer
     # 11a 80    15 Zeichen  Reserviert, 15 Blanks
     # 11b 95    8 Zeichen    Ausführungsdatum im Format DDMMJJJJ. Nicht jünger als Erstellungsdatum (A7), jedoch höchstens 15 Kalendertage später. Sonst Blanks.
     # 11c 103    24 Zeichen  Reserviert, 24 Blanks
-    # 12   127    1 Zeichen    Währungskennzeichen
+    # 12  127    1 Zeichen    Währungskennzeichen
     #            " " = DM
     #            "1" = Euro
     #    Insgesamt 128 Zeichen
@@ -163,33 +163,35 @@ module KingDta
     #      Die im Textschlüssel mit J bezeichnete Stelle, wird bei Übernahme in eine Zahlung automatisch mit der jeweils aktuellen Jahresendziffer (7, wenn 97) ersetzt.
     #  8   49  1 Zeichen  Reserviert, " " (Blank)
     #  9   50  11 Zeichen  Betrag in DM
-    #  10   61  8 Zeichen  Bankleitzahl des Auftraggebers
-    #  11   69  10 Zeichen  Kontonummer des Auftraggebers
-    #  12   79  11 Zeichen  Betrag in Euro einschließlich Nachkommastellen, nur belegt, wenn Euro als Währung angegeben wurde (A12, C17a), sonst Nullen
-    #  13   90  3 Zeichen  Reserviert, 3 Blanks
+    #  10  61  8 Zeichen  Bankleitzahl des Auftraggebers
+    #  11  69  10 Zeichen  Kontonummer des Auftraggebers
+    #  12  79  11 Zeichen  Betrag in Euro einschließlich Nachkommastellen, nur belegt, wenn Euro als Währung angegeben wurde (A12, C17a), sonst Nullen
+    #  13  90  3 Zeichen  Reserviert, 3 Blanks
     #  14a 93  27 Zeichen  Name des Kunden
     #  14b 120  8 Zeichen  Reserviert, 8 Blanks
     #    Insgesamt 128 Zeichen
     #
-    #  15 128  27 Zeichen  Name des Auftraggebers
-    #  16 155  27 Zeichen  Verwendungszweck
+    #  15  128  27 Zeichen  Name des Auftraggebers
+    #  16  155  27 Zeichen  Verwendungszweck
     #  17a 182  1 Zeichen  Währungskennzeichen
     #      " " = DM
     #      "1" = Euro
     #  17b 183  2 Zeichen  Reserviert, 2 Blanks
-    #  18 185  2 Zeichen  Anzahl der Erweiterungsdatensätze, "00" bis "15"
-    #  19 187  2 Zeichen  Typ (1. Erweiterungsdatensatz)
-    #      "01" Name des Kunden
-    #      "02" Verwendungszweck
-    #      "03" Name des Auftraggebers
-    #  20 189  27 Zeichen  Beschreibung gemäß Typ
-    #  21 216  2 Zeichen  wie C19, oder Blanks (2. Erweiterungsdatensatz)
-    #  22 218  27 Zeichen  wie C20, oder Blanks
-    #  23 245  11 Zeichen  11 Blanks
+    #  18  185  2 Zeichen  Anzahl der Erweiterungsdatensätze, "00" bis "15"
+    #  19  187  2 Zeichen  Typ (1. Erweiterungsdatensatz)
+    #       "01" Name des Kunden
+    #       "02" Verwendungszweck
+    #       "03" Name des Auftraggebers
+    #  20  189  27 Zeichen  Beschreibung gemäß Typ
+    #  21  216  2 Zeichen  wie C19, oder Blanks (2. Erweiterungsdatensatz)
+    #  22  218  27 Zeichen  wie C20, oder Blanks
+    #  23  245  11 Zeichen  11 Blanks
     #  Insgesamt 256 Zeichen, kann wiederholt werden (max 3 mal)
-    # ==== Parameter
+    #
+    # === Parameter
     # booking<Object>::Booking object to be written to c-sektion
-    # ==== Returns
+    #
+    # === Returns
     # <String>:: The current dta_string
     def add_c( booking )
       zahlungsart = if @typ == 'LK'
@@ -207,7 +209,7 @@ module KingDta
       data1 +=  '%08i' % 0  #freigestellt
       data1 +=  '%08i' % booking.account.bank_number
       data1 +=  '%010i' % booking.account.bank_account_number
-      data1 +=  '0%011i0' % booking.account.kunnr   #interne Kundennummer
+      data1 +=  '0%011i0' % booking.account.client_number   #interne Kundennummer
       data1 +=  zahlungsart
       data1 +=  ' ' #bankintern
       data1 +=  '0' * 11   #Reserve
@@ -238,7 +240,7 @@ module KingDta
       data2 +=  ' ' * 2
       # Gesamte Satzlänge ermitteln ( data1(+4) + data2 + Erweiterungen )
       data1 = "%04i#{data1}" % ( data1.size + 4 + data2.size+ 2 + exts.size * 29 )
-      raise "DTAUS: Längenfehler C/1 #{data1.size}, #{booking.account.name}" unless data1.size == 128
+      raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.owner}" unless data1.size == 128
       dta_string << data1
       #Anzahl Erweiterungen anfügen
       data2 +=  '%02i' % exts.size  #Anzahl Erweiterungsteile
@@ -249,7 +251,7 @@ module KingDta
       exts[0..1].each{|e| data2 +=  "%2.2s%-27.27s" % format_ext(e[0], e[1]) }
       data2 +=  ' ' * 11
       # add the final piece of the second C section
-      raise "DTAUS: Längenfehler C/2 #{data2.size}, #{booking.account.name}" if data2.size != 128
+      raise "DTAUS: Längenfehler C/2 #{data2.size} nicht 128, #{booking.account.owner}" unless data2.size == 128
       dta_string << data2
       #Erstellen der Texterweiterungen à vier Stück
       add_ext( exts[2..5] )
@@ -259,7 +261,7 @@ module KingDta
     end  #dataC
 
     # Format an extension so it can be used in string substitution
-    # ==== Returns
+    # === Returns
     # Array[String, String]::[Extesnsion type(01 02 03), 'text content ..']
     def format_ext(type, content)
       ext = ( type == '00' ) ? [' ', ' '] : [ type, convert_text(content) ]
@@ -269,7 +271,7 @@ module KingDta
     # Add a section-C extension, always containing the section type followed by
     # 4 segments with 27 chars and an ending seperator of 12 blanks
     # Only adds the segement if something is in there
-    # ==== Parameter
+    # === Parameter
     # <Array[Array[String,String]]>:: two dim. ary containing: [extension type(01 02 03),string content]
     def add_ext( ext)
       raise "Nur #{ext.size} Erweiterungstexte, 4 benötigt" if ext.size != 4

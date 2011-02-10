@@ -4,18 +4,20 @@ module KingDta
   class Account
     include KingDta::Helper
     # dta~ jeweilige Feld in DTAUS-Norm
-    attr_reader  :bank_account_number, :bank_number, :owner, :kunnr, :dtakunnr
+    attr_reader  :bank_account_number, :bank_number, :owner, :client_number
     
-    def initialize( ban, bank_number, owner, kunnr="" )
-      @bank_account_number = ban.kind_of?( Integer ) ? ban : ban.gsub(/\s/, '').to_i
-      @bank_number  = bank_number.kind_of?( Integer ) ? bank_number :  bank_number.gsub(/\s/, '').to_i
+    def initialize( ban, bank_number, owner, client_number="" )
+
+      @bank_account_number = ban.kind_of?( Integer ) ? ban : ban.gsub(/\s/, '').to_i      
+      @bank_number  = bank_number.kind_of?( Integer ) ? bank_number :  bank_number.gsub(/\s/, '').to_i      
+      @client_number = client_number.kind_of?( Integer ) ? client_number : client_number.gsub(/\s/, '').to_i
       @owner= convert_text( owner )
-      @kunnr  = kunnr.gsub(/\s/, '').to_i
-      
-      raise Exception.new("Invalid bank account number #{ban}")  if @bank_account_number == 0
-      raise Exception.new("BLZnummer #{bank_number} ungültig")   if @bank_number == 0
-      raise Exception.new("Invalid account owner #{owner}")      unless @owner.kind_of?(String) # not possible
-      # @dtakunnr  = convert_text( @kunnr )
+
+      raise ArgumentError.new('Bank account number too long, max 10 allowed') if "#{@bank_account_number}".length > 10
+      raise ArgumentError.new('Bank number too long, max 8 allowed') if "#{@bank_number}".length > 8
+      raise ArgumentError.new('Client number too long, max 10 allowed') if "#{@client_number}".length > 10
+      raise ArgumentError.new("Bank account number cannot be 0")  if @bank_account_number == 0
+      raise ArgumentError.new("Bank number cannot be 0")   if @bank_number == 0
     end
     
   end

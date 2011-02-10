@@ -52,10 +52,10 @@ describe KingDta::Dtaus do
   it "should create header" do
     str = @dtaus.add_a
     str.length.should == 128
-    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    00028800370000000000               #{Date.today.strftime("%d%m%Y")}                        1"
+    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"
     str.should == out
-    #60-70 kontonummer mit nullen aufgefüllt
-    str[60...70].should == "000#{test_kto1.nr}"
+    #60-70 kontonummer mit nullen aufgefüllt - hier nicht da ktnr == 10 stellen
+    str[60...70].should == "#{test_kto1.nr}"
     str.should include(test_kto1.blz)
   end
 
@@ -74,7 +74,7 @@ describe KingDta::Dtaus do
     str = @dtaus.dta_string
     str.length.should == 256
     str.should include(@kto2.name.upcase)
-    out = "0216C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
+    out = "0216C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
     str.should == out
   end
 
@@ -84,7 +84,7 @@ describe KingDta::Dtaus do
     str = @dtaus.dta_string
     str.length.should == 256
     str.should include(@kto2.name.upcase)
-    out = "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "
+    out = "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "
     str.should == out
   end
 
@@ -96,8 +96,8 @@ describe KingDta::Dtaus do
     str.should include(@kto1.name.upcase)
     str.should include(@kto2.name.upcase)
     str.should include(@dtaus.default_text.upcase)
-    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    00028800370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
           "0128E     0000001000000000000000000000002787777000000000370400440000000022025                                                   "
     str.should == out
   end
@@ -108,8 +108,8 @@ describe KingDta::Dtaus do
     str = @dtaus.create
     str.length.should == 640
     str.should include(@kto2.name.upcase)
-    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    00028800370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
-          "0274C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGRGN R-3456-0102220 MONATSBE1  0302ITRAG 08/10 FREELANCER VERS02ION VIELEN DANK IHRE SALESK           02ING GMBH                                                                                                                      "+
+    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
+          "0274C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGRGN R-3456-0102220 MONATSBE1  0302ITRAG 08/10 FREELANCER VERS02ION VIELEN DANK IHRE SALESK           02ING GMBH                                                                                                                      "+
           "0128E     0000001000000000000000000000002787777000000000370400440000000022025                                                   "
     str.should == out
   end
@@ -122,13 +122,13 @@ describe KingDta::Dtaus do
     str.should include(@kto1.name.upcase)
     str.should include(@kto2.name.upcase)
     str.should include(@dtaus.default_text.upcase)
-    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    00028800370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-          "0187C00000000370400440002787777000000000000005000 0000000000037040044000288003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+    out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
+          "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
           "0128E     0000006000000000000000000000016726662000000002222402640000000132150                                                   "
     str.should == out
   end

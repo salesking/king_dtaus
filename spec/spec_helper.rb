@@ -22,7 +22,7 @@ require "#{File.dirname(__FILE__)}/../lib/king_dtaus"
 #      bankplz:0815
 #      bankort:Felsblock
 def test_kto1
-  opts = { :nr => '2880037', :blz => '37040044', :name =>'Gimme your Money AG',
+  opts = { :nr => '7828970037', :blz => '37040044', :name =>'Gimme your Money AG',
             :bank => 'Commerzbank Köln', :zweck => 'Monatsbeitrag' }
   TestKonto.new(opts)
 end
