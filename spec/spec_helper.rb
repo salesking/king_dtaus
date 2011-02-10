@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'ostruct'
 require 'date'
-require "#{File.dirname(__FILE__)}/../lib/king_dtaus"
+require "king_dtaus"
 
 #Filename der eigenen Kontodaten
 #    Beispiel:
