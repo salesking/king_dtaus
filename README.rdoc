@@ -16,7 +16,7 @@ This gem saves you all the trouble when generating dtaus-text.
  
 * create lastschrift
 * create gutschrift
-
+* 100% Test coverage
 
 == Example
   
@@ -43,10 +43,15 @@ also make sure to read the specs
 
 == Credits
 
+Bugfixes and enhancements by 
+
+* Georg Ledermann - https://github.com/ledermann
+* Kim Rudolph - https://github.com/krudolph
+* Railslove - Thorsten Böttger https://github.com/alto
+
 This gem used https://rubygems.org/gems/DTAUS as a starting point. 
 It was disected, turned into a real class structure, bugs where fixed and 
 of course a full test suite ensures its functionality.
 
-Copyright (c) 2009-2010 Georg Leciejewski, 
-Bugfixes and enhancements by Georg Ledermann 
-released under the MIT license
+
+Copyright (c) 2009-2011 Georg Leciejewski, released under the MIT license

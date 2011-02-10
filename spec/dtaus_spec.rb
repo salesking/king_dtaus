@@ -132,10 +132,19 @@ describe KingDta::Dtaus do
     str.should == out
   end
 
-  xit "should create file" do
+  it "should create file" do
     @dtaus.default_text = 'Default Verwendungszweck'
     6.times { @dtaus.add(@booking) }
-    file = @dtaus.create_file
+    # create test output file in spec dir
+    filename = File.join(File.dirname(__FILE__), 'test_output.dta')
+    @dtaus.create_file(filename)
+    str = ''
+    File.open(filename, 'r').each do |ln|
+      str << ln
+    end
+    str.length.should == 1792
+    #remove testfile
+    File.delete(filename)
   end
 
 end
