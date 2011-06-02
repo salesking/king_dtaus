@@ -313,6 +313,6 @@ module KingDta
       raise "DTAUS: Längenfehler E #{str.size} <> 128" if str.size != 128
       dta_string << str
     end
-    
+
   end  #class dtaus
 end
