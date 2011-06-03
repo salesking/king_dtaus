@@ -1,5 +1,5 @@
 module KingDta
-  class DtazvSegments
+  module DtazvSegments
 
     #Erstellen P-Segment der DTAZV-Datei
     # - P Datei-Vorsatz mit 256 Bytes

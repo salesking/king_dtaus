@@ -8,13 +8,10 @@ module KingDta
 
     # Create a new dtazv file/string.
     # ===Parameter
-    # typ<String>:: valid strings are 'LK' (Lastschrift Kunde) and 'GK' (Gutschrift Kunde)
     # typ<Date>:: date when the the transfer is to be created
-    def initialize( typ, date=Date.today )
+    def initialize(date=Date.today)
       raise ArgumentError.new("Wrong date format. Make it a Time or Date object with yyyy-mm-dd") unless date.respond_to?(:strftime)
-      raise ArgumentError.new("Unknown order type: #{typ}. Allowed Values are LK, GK") unless ['LK','GK'].include?(typ)
       @date = date
-      @typ  = typ
       @value_pos  = true  #all values are positive by default. Variable changes with first booking entry
       @closed     = false
       @default_text = 'Want some? Come, get some!' # default verwendungzweck

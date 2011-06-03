@@ -1,8 +1,16 @@
 # encoding: utf-8
-require 'rubygems'
+
+$:.unshift(File.dirname(__FILE__))
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+require "king_dtaus"
+require "rspec"
 require 'ostruct'
 require 'date'
-require "king_dtaus"
+
+RSpec.configure do |config|
+end
+
 
 #Filename der eigenen Kontodaten
 #    Beispiel:
