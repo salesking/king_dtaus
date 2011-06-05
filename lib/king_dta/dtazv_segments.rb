@@ -240,9 +240,34 @@ module KingDta
     #
     # === Returns
     # <String>:: The current dta_string
-    #Aufbau des Segments:
-    # Nr.  Start  Länge     Beschreibung
-    # 1   0      4 Zeichen    Länge des Datensatzes, immer 128 Bytes, also immer "0128"
+    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                                                  Erläuterungen
+    # 1     4               1                 P       binär/num   Satzlänge                                               Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
+    # 2     1               5                 P       alpha       Satzart                                                 Konstante "V"
+    # 3     27              6                 P       alpha       Warenbezeichnung der eingekauften Transithandelsware    -
+    # 4a    2               33                P       num         Kapitel-Nummer des Warenver­ zeichnisses                Gemäß Warenverzeichnis für die Außenhandelsstatistik.
+    #                                                             für die eingekaufte Transithandelsware
+    # 4b    7               35                P       num         "0000000“                                               Konstante "0000000“
+    # 5     7               42                P       alpha       Einkaufsland Transithandel                              Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik
+    # 6     3               49                P       alpha       Ländercode für Einkaufsland Transithandel               2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
+    # 7     12              52                P       num         Einkaufspreis Transithandel (Vorkommastellen)           Angabe in Auftragswährung (siehe Feld T13) ; bei Euro-Gegenwertzahlungen : Angabe in Euro und Feld T19 mit ’91‘ belegen.
+    # 8     1               64                P       alpha       Verkauf der Transithandelsware an Gebietsfremde         Ja (= J) bzw. Nein (= N)
+    #                                                             (durchgehandeltes Transithandels­ geschäft)
+    # 9     1               65                P       alpha       Kennzeichnung Verkauf der Transithandelsware            Ja (= J) bzw. Nein (= N)
+    #                                                              an Gebietsansässige (gebrochenes
+    #                                                              Transithandelsgeschäft)
+    # 10    1               66                N       alpha       -                                                       Reserve
+    # 11    1               67                P       alpha       Kennzeichnung Transithandelsware unverkauft             Ja (= J) bzw. Nein (= N)
+    #                                                              auf Lager im Ausland
+    # 12    27              68                K/P     alpha       Warenbezeichnung der verkauften Transithandelsware      Nur belegt, wenn durchgehandelter Transithandel (J in Feld V8) und nicht identisch mit Feld V3
+    # 13a   2               95                K/P     num         Kapitel-Nummer des Warenverzeichnisses für die          Gemäß Warenverzeichnis für die Außenhandelsstatistik; nur belegt, wenn durchge­ handelter Transithandel (J in Feld V8) und wenn Feld V13a nicht identisch mit Feld V4a
+    #                                                              verkaufte Transithandelsware
+    # 13b   7               97                P       num         "0000000"                                               Konstante "0000000"
+    # 14    4               104               K/P     alpha       Fälligkeit Verkaufserlös Transithandel                  Nur belegt, wenn durchgehandelter Transithandel (J in Feld V8), Format: JJMM
+    # 15    7               108               K/P     alpha       Käuferland Transithandel                                Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik; nur be­ legt, wenn durchgehandelter Transithandel (J in Feld V8)
+    # 16    3               115               K/P     alpha       Ländercode für Käuferland                               2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen; nur belegt, wenn durchgehandelter Transithandel (J in Feld V8)
+    # 17    12              118               K/P     num         Verkaufspreis Transithandel (Vorkommastellen)           Nur belegt, wenn durchgehandelter Transithandel (J in Feld V8); Angabe in Auftragswährung (siehe Feld T13); bei Euro-Gegenwertzahlungen : Angabe in Euro und Feld T19 mit ’91‘ belegen.
+    # 18    40              130               K/P     alpha       Ergänzungsangaben Transithandel                         Name und Sitz des Nachkäufers bei gebrochenem Transithandel (J in Feld V9)
+    # 19    87              170               N       alpha       -                                                       Reserve
     def add_v
 
     end
