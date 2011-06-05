@@ -1,25 +1,56 @@
+= Dtazv
+
+DTAZV is a format ....
+
+== Install
+
+  gem install king_dtazv
+
+== Features
+
+*
+*
+*
+
+== Example
+
+== Credits
+
+Bugfixes and enhancements by
+
+* Georg Ledermann - https://github.com/ledermann
+* Kim Rudolph - https://github.com/krudolph
+* Railslove - Thorsten Böttger https://github.com/alto
+
+This gem used https://rubygems.org/gems/DTAUS as a starting point.
+It was disected, turned into a real class structure, bugs where fixed and
+of course a full test suite ensures its functionality.
+
+
+Copyright (c) 2009-2011 Georg Leciejewski (SalesKing), Jan Kus (Railslove), released under the MIT license
+
 = Dtaus
 
-DTAUS is a format for German bank transfers and is short for 
-"Datenträgeraustausch". The format itself totally sucks because it was 
-established in the last century, to be used on floppy disks. Still almost 
-all German banks use it(they only seem innovative at robbing), and it is 
+DTAUS is a format for German bank transfers and is short for
+"Datenträgeraustausch". The format itself totally sucks because it was
+established in the last century, to be used on floppy disks. Still almost
+all German banks use it(they only seem innovative at robbing), and it is
 therefore supported in common banking programs too.
 
-This gem saves you all the trouble when generating dtaus-text. 
+This gem saves you all the trouble when generating dtaus-text.
 
 == Install
 
   gem install king_dtaus
 
 == Features
- 
+
 * create lastschrift
 * create gutschrift
 * 100% Test coverage
 
 == Example
-  
+
   #create a new dtaus object
   dta = KingDta::Dtaus.new('LK')
   # set sender account
@@ -43,14 +74,14 @@ also make sure to read the specs
 
 == Credits
 
-Bugfixes and enhancements by 
+Bugfixes and enhancements by
 
 * Georg Ledermann - https://github.com/ledermann
 * Kim Rudolph - https://github.com/krudolph
 * Railslove - Thorsten Böttger https://github.com/alto
 
-This gem used https://rubygems.org/gems/DTAUS as a starting point. 
-It was disected, turned into a real class structure, bugs where fixed and 
+This gem used https://rubygems.org/gems/DTAUS as a starting point.
+It was disected, turned into a real class structure, bugs where fixed and
 of course a full test suite ensures its functionality.
 
 
