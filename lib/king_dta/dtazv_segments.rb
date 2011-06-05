@@ -279,9 +279,22 @@ module KingDta
     #
     # === Returns
     # <String>:: The current dta_string
-    #Aufbau des Segments:
-    # Nr.  Start  Länge     Beschreibung
-    # 1   0      4 Zeichen    Länge des Datensatzes, immer 128 Bytes, also immer "0128"
+    # Datensatz Y (Datei-Nachsatz)
+    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                          Erläuterungen
+    # 1     4               1                 P       binär/num   Satzlänge                       Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
+    # 2     1               5                 P       alpha       Satzart                         Konstante W
+    # 3     1               6                 P       num         Belegart                        Dienstleistungen, Übertragungen	= ‘2’ Kapitaltransaktionen und Kapitalerträge	= ‘4’
+    # 4     3               7                 P       num         Kennzahl                        Gemäß Leistungsverzeichnis (Anlage LV zur AWV)
+    # 5     7               10                P       alpha       Land                            Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik (siehe Anhang 3, Abschnitt E)
+    # 6     3               17                P       alpha       Ländercode                      2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik (siehe Anhang 3, Abschnitt E); linksbündig zu belegen; 3. Stelle Leerzeichen
+    # 7     7               20                K/P     alpha       Anlageland bei Kapitalverkehr   Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik 3
+    # 8     3               27                K/P     alpha       Ländercode für Anlageland       2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik 3; linksbündig zu belegen; 3. Stelle Leerzeichen
+    # 9     12              30                P       num         Betrag für Dienstleistungen,    Angabe in Auftragswährung (siehe Feld T13); bei Euro-Gegenwertzahlungen : Angabe in Euro und Feld T19 mit ’91‘ belegen.
+    #                                                             Kapitalverkehr, Sonstiges
+    #                                                             (Vorkommastellen)
+    # 10    140             42                P       alpha       nähere Angaben zur zugrunde     Wichtige Einzelheiten des Grundgeschäfts
+    #                                                             liegenden Leistung
+    # 11    75              182               N       alpha       -                               Reserve
     def add_w
 
     end
@@ -294,8 +307,16 @@ module KingDta
     # === Returns
     # <String>:: The current dta_string
     #Aufbau des Segments:
-    # Nr.  Start  Länge     Beschreibung
-    # 1   0      4 Zeichen    Länge des Datensatzes, immer 128 Bytes, also immer "0128"
+    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                  Erläuterungen
+    # 1     4               1                 P       binär/num   Satzlänge               Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
+    # 2     1               5                 P       alpha       Satzart                 Konstante Y
+    # 3     15              6                 P       num         Betragssumme            Aus Datensätzen U Feld 5 ( = 0, falls keine U-Sätze vorhanden)
+    # 4     15              21                P       num         Betragssumme            Aus Datensätzen V Feld 7
+    # 5     15              36                P       num         Betragssumme            Aus Datensätzen V Feld 17
+    # 6     15              51                P       num         Betragssumme            Aus Datensätzen W Feld 9
+    # 7     6               66                P       num         Anzahl der Datensätze   Anzahl Datensätze U, V, W
+    # 8     6               72                P       num         Anzahl der Datensätze   Anzahl Datensätze T
+    # 9     179             78                P       alpha       Leerzeichen             Reserve
     def add_y
 
     end
