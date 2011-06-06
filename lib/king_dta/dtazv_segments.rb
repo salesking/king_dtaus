@@ -98,7 +98,7 @@ module KingDta
       data += "%2i" % 0 # Bundeslandschlüssel
       data += '%8i'   %  @account.bank_number # Firmennummer / BLZ des Auftraggebers
       data += '%068i' % 0 # Reserve
-      # raise "DTAUS: Längenfehler Q (#{data.size} <> 256)\n" if data.size != 256
+      raise "DTAUS: Längenfehler Q (#{data.size} <> 256)\n" if data.size != 256
       dta_string << data
     end
 
@@ -234,7 +234,7 @@ module KingDta
     #                                                                                            elektronischen Kontoauszug übernommen.
     #                                                                                            (nur nach Absprache mit dem Kreditinstitut)
     # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
-    # 24  35                680               alpha           Name und Telefonnummer sowie      Ansprechpartner beim Auftraggeber für eventuelle
+    # 24  35                680               alpha           Name und Telefonnummer sowie       Ansprechpartner beim Auftraggeber für eventuelle
     #                                                          ggf. Stellvertretungsmeldung      Rückfragen der beauftragten Bank oder der           K/P             K                 Ansprechpartner beim Auftraggeber         K/P             -
     #                                                                                            Meldebehörde. Dahinter, wenn Auftraggeber                                             für eventuelle Rückfragen der
     #                                                                                            nicht Zahlungspflichtiger ist:	‘INVF’,                                               beauftragten Bank
@@ -253,9 +253,45 @@ module KingDta
     #                                                                                            Belegung in diesem Falle : ‘1’
     # 26  51                716               alpha           -                                 Reserve                                             N               N                 -                                         N               -
     # 27  2                 767               num             Erweiterungskennzeichen           00 = es folgt kein Meldeteil                        P               N                 -                                         P               -
-    #                                                                                           01 – 08 = Anzahl der Meldeteile à 256 Bytes
+    #
     def add_t
-
+      data  = '0572'  # 1 Länge des Datensatzes
+      data += 'T'     # 2 Satzart
+      data += '%8i'   %  @account.bank_number # 3 BLZ des Einreichinstituts
+      # kurze variante
+      #4a data +=ISO-Währungscode
+      #4b data +=Kontonummer
+      data += @date.strftime("%y%m%d") #5 Ausführungstermin Einzelzahlung, wenn abweichend von Feld Q8
+      # kurze variante
+      # 6 data += '%08i'  %  @account.bank_number # 6 BLZ
+      # 7a
+      # 7b
+      data += # 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
+      data += # 9 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
+      data += # 10 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2: Name Zeile 3	: Straße Zeile 4	: Ort
+      # kurze variante
+      # data += 11
+      # data += 12
+      data += # 13 3 Auftragswährung "EUR"
+      data += # 14a 14 Betrag (Vorkommastellen)          Rechtsbündig
+      data += # 14b 3 Betrag (Nachkommastellen)         Linksbündig
+      data += # 15 4x35 Verwendungszweck
+      data += # 16 Weisungsschlüssel 1 (gem. Anhang 2)
+      data += # 17 Weisungsschlüssel 2 (gem. Anhang 2)
+      data += # 18 Weisungsschlüssel 3 (gem. Anhang 2)
+      data += # 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
+      # kurze variante
+      # data += 20
+      # data += 21
+      # data += 22
+      # data += 23
+      data += # 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
+      # kurze variante
+      # data += 25
+      data += '%051i' % 0 # 26 Reserve
+      data += # 27 2 Erweiterungskennzeichen           00 = es folgt kein Meldeteil
+      raise "DTAUS: Längenfehler T (#{data.size} <> 572)\n" if data.size != 572
+      dta_string << data
     end
 
     #Erstellen V-Segment der DTAZV-Datei
@@ -269,7 +305,7 @@ module KingDta
     # 1     4               1                 P       binär/num   Satzlänge                                               Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
     # 2     1               5                 P       alpha       Satzart                                                 Konstante "V"
     # 3     27              6                 P       alpha       Warenbezeichnung der eingekauften Transithandelsware    -
-    # 4a    2               33                P       num         Kapitel-Nummer des Warenver­ zeichnisses                Gemäß Warenverzeichnis für die Außenhandelsstatistik.
+    # 4a    2               33                P       num         Kapitel-Nummer des Warenverzeichnisses                  Gemäß Warenverzeichnis für die Außenhandelsstatistik.
     #                                                             für die eingekaufte Transithandelsware
     # 4b    7               35                P       num         "0000000“                                               Konstante "0000000“
     # 5     7               42                P       alpha       Einkaufsland Transithandel                              Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik
@@ -294,7 +330,27 @@ module KingDta
     # 18    40              130               K/P     alpha       Ergänzungsangaben Transithandel                         Name und Sitz des Nachkäufers bei gebrochenem Transithandel (J in Feld V9)
     # 19    87              170               N       alpha       -                                                       Reserve
     def add_v
-
+      data  = '0256'  # 1 Länge des Datensatzes
+      data += 'V'    # 2 Satzart
+      # data += '%27s'   % # 3 Warenbezeichnung der eingekauften Transithandelsware
+      # data += 4a Kapitel-Nummer des Warenverzeichnisses für die eingekaufte Transithandelsware
+      data += "0000000" # 4b Konstante "0000000“
+      # data += '%7s' # 5 Einkaufsland Transithandel
+      # data += '%03s' # 6 Ländercode für Einkaufsland Transithandel 2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
+      # data += '%012i' # 7 Einkaufspreis Transithandel (Vorkommastellen)
+      # data += 'J' # 8 Verkauf der Transithandelsware an Gebietsfremde         Ja (= J) bzw. Nein (= N)
+      # data += '...' # 9 Kennzeichnung Verkauf der Transithandelsware an Gebietsansässige (gebrochenes Transithandelsgeschäft) Ja (= J) bzw. Nein (= N)
+      # data += '%01s' # 10 Reserve
+      # data += 'J' # 11 Kennzeichnung Transithandelsware unverkauft             Ja (= J) bzw. Nein (= N)
+      # data += '%27s' # 12 Warenbezeichnung der verkauften Transithandelsware      Nur belegt, wenn durchgehandelter Transithandel (J in Feld V8) und nicht identisch mit Feld V3
+      # data += '%27s' # 13a Kapitel-Nummer des Warenverzeichnisses für die
+      # data += "0000000" # 13b Konstante "0000000"
+      # data += '%04s' # 14 Fälligkeit Verkaufserlös Transithandel verkaufte Transithandelsware
+      # data += '%07s' # 15 Käuferland Transithandel                                Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik
+      # data += '%03s' # 16 Ländercode für Käuferland                               2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen;
+      # data += '%12s' # 17 Verkaufspreis Transithandel (Vorkommastellen)           Nur belegt, wenn durchgehandelter Transithandel
+      # data += '%40s' # 18 Ergänzungsangaben Transithandel                         Name und Sitz des Nachkäufers bei gebrochenem Transithandel (J in Feld V9)
+      # data += '%87s' # 19 Reserve
     end
 
     #Erstellen W-Segment der DTAZV-Datei
@@ -304,7 +360,7 @@ module KingDta
     #
     # === Returns
     # <String>:: The current dta_string
-    # Datensatz Y (Datei-Nachsatz)
+    # Datensatz W (Datei-Nachsatz)
     # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                          Erläuterungen
     # 1     4               1                 P       binär/num   Satzlänge                       Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
     # 2     1               5                 P       alpha       Satzart                         Konstante W

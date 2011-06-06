@@ -18,6 +18,7 @@ describe KingDta::DtazvSegments do
                         @dudes_konto.sender_city,
                         @dudes_konto.sender_zip_code
                       )
+    # @fidel_castros_booking = KingDta::Booking.new(...)
   end
 
   it "should return the proper P segment" do
@@ -30,11 +31,26 @@ describe KingDta::DtazvSegments do
 
   it "should return the proper Q segment" do
     @dudes_dtazv_export.add_q.should == "0256Q370400447828970037                                                   GIMME YOUR MONEY AG                  6th avenue 445555                        los angeles11060601110606N 03704004400000000000000000000000000000000000000000000000000000000000000000000"
-    puts @dudes_dtazv_export.add_q
   end
 
   it "should return the proper length of P segment" do
     @dudes_dtazv_export.add_q.size.should == 256
+  end
+
+  it "should return the proper T segment" do
+    # @dudes_dtazv_export.add_t.should == "............"
+  end
+
+  it "should return the proper length of T segment" do
+    # @dudes_dtazv_export.add_t.size.should == 572
+  end
+
+  it "should return the proper V segment" do
+    # @dudes_dtazv_export.add_t.should == "..........."
+  end
+
+  it "should return the proper length of V segment" do
+    # @dudes_dtazv_export.add_t.size.should == 256
   end
 
 end
