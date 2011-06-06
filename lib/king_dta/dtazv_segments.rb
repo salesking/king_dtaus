@@ -377,7 +377,17 @@ module KingDta
     #                                                             liegenden Leistung
     # 11    75              182               N       alpha       -                               Reserve
     def add_w
-
+      data  = '0256'  # 1 Länge des Datensatzes
+      data += 'W'    # 2 Satzart
+      data += '%01s'   % ... # 3 Belegart
+      data += '%03s' % ... # 4 Kennzahl
+      data += '%07s' % ... # 5 Land
+      data += '%3s' # 6 Ländercode
+      data += '%07s'   % ... # 7 Anlageland bei Kapitalverkehr
+      data += '%03s' % ... # 8 Ländercode für Anlageland
+      data += '%012i' % ... # 9 Betrag für Dienstleistungen Kapitalverkehr, Sonstiges (Vorkommastellen)
+      data += '%0140s' # 10 nähere Angaben zur zugrunde liegenden Leistung
+      data += '%075s' # 11 Reserve
     end
 
     #Erstellen Y-Segment der DTAZV-Datei
@@ -399,7 +409,16 @@ module KingDta
     # 8     6               72                P       num         Anzahl der Datensätze   Anzahl Datensätze T
     # 9     179             78                P       alpha       Leerzeichen             Reserve
     def add_y
-
+      data  = '0256'  # 1 Länge des Datensatzes
+      data += 'V'    # 2 Satzart
+      # data += '%27s'   % # 3 Warenbezeichnung der eingekauften Transithandelsware
+      # data += 4a Kapitel-Nummer des Warenverzeichnisses für die eingekaufte Transithandelsware
+      data += "0000000" # 4b Konstante "0000000“
+      # data += '%7s' # 5 Einkaufsland Transithandel
+      # data += '%03s' # 6 Ländercode für Einkaufsland Transithandel 2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
+      # data += '%012i' # 7 Einkaufspreis Transithandel (Vorkommastellen)
+      # data += 'J' # 8 Verkauf der Transithandelsware an Gebietsfremde         Ja (= J) bzw. Nein (= N)
+      # data += '...' # 9 Kennzeichnung Verkauf der Transithandelsware an Gebietsansässige (gebrochenes Transithandelsgeschäft) Ja (= J) bzw. Nein (= N)
     end
 
   end
