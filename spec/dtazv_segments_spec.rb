@@ -53,4 +53,12 @@ describe KingDta::DtazvSegments do
     # @dudes_dtazv_export.add_t.size.should == 256
   end
 
+  it "should return the proper W segment" do
+    # @dudes_dtazv_export.add_t.should == "..........."
+  end
+
+  it "should return the proper length of W segment" do
+    # @dudes_dtazv_export.add_t.size.should == 256
+  end
+
 end
