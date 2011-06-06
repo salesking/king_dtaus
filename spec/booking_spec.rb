@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe KingDta::Booking do
 
@@ -31,7 +31,7 @@ describe KingDta::Booking do
     b.value.should == 100
     b.should_not be_pos
   end
-  
+
   it "should have no rounding error for float" do
     booking = KingDta::Booking.new(@account, 159.73)
     booking.value.should == 15973

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 # All Test DTA output strings are validated with sFirm => lokal Sparkassen Software
 describe KingDta::Dtaus do
 
@@ -15,11 +15,11 @@ describe KingDta::Dtaus do
   it "should not init without values" do
     lambda{ KingDta::Dtaus.new }.should raise_error(ArgumentError)
   end
-  
+
   it "should init with valid values" do
     lambda{ KingDta::Dtaus.new('LK', Date.today) }.should_not raise_error(ArgumentError)
   end
-  
+
   it "should not init with an unknown type" do
     lambda{ KingDta::Dtaus.new('UNKNOWN', "date") }.should raise_error(ArgumentError)
   end
@@ -27,11 +27,11 @@ describe KingDta::Dtaus do
   it "should not init with an invalid date" do
     lambda{ KingDta::Dtaus.new('LK', "date") }.should raise_error(ArgumentError)
   end
-  
+
   it "should deny invalid accounts" do
     lambda{ @dtaus.account = "account" }.should raise_error(KingDta::Exception)
   end
-  
+
   it "should not add a booking if closed" do
     @dtaus.add(@booking)
     @dtaus.create
@@ -43,7 +43,7 @@ describe KingDta::Dtaus do
     negative_booking = KingDta::Booking.new(KingDta::Account.new( @kto2.nr, @kto2.blz, @kto2.name, @kto2.bank ), -120.25 )
     lambda{ @dtaus.add(negative_booking) }.should raise_error(KingDta::Exception)
   end
-  
+
   it "should not create if there are no bookings" do
     lambda{ @dtaus.create}.should raise_error(KingDta::Exception)
   end

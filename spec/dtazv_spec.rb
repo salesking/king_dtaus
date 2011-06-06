@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 # All Test DTAZV output strings are validated with sFirm => lokal Sparkassen Software
 describe KingDta::Dtazv do
 

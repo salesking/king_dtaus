@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe KingDta::Account do
 
@@ -28,5 +28,5 @@ describe KingDta::Account do
     # max 10
     lambda{ KingDta::Account.new(@ba.nr, @ba.blz, @ba.name, 12345678901) }.should raise_error(ArgumentError, 'Client number too long, max 10 allowed')
   end
-  
+
 end

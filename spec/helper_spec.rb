@@ -1,6 +1,4 @@
-# encoding: utf-8
-
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe KingDta::Helper do
   include KingDta::Helper
@@ -12,11 +10,11 @@ describe KingDta::Helper do
   it "should remove invalid chars" do
     convert_text('@()"=<>!§').should == ''
   end
-  
+
   it "should leave valid chars" do
     convert_text('abc-ABC-0123- .,&/+*$%').should == 'ABC-ABC-0123- .,&/+*$%'
   end
-  
+
   it "should convert umlaute" do
     convert_text('üöäÜÖÄß').should == 'UEOEAEUEOEAESS'
   end
