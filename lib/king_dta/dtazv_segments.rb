@@ -34,10 +34,10 @@ module KingDta
     def add_p
       data  = '0256' # Länge des Datensatzes
       data += 'P'   # Satzart
-      data += '%8i'   %  @account.account_bank_number # BLZ des Einreichinstituts
-      data += '%70s'  %  @account.account_bank_name # Einreichinstitut  Zeile 1 u. 2: Name;
+      data += '%8i'   %  @account.bank_number # BLZ des Einreichinstituts
+      data += '%70s'  %  @account.bank_name # Einreichinstitut  Zeile 1 u. 2: Name;
       data += '%35s'  %  @account.account_street_zip # Einreichinstitut Straße Postfach; Zeile 4: Ort
-      data += '%35s'  %  @account.account_city # Einreichinstitut  Zeile 4: Ort
+      data += '%35s'  %  @account.city # Einreichinstitut  Zeile 4: Ort
       data += @date.strftime("%y%m%d")  # Erstellungsdatum  In der Form JJMMTT
       data += '01'  # laufende Nummer   Laufende Tagesnummer
       data += '%095i' % 0 # Reserve
@@ -86,15 +86,19 @@ module KingDta
     def add_q
       data  = '0256' # Länge des Datensatzes
       data += 'Q'   # Satzart
-      data += '%8i'   %  @account.account_bank_number # BLZ des Einreichinstituts
-      data += '%10i'  %  @account.account_nr  # Kundennummer
+      data += '%8i'   %  @account.bank_number # BLZ des Einreichinstituts
+      data += '%10i'  %  @account.bank_account_number  # Kundennummer
       data += '%70s'  %  @account.sender_name # Einreichinstitut  Zeile 1 u. 2: Name
       data += '%35s'  %  @account.sender_street_zip # Einreichinstitut  Zeile 3: Straße Postfach
       data += '%35s'  %  @account.sender_city # Einreichinstitut  Zeile 4: Ort
       data += @date.strftime("%y%m%d")  # Erstellungsdatum  In der Form JJMMTT
       data += '01'  # laufende Nummer   Laufende Tagesnummer
-      data += '%095i' % 0 # Reserve
-      raise "DTAUS: Längenfehler P (#{data.size} <> 256)\n" if data.size != 256
+      data += @date.strftime("%y%m%d")  # (erster) Ausführungstermin Datei
+      data += "N" # Weiterleitung an die Meldebehörde
+      data += "%2i" % 0 # Bundeslandschlüssel
+      data += '%8i'   %  @account.bank_number # Firmennummer / BLZ des Auftraggebers
+      data += '%068i' % 0 # Reserve
+      # raise "DTAUS: Längenfehler Q (#{data.size} <> 256)\n" if data.size != 256
       dta_string << data
     end
 
