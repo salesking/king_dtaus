@@ -6,13 +6,17 @@ describe KingDta::DtazvSegments do
     @dudes_dtazv_export = KingDta::Dtazv.new(Date.today)
     @dudes_konto = dudes_konto
     @dudes_dtazv_export.account = KingDta::Account.new(
-                        @dudes_konto.nr,
-                        @dudes_konto.blz,
-                        @dudes_konto.name,
-                        @dudes_konto.street,
-                        @dudes_konto.city,
-                        @dudes_konto.zip_code,
-                        @dudes_konto.bank_name
+                        @dudes_konto.account_nr,
+                        @dudes_konto.account_bank_number,
+                        @dudes_konto.sender_name,
+                        @dudes_konto.client_number,
+                        @dudes_konto.account_street,
+                        @dudes_konto.account_city,
+                        @dudes_konto.account_zip_code,
+                        @dudes_konto.account_bank_name
+                        @dudes_konto.sender_street,
+                        @dudes_konto.sender_city,
+                        @dudes_konto.sender_zip_code,
                       )
   end
 

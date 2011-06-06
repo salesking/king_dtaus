@@ -84,7 +84,17 @@ module KingDta
     # 11    8               181               K/P     num         Firmennummer / BLZ des Auftraggebers  Siehe Erläuterungen Feld Q10
     # 12    68              189               N       alpha                                             Reserve
     def add_q
-
+      data  = '0256' # Länge des Datensatzes
+      data += 'Q'   # Satzart
+      data += '%8i'   %  @account.bank_number # BLZ des Einreichinstituts
+      data += '%10i'  %  @account.nr  # Kundennummer
+      data += '%35s'  %  @account.street # Einreichinstitut  Zeile 1 u. 2: Name; Zeile 3: Straße Postfach; Zeile 4: Ort
+      data += '%35s'  %  @account.city # Einreichinstitut  Zeile 1 u. 2: Name; Zeile 3: Straße Postfach; Zeile 4: Ort
+      data += @date.strftime("%y%m%d")  # Erstellungsdatum  In der Form JJMMTT
+      data += '01'  # laufende Nummer   Laufende Tagesnummer
+      data += '%095i' % 0 # Reserve
+      raise "DTAUS: Längenfehler P (#{data.size} <> 256)\n" if data.size != 256
+      dta_string << data
     end
 
     #Erstellen T-Segment der DTAZV-Datei
