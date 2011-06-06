@@ -28,14 +28,20 @@ module KingDta
       raise ArgumentError.new('Client number too long, max 10 allowed') if "#{@client_number}".length > 10
       raise ArgumentError.new("Bank account number cannot be 0")  if @bank_account_number == 0
       raise ArgumentError.new("Bank number cannot be 0")   if @bank_number == 0
-      raise ArgumentError.new("Street too long, max 35 allowed") if @street && @street.length > 35
+      raise ArgumentError.new("Street and/or Zip Code too long, max 35 allowed") if @street && @zip_code && "#{@street} #{@zip_code}".length > 35
       raise ArgumentError.new("City too long, max 35 allowed") if @city && @city.length > 35
-      raise ArgumentError.new("Zip-Code too long, max 35 allowed") if @zip_code && @zip_code.length > 35
       raise ArgumentError.new("Bank Name too long, max 35 allowed") if @bank_name && @bank_name.length > 35
-      raise ArgumentError.new("Sender Street too long, max 35 allowed") if @sender_street && @sender_street.length > 35
+      raise ArgumentError.new("Sender Street and/or Zip Code too long, max 35 allowed") if @sender_street && @sender_zip_code && "#{@sender_street} #{@sender_zip_code}".length > 35
       raise ArgumentError.new("Sender City too long, max 35 allowed") if @sender_city && @sender_city.length > 35
-      raise ArgumentError.new("Sender Zip-Code too long, max 35 allowed") if @sender_zip_code && @sender_zip_code.length > 35
 
+    end
+
+    def account_street_zip
+      "#{@street} #{@zip_code}"
+    end
+
+    def sender_street_zip
+      "#{@sender_street} #{@sender_zip_code}"
     end
 
   end

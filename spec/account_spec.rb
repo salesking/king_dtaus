@@ -46,7 +46,7 @@ describe KingDta::Account do
     lambda{ KingDta::Account.new(@ba.account_nr, @ba.account_bank_number, @ba.sender_name, 12345678901) }.should raise_error(ArgumentError, 'Client number too long, max 10 allowed')
   end
 
-  it "should fail if street is too long" do
+  it "should fail if street and/or Zip Code is too long" do
     lambda{ KingDta::Account.new(
             @dudes_konto.account_nr,
             @dudes_konto.account_bank_number,
@@ -59,7 +59,7 @@ describe KingDta::Account do
             @dudes_konto.sender_street,
             @dudes_konto.sender_city,
             @dudes_konto.sender_zip_code
-          )}.should raise_error(ArgumentError, 'Street too long, max 35 allowed')
+          )}.should raise_error(ArgumentError, 'Street and/or Zip Code too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
@@ -78,22 +78,6 @@ describe KingDta::Account do
           )}.should raise_error(ArgumentError, 'City too long, max 35 allowed')
   end
 
-  it "should fail if zipcode is too long" do
-    lambda{ KingDta::Account.new(
-            @dudes_konto.account_nr,
-            @dudes_konto.account_bank_number,
-            @dudes_konto.sender_name,
-            @dudes_konto.client_number,
-            @dudes_konto.account_street,
-            @dudes_konto.account_city,
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            @dudes_konto.account_bank_name,
-            @dudes_konto.sender_street,
-            @dudes_konto.sender_city,
-            @dudes_konto.sender_zip_code
-          )}.should raise_error(ArgumentError, 'Zip-Code too long, max 35 allowed')
-  end
-
   it "should fail if bank name is too long" do
     lambda{ KingDta::Account.new(
             @dudes_konto.account_nr,
@@ -110,7 +94,7 @@ describe KingDta::Account do
           )}.should raise_error(ArgumentError, 'Bank Name too long, max 35 allowed')
   end
 
-  it "should fail if sender street is too long" do
+  it "should fail if sender street and/or zipcode is too long" do
     lambda{ KingDta::Account.new(
             @dudes_konto.account_nr,
             @dudes_konto.account_bank_number,
@@ -123,7 +107,7 @@ describe KingDta::Account do
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             @dudes_konto.sender_city,
             @dudes_konto.sender_zip_code
-          )}.should raise_error(ArgumentError, 'Sender Street too long, max 35 allowed')
+          )}.should raise_error(ArgumentError, 'Sender Street and/or Zip Code too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
@@ -142,20 +126,38 @@ describe KingDta::Account do
           )}.should raise_error(ArgumentError, 'Sender City too long, max 35 allowed')
   end
 
-  it "should fail if zipcode is too long" do
-    lambda{ KingDta::Account.new(
-            @dudes_konto.account_nr,
-            @dudes_konto.account_bank_number,
-            @dudes_konto.sender_name,
-            @dudes_konto.client_number,
-            @dudes_konto.account_street,
-            @dudes_konto.account_city,
-            @dudes_konto.account_zip_code,
-            @dudes_konto.account_bank_name,
-            @dudes_konto.sender_street,
-            @dudes_konto.sender_city,
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-          )}.should raise_error(ArgumentError, 'Sender Zip-Code too long, max 35 allowed')
+  it "should return account street and zip" do
+    konto = KingDta::Account.new(
+      @dudes_konto.account_nr,
+      @dudes_konto.account_bank_number,
+      @dudes_konto.sender_name,
+      @dudes_konto.client_number,
+      @dudes_konto.account_street,
+      @dudes_konto.account_city,
+      @dudes_konto.account_zip_code,
+      @dudes_konto.account_bank_name,
+      @dudes_konto.sender_street,
+      @dudes_konto.sender_city,
+      @dudes_konto.sender_zip_code
+    )
+    konto.account_street_zip.should == "5th avenue 55323"
+  end
+
+  it "should return sender street and zip" do
+    konto = KingDta::Account.new(
+      @dudes_konto.account_nr,
+      @dudes_konto.account_bank_number,
+      @dudes_konto.sender_name,
+      @dudes_konto.client_number,
+      @dudes_konto.account_street,
+      @dudes_konto.account_city,
+      @dudes_konto.account_zip_code,
+      @dudes_konto.account_bank_name,
+      @dudes_konto.sender_street,
+      @dudes_konto.sender_city,
+      @dudes_konto.sender_zip_code
+    )
+    konto.sender_street_zip.should == "6th avenue 445555"
   end
 
 end
