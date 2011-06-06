@@ -61,4 +61,12 @@ describe KingDta::DtazvSegments do
     # @dudes_dtazv_export.add_t.size.should == 256
   end
 
+  it "should return the proper Y segment" do
+    # @dudes_dtazv_export.add_t.should == "..........."
+  end
+
+  it "should return the proper length of Y segment" do
+    # @dudes_dtazv_export.add_t.size.should == 256
+  end
+
 end

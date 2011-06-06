@@ -410,15 +410,14 @@ module KingDta
     # 9     179             78                P       alpha       Leerzeichen             Reserve
     def add_y
       data  = '0256'  # 1 Länge des Datensatzes
-      data += 'V'    # 2 Satzart
-      # data += '%27s'   % # 3 Warenbezeichnung der eingekauften Transithandelsware
-      # data += 4a Kapitel-Nummer des Warenverzeichnisses für die eingekaufte Transithandelsware
-      data += "0000000" # 4b Konstante "0000000“
-      # data += '%7s' # 5 Einkaufsland Transithandel
-      # data += '%03s' # 6 Ländercode für Einkaufsland Transithandel 2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
-      # data += '%012i' # 7 Einkaufspreis Transithandel (Vorkommastellen)
-      # data += 'J' # 8 Verkauf der Transithandelsware an Gebietsfremde         Ja (= J) bzw. Nein (= N)
-      # data += '...' # 9 Kennzeichnung Verkauf der Transithandelsware an Gebietsansässige (gebrochenes Transithandelsgeschäft) Ja (= J) bzw. Nein (= N)
+      data += 'Y'    # 2 Satzart
+      data += '%015i'   % ... # 3 Betragssumme
+      data += '%015i' % ... # 4 Betragssumme
+      data += '%015i' % ... # 5 Betragssumme
+      data += '%015i' # 6 Betragssumme
+      data += '%06i'   % ... # 7 Anzahl der Datensätze
+      data += '%06i' % ... # 8 Anzahl der Datensätze
+      data += '%0179s' % ... # 9 Leerzeichen Reserve
     end
 
   end
