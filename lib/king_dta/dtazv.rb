@@ -63,13 +63,16 @@ module KingDta
       @closed = true
       # cleanup before we start
       @dta_string = dta_string.empty? ? dta_string : ''
-
-      # TODO CHANGE THIS
       # set_checksums
       # add_a
       # bookings.each{ |b| add_c( b) }
       # add_e
       # dta_string
+      add_p
+      add_q
+      bookings.each{ |b| add_t(b) }
+      add_y(1)
+      puts dta_string
     end
 
     # TODO why this checksums are being created?
