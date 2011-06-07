@@ -87,10 +87,10 @@ module KingDta
       data  = '0256' # Länge des Datensatzes
       data += 'Q'   # Satzart
       data += '%8i'   %  @account.bank_number # BLZ des Einreichinstituts
-      data += '%10i'  %  @account.bank_account_number  # Kundennummer
-      data += '%70s'  %  @account.sender_name # Einreichinstitut  Zeile 1 u. 2: Name
-      data += '%35s'  %  @account.sender_street_zip # Einreichinstitut  Zeile 3: Straße Postfach
-      data += '%35s'  %  @account.sender_city # Einreichinstitut  Zeile 4: Ort
+      data += '%10i'  %  @account.account_number  # Kundennummer
+      data += '%70s'  %  @account.client_name # Einreichinstitut  Zeile 1 u. 2: Name
+      data += '%35s'  %  @account.client_street_zip # Einreichinstitut  Zeile 3: Straße Postfach
+      data += '%35s'  %  @account.client_city # Einreichinstitut  Zeile 4: Ort
       data += @date.strftime("%y%m%d")  # Erstellungsdatum  In der Form JJMMTT
       data += '01'  # laufende Nummer   Laufende Tagesnummer
       data += @date.strftime("%y%m%d")  # (erster) Ausführungstermin Datei
@@ -243,7 +243,6 @@ module KingDta
     #                                                                                            (8-stellig) des Zahlungspflichtigen
     # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
     # 25  1                 715               num             Meldeschlüssel                    Nur belegt, wenn die Weiterleitung des              K               N                 -                                         K               -
-    # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
     #                                                                                            Zahlungsauftrages an die Bundesbank auf
     #                                                                                            die statistischen Angaben beschränkt werden
     #                                                                                            soll; (dies sind die Datensätze V, W und Q
@@ -251,13 +250,14 @@ module KingDta
     #                                                                                            9b, 10a, 10b, 13, 14a, 14b, 15, 16, 17,
     #                                                                                            18, 19 und 24 - 27 des Datensatzes T).
     #                                                                                            Belegung in diesem Falle : ‘1’
+    # /Entfällt bei der kurzen Variante -------------------------------------------------------------------------------------------------------
     # 26  51                716               alpha           -                                 Reserve                                             N               N                 -                                         N               -
     # 27  2                 767               num             Erweiterungskennzeichen           00 = es folgt kein Meldeteil                        P               N                 -                                         P               -
     #
-    def add_t
+    def add_t(booking)
       data  = '0572'  # 1 Länge des Datensatzes
       data += 'T'     # 2 Satzart
-      data += '%8i'   %  @account.bank_number # 3 BLZ des Einreichinstituts
+      data += '%08i' % @account.bank_number # 3 BLZ des Einreichinstituts
       # kurze variante
       #4a data +=ISO-Währungscode
       #4b data +=Kontonummer
@@ -266,26 +266,30 @@ module KingDta
       # 6 data += '%08i'  %  @account.bank_number # 6 BLZ
       # 7a
       # 7b
-      data += # 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
-      data += # 9 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
-      data += # 10 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2: Name Zeile 3	: Straße Zeile 4	: Ort
+      data += '%011i' % booking.account.bank_number # 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
+      data += '%03s' % booking.account.bank_country_code # 9 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
+      data += '%070s' % booking.account.client_name # 10 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2: Name Zeile 3	: Straße Zeile 4	: Ort
+      data += '%035s' % booking.account.client_street_zip
+      data += '%035s' % booking.account.client_city
       # kurze variante
       # data += 11
-      # data += 12
-      data += # 13 3 Auftragswährung "EUR"
-      data += # 14a 14 Betrag (Vorkommastellen)          Rechtsbündig
-      data += # 14b 3 Betrag (Nachkommastellen)         Linksbündig
-      data += # 15 4x35 Verwendungszweck
-      data += # 16 Weisungsschlüssel 1 (gem. Anhang 2)
-      data += # 17 Weisungsschlüssel 2 (gem. Anhang 2)
-      data += # 18 Weisungsschlüssel 3 (gem. Anhang 2)
-      data += # 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
+      data += '%035s' % booking.account.account_number # 12 35 IBAN bzw. Kontonummer des
+      data += 'EUR' # 13 3 Auftragswährung "EUR"
+      data += '%014i' % booking.value_pre_decimal # 14a 14 Betrag (Vorkommastellen)          Rechtsbündig
+      data += '%03i' % booking.value_decimal_place # 14b 3 Betrag (Nachkommastellen)         Linksbündig
+      data += booking.text || default_text # 15 4x35 Verwendungszweck
+      # i dont know what to do.
+      # data += # 16 Weisungsschlüssel 1 (gem. Anhang 2)
+      # data += # 17 Weisungsschlüssel 2 (gem. Anhang 2)
+      # data += # 18 Weisungsschlüssel 3 (gem. Anhang 2)
+      # data += # 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
       # kurze variante
       # data += 20
       # data += 21
       # data += 22
       # data += 23
-      data += # 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
+      # i dont know what to do.
+      # data += # 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
       # kurze variante
       # data += 25
       data += '%051i' % 0 # 26 Reserve
@@ -330,11 +334,11 @@ module KingDta
     # 18    40              130               K/P     alpha       Ergänzungsangaben Transithandel                         Name und Sitz des Nachkäufers bei gebrochenem Transithandel (J in Feld V9)
     # 19    87              170               N       alpha       -                                                       Reserve
     def add_v
-      data  = '0256'  # 1 Länge des Datensatzes
-      data += 'V'    # 2 Satzart
+      # data  = '0256'  # 1 Länge des Datensatzes
+      # data += 'V'    # 2 Satzart
       # data += '%27s'   % # 3 Warenbezeichnung der eingekauften Transithandelsware
       # data += 4a Kapitel-Nummer des Warenverzeichnisses für die eingekaufte Transithandelsware
-      data += "0000000" # 4b Konstante "0000000“
+      # data += "0000000" # 4b Konstante "0000000“
       # data += '%7s' # 5 Einkaufsland Transithandel
       # data += '%03s' # 6 Ländercode für Einkaufsland Transithandel 2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
       # data += '%012i' # 7 Einkaufspreis Transithandel (Vorkommastellen)
@@ -377,17 +381,17 @@ module KingDta
     #                                                             liegenden Leistung
     # 11    75              182               N       alpha       -                               Reserve
     def add_w
-      data  = '0256'  # 1 Länge des Datensatzes
-      data += 'W'    # 2 Satzart
-      data += '%01s'   % ... # 3 Belegart
-      data += '%03s' % ... # 4 Kennzahl
-      data += '%07s' % ... # 5 Land
-      data += '%3s' # 6 Ländercode
-      data += '%07s'   % ... # 7 Anlageland bei Kapitalverkehr
-      data += '%03s' % ... # 8 Ländercode für Anlageland
-      data += '%012i' % ... # 9 Betrag für Dienstleistungen Kapitalverkehr, Sonstiges (Vorkommastellen)
-      data += '%0140s' # 10 nähere Angaben zur zugrunde liegenden Leistung
-      data += '%075s' # 11 Reserve
+      # data  = '0256'  # 1 Länge des Datensatzes
+      # data += 'W'    # 2 Satzart
+      # data += '%01s'   % ... # 3 Belegart
+      # data += '%03s' % ... # 4 Kennzahl
+      # data += '%07s' % ... # 5 Land
+      # data += '%3s' # 6 Ländercode
+      # data += '%07s'   % ... # 7 Anlageland bei Kapitalverkehr
+      # data += '%03s' % ... # 8 Ländercode für Anlageland
+      # data += '%012i' % ... # 9 Betrag für Dienstleistungen Kapitalverkehr, Sonstiges (Vorkommastellen)
+      # data += '%0140s' # 10 nähere Angaben zur zugrunde liegenden Leistung
+      # data += '%075s' # 11 Reserve
     end
 
     #Erstellen Y-Segment der DTAZV-Datei
@@ -409,15 +413,15 @@ module KingDta
     # 8     6               72                P       num         Anzahl der Datensätze   Anzahl Datensätze T
     # 9     179             78                P       alpha       Leerzeichen             Reserve
     def add_y
-      data  = '0256'  # 1 Länge des Datensatzes
-      data += 'Y'    # 2 Satzart
-      data += '%015i'   % ... # 3 Betragssumme
-      data += '%015i' % ... # 4 Betragssumme
-      data += '%015i' % ... # 5 Betragssumme
-      data += '%015i' # 6 Betragssumme
-      data += '%06i'   % ... # 7 Anzahl der Datensätze
-      data += '%06i' % ... # 8 Anzahl der Datensätze
-      data += '%0179s' % ... # 9 Leerzeichen Reserve
+      # data  = '0256'  # 1 Länge des Datensatzes
+      # data += 'Y'    # 2 Satzart
+      # data += '%015i'   % ... # 3 Betragssumme
+      # data += '%015i' % ... # 4 Betragssumme
+      # data += '%015i' % ... # 5 Betragssumme
+      # data += '%015i' # 6 Betragssumme
+      # data += '%06i'   % ... # 7 Anzahl der Datensätze
+      # data += '%06i' % ... # 8 Anzahl der Datensätze
+      # data += '%0179s' % ... # 9 Leerzeichen Reserve
     end
 
   end
