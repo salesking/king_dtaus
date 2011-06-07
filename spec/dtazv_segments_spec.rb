@@ -18,14 +18,15 @@ describe KingDta::DtazvSegments do
                         @dudes_konto.bank_name,
                         @dudes_konto.client_street,
                         @dudes_konto.client_city,
-                        @dudes_konto.client_zip_code
+                        @dudes_konto.client_zip_code,
+                        @dudes_konto.bank_country_code,
+                        @dudes_konto.client_country_code
                       )
-
     @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(@fidel_castros_account.account_number, @fidel_castros_account.bank_number, @fidel_castros_account.client_name, @fidel_castros_account.bank_name), 220.25)
   end
 
   it "should return the proper P segment" do
-    @dudes_dtazv_export.add_p.should == "0256P37040044                                                     Commerzbank K\303\266ln                   5th avenue 55323                        los angeles#{@date.strftime("%y%m%d")}0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    @dudes_dtazv_export.add_p.should == "0256P37040044                                                     Commerzbank Köln                   5th avenue 55323                        los angeles1106070100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
   end
 
   it "should return the proper length of P segment" do
@@ -33,7 +34,7 @@ describe KingDta::DtazvSegments do
   end
 
   it "should return the proper Q segment" do
-    @dudes_dtazv_export.add_q.should == "0256Q370400447828970037                                                   GIMME YOUR MONEY AG                  6th avenue 445555                        los angeles#{@date.strftime("%y%m%d")}01#{@date.strftime("%y%m%d")}N 03704004400000000000000000000000000000000000000000000000000000000000000000000"
+    @dudes_dtazv_export.add_q.should == "0256Q370400447828970037                                                   GIMME YOUR MONEY AG                  6th avenue 445555                        los angeles11060701110607N000000000000000000000000000000000000000000000000000000000000000000000000000000"
   end
 
   it "should return the proper length of P segment" do
@@ -41,6 +42,7 @@ describe KingDta::DtazvSegments do
   end
 
   it "should return the proper T segment" do
+    puts @dudes_dtazv_export.add_t(@fidel_castros_booking)
     # @dudes_dtazv_export.add_t(booking).should == "............"
   end
 

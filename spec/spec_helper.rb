@@ -44,7 +44,9 @@ def dudes_konto
             :client_name =>'Gimme your Money AG',
             :client_street => "6th avenue",
             :client_city => "los angeles",
-            :client_zip_code => "445555"
+            :client_zip_code => "445555",
+            :bank_country_code => "DE",
+            :client_country_code => "DE"
           }
   TestKonto.new(opts)
 end
@@ -62,7 +64,10 @@ def fidel_castros_account
             :client_name =>'Fidel Castro',
             :client_street => "Bush-Avenue 55",
             :client_city => "Kuba",
-            :client_zip_code => "066600"
+            :client_zip_code => "066600",
+            :client_zip_code => "445555",
+            :bank_country_code => "DE",
+            :client_country_code => "DE"
           }
   TestKonto.new(opts)
 end

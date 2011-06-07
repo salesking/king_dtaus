@@ -32,15 +32,15 @@ module KingDta
     # 6     2               160               P       num         laufende Nummer   Laufende Tagesnummer
     # 7     95              162               N       alpha                         Reserve
     def add_p
-      data  = '0256' # Länge des Datensatzes
-      data += 'P'   # Satzart
-      data += '%8i'   %  @account.bank_number # BLZ des Einreichinstituts
-      data += '%70s'  %  @account.bank_name # Einreichinstitut  Zeile 1 u. 2: Name;
-      data += '%35s'  %  @account.account_street_zip # Einreichinstitut Straße Postfach; Zeile 4: Ort
-      data += '%35s'  %  @account.city # Einreichinstitut  Zeile 4: Ort
-      data += @date.strftime("%y%m%d")  # Erstellungsdatum  In der Form JJMMTT
-      data += '01'  # laufende Nummer   Laufende Tagesnummer
-      data += '%095i' % 0 # Reserve
+      data  = '0256'                                    # Länge des Datensatzes, PFLICHT
+      data += 'P'                                       # Satzart, PFLICHT
+      data += '%8i'   %  @account.bank_number           # BLZ des Einreichinstituts, KANN
+      data += '%70s'  %  @account.bank_name             # Einreichinstitut  Zeile 1 u. 2: Name; PFLICHT
+      data += '%35s'  %  @account.account_street_zip    # Einreichinstitut Straße Postfach; Ort PFLICHT
+      data += '%35s'  %  @account.city                  # Einreichinstitut  Zeile 4: Ort PFLICHT
+      data += @date.strftime("%y%m%d")                  # Erstellungsdatum  In der Form JJMMTT, PFLICHT
+      data += '01'                                      # laufende Nummer Laufende Tagesnummer, PFLICHT TODO
+      data += '%095i' % 0                               # Reserve
       raise "DTAUS: Längenfehler P (#{data.size} <> 256)\n" if data.size != 256
       dta_string << data
     end
@@ -72,9 +72,9 @@ module KingDta
     # 1     4               1                 P       binär/num   Satzlänge                             Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
     # 2     1               5                 P       alpha       Satzart                               Konstante "Q"
     # 3     8               6                 P       num         BLZ                                   Erstbeauftragtes Kreditinstitut
-    # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN --------------------------------------------------------------------------------------------------------
     # 4     10              14                P       num         Kundennummer                          Ordnungsnummer gemäß Vereinbarung mit dem erstbeauftragten Kreditinstitut (ggf. Kontonummer)
-    # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 5     4x35            24                P       alpha       Auftraggeberdaten                     Zeile 1 und 2: Name; Zeile 3: Straße / Postfach; Zeile 4: Ort
     # 6     6               164               P       num         Erstellungsdatum                      Format: JJMMTT
     # 7     2               170               P       num         laufende Nummer                       Laufende Tagesnummer
@@ -84,20 +84,20 @@ module KingDta
     # 11    8               181               K/P     num         Firmennummer / BLZ des Auftraggebers  Siehe Erläuterungen Feld Q10
     # 12    68              189               N       alpha                                             Reserve
     def add_q
-      data  = '0256' # Länge des Datensatzes
-      data += 'Q'   # Satzart
-      data += '%8i'   %  @account.bank_number # BLZ des Einreichinstituts
-      data += '%10i'  %  @account.account_number  # Kundennummer
-      data += '%70s'  %  @account.client_name # Einreichinstitut  Zeile 1 u. 2: Name
-      data += '%35s'  %  @account.client_street_zip # Einreichinstitut  Zeile 3: Straße Postfach
-      data += '%35s'  %  @account.client_city # Einreichinstitut  Zeile 4: Ort
-      data += @date.strftime("%y%m%d")  # Erstellungsdatum  In der Form JJMMTT
-      data += '01'  # laufende Nummer   Laufende Tagesnummer
-      data += @date.strftime("%y%m%d")  # (erster) Ausführungstermin Datei
-      data += "N" # Weiterleitung an die Meldebehörde
-      data += "%2i" % 0 # Bundeslandschlüssel
-      data += '%8i'   %  @account.bank_number # Firmennummer / BLZ des Auftraggebers
-      data += '%068i' % 0 # Reserve
+      data  = '0256'                                  # Länge des Datensatzes, PFLICHT
+      data += 'Q'                                     # Satzart, PFLICHT
+      data += '%08i'   %  @account.bank_number        # BLZ des Einreichinstituts, PFLICHT
+      data += '%010i'  %  @account.account_number     # Kundennummer, PFLICHT
+      data += '%070s'  %  @account.client_name        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
+      data += '%035s'  %  @account.client_street_zip  # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
+      data += '%035s'  %  @account.client_city        # Einreichinstitut  Zeile 4: Ort, PFLICHT
+      data += @date.strftime("%y%m%d")                # Erstellungsdatum  In der Form JJMMTT, PFLICHT
+      data += '01'                                    # laufende Nummer   Laufende Tagesnummer, PFLICHT TODO
+      data += @date.strftime("%y%m%d")                # (erster) Ausführungstermin Datei, PFLICHT
+      data += "N"                                     # Weiterleitung an die Meldebehörde, PFLICHT
+      data += "%02i"    % 0                           # Bundeslandschlüssel, KANN, NICHT BELEGT, KEINE MELDUNG
+      data += '%08i'    % 0                           # @account.bank_number # Firmennummer / BLZ des Auftraggebers, KANN, NICHT BELEGT, KEINE MELDUNG
+      data += '%068i'   % 0                           # Reserve
       raise "DTAUS: Längenfehler Q (#{data.size} <> 256)\n" if data.size != 256
       dta_string << data
     end
@@ -130,16 +130,16 @@ module KingDta
     # 2     1               5                 alpha             Satzart                         Konstante "T"                                       P               P                 -                                         P               -
     # 3     8               6                 num               BLZ                             BLZ der kontoführenden Stelle des mit dem
     #                                                                                           Auftragswert zu belastenden Kontos (Feld T4b)       P               P                 -                                         P               -
-    # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 4a    3               14                alpha             ISO-Währungscode                Für mit Auftragswert zu belastendes Konto.          P               P                 Nur "EUR" zulälssig                       P               Nur "EUR" zulässig
     # 4b    10              17                num               Kontonummer                     Mit Auftragswert zu belastendes Konto               P               P                 -                                         P               -
-    # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 5     6               27                num               Ausführungstermin               Format: JJMMTT; gleich oder nach dem Datum aus      K               K                 -                                         K               -
     #                                                           Einzelzahlung, wenn             Feld Q8, jedoch bis zu höchstens 15 Kalendertage
     #                                                           abweichend von Feld Q8          nach dem Datum aus Feld Q6; fehlt der Termin in
     #                                                                                           T5, so wird das Datum in Q8 als Ausführungstermin
     #                                                                                           angenommen.
-    # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 6     8               33                num               BLZ                             BLZ der kontoführenden Stelle des mit Entgelten     K/P             N                 -                                         K/P             -
     #                                                                                           und Auslagen zu belastenden Kontos. (belegt,
     #                                                                                           wenn dieses Konto abweicht von Auftragswertkonto)
@@ -149,7 +149,7 @@ module KingDta
     # 7b    10              44                num               Kontonummer                     Kontonummer des mit Entgelten und Auslagen zu       K/P             N                 -                                         K/P             Nur 'EUR' zulässig
     #                                                                                           belastenden Kontos. (belegt, wenn dieses Konto
     #                                                                                           abweicht von Auftragswertkonto)
-    # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 8     11              54                alpha             Bank Identifier Code (BIC)      Sofern die Zahlung an einen deutschen
     #                                                           des Zahlungsdienstleisters      Zahlungsdienstleister erfolgt, alternativ auch      K/P             P                 Bank Identifier Code	P (BIC)             P               Bank Identifier Code (BIC) ist Pflicht.
     #                                                           des Zahlungsempfängers oder     die BLZ des Zahlungsdienstleisters des                                                ist Pflicht. Zahlungsdienstleister
@@ -178,7 +178,7 @@ module KingDta
     # 10b   4x35            211               alpha           Zahlungsempfänger bzw.            Bei Zahlungsauftrag: Zahlungsempfänger Bei          P               P                 Angabe eines Scheckempfängers nicht       P               Angabe eines Scheck­ empfängers nicht möglich
     #                                                         Scheckempfänger                   Scheckziehung:	Scheckempfänger Zeile 1 und 2:                                        möglich
     #                                                                                           Name Zeile 3	: Straße Zeile 4	: Ort/Land.
-    # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 11    2x35            351               alpha           Ordervermerk                      Nur belegt bei Scheckziehung (d.h. bei den
     #                                                                                           Zahlungsartschlüsseln 20-23 und 30-33 in Feld T22)  K/P             N                 -                                         N               -
     #                                                                                           und Abweichung vom Inhalt der Zeilen 1 und 2
@@ -188,7 +188,7 @@ module KingDta
     #                                                                                           (Nicht zu belegen bei Scheckziehungen, d.h.                                           mit Schräg­ strich beginnend.
     #                                                                                           bei den Zahlungsartschlüsseln 20-23 und 30-33
     #                                                                                           in Feld T22)
-    # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 13    3               456               alpha           Auftragswährung                   ISO-Code der zu zahlenden Währung                   P               P                 Nur 'EUR' zulässig                        P               Nur 'EUR' zulässig
     # 14a   14              459               num             Betrag (Vorkommastellen)          Rechtsbündig                                        P               P                 Nur Beträge bis max. 50k EUR zulässig     P               -
     # 14b   3               473               num             Betrag (Nachkommastellen)         Linksbündig                                         P               P                 -                                         P               -
@@ -207,7 +207,7 @@ module KingDta
     #                                                                                           Bei Scheckziehungen, d.h. bei den
     #                                                                                           Zahlungsartschlüsseln 20-23 und 30-33
     #                                                                                           in Feld T22 nur '91' möglich.
-    # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 20    25              624               alpha           Zusatzinformationen zum           Z. B. Telex, Tel.-Nr., Kabelanschrift
     #                                                         Weisungsschlüssel                 (Nicht zu belegen bei Scheckziehungen,              K               N                 -                                         K               Nur bei Weisungs­ schlüssel ‚10‘ aus An­ hang 2 zulässig
     #                                                                                           d.h. bei den Zahlungsartschlüsseln 20-23
@@ -233,7 +233,7 @@ module KingDta
     #                                                                                            angeben; maximal 16 Stellen werden in den
     #                                                                                            elektronischen Kontoauszug übernommen.
     #                                                                                            (nur nach Absprache mit dem Kreditinstitut)
-    # /Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 24  35                680               alpha           Name und Telefonnummer sowie       Ansprechpartner beim Auftraggeber für eventuelle
     #                                                          ggf. Stellvertretungsmeldung      Rückfragen der beauftragten Bank oder der           K/P             K                 Ansprechpartner beim Auftraggeber         K/P             -
     #                                                                                            Meldebehörde. Dahinter, wenn Auftraggeber                                             für eventuelle Rückfragen der
@@ -241,7 +241,7 @@ module KingDta
     #                                                                                            ohne Leerstellen gefolgt von: Bundesland-Nummer
     #                                                                                            (2-stellig) und: Firmennummer bzw. BLZ
     #                                                                                            (8-stellig) des Zahlungspflichtigen
-    # Entfällt bei der kurzen Variante --------------------------------------------------------------------------------------------------------
+    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 25  1                 715               num             Meldeschlüssel                    Nur belegt, wenn die Weiterleitung des              K               N                 -                                         K               -
     #                                                                                            Zahlungsauftrages an die Bundesbank auf
     #                                                                                            die statistischen Angaben beschränkt werden
@@ -250,51 +250,50 @@ module KingDta
     #                                                                                            9b, 10a, 10b, 13, 14a, 14b, 15, 16, 17,
     #                                                                                            18, 19 und 24 - 27 des Datensatzes T).
     #                                                                                            Belegung in diesem Falle : ‘1’
-    # /Entfällt bei der kurzen Variante -------------------------------------------------------------------------------------------------------
+    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN-------------------------------------------------------------------------------------------------------
     # 26  51                716               alpha           -                                 Reserve                                             N               N                 -                                         N               -
     # 27  2                 767               num             Erweiterungskennzeichen           00 = es folgt kein Meldeteil                        P               N                 -                                         P               -
     #
     def add_t(booking)
-      data  = '0572'  # 1 Länge des Datensatzes
-      data += 'T'     # 2 Satzart
-      data += '%08i' % @account.bank_number # 3 BLZ des Einreichinstituts
-      # kurze variante
-      #4a data +=ISO-Währungscode
-      #4b data +=Kontonummer
-      data += @date.strftime("%y%m%d") #5 Ausführungstermin Einzelzahlung, wenn abweichend von Feld Q8
-      # kurze variante
-      # 6 data += '%08i'  %  @account.bank_number # 6 BLZ
-      # 7a
-      # 7b
-      data += '%011i' % booking.account.bank_number # 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
-      data += '%03s' % booking.account.bank_country_code # 9 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
-      data += '%070s' % booking.account.client_name # 10 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2: Name Zeile 3	: Straße Zeile 4	: Ort
-      data += '%035s' % booking.account.client_street_zip
-      data += '%035s' % booking.account.client_city
-      # kurze variante
-      # data += 11
-      data += '%035s' % booking.account.account_number # 12 35 IBAN bzw. Kontonummer des
-      data += 'EUR' # 13 3 Auftragswährung "EUR"
-      data += '%014i' % booking.value_pre_decimal # 14a 14 Betrag (Vorkommastellen)          Rechtsbündig
-      data += '%03i' % booking.value_decimal_place # 14b 3 Betrag (Nachkommastellen)         Linksbündig
-      data += booking.text || default_text # 15 4x35 Verwendungszweck
+      data  = '0572'                                                # PFLICHT, 1 Länge des Datensatzes
+      data += 'T'                                                   # PFLICHT, 2 Satzart
+      data += '%08i' % @account.bank_number                         # PFLICHT, 3 BLZ des Einreichinstituts
+      data += 'EUR'                                                 # PFLICHT, 4a ISO-Währungscode
+      data += '%010s'  % @account.account_number                    # PFLICHT, 4b Kontonummer
+      data += @date.strftime("%y%m%d")                              # KANN, 5 Ausführungstermin Einzelzahlung, wenn abweichend von Feld Q8
+      data += '%08i'  % @account.bank_number                        # KANN/PFLICHT 6 BLZ
+      data += 'EUR'                                                 # KANN/PFLICHT 7a ISO-Währungscode
+      data += '%010i' % @account.bank_number                        # KANN/PFLICHT 7b BLZ
+      data += '%011s' % booking.account.bank_number                 # KANN/PFLICHT 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
+      data += '%03s'  % booking.account.bank_country_code           # KANN/PFLICHT 9a 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
+      data += '%070s' % booking.account.bank_name                   # KANN/PFLICHT 9b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data += '%035s' % booking.account.account_street_zip          # KANN/PFLICHT 9b Name Zeile 3	: Straße Zeile
+      data += '%035s' % booking.account.city                        # KANN/PFLICHT 9b 4	: Ort
+      data += '%03s'  % booking.account.client_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers bzw. Scheckempfängers
+      data += '%070s' % booking.account.client_name                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data += '%035s' % booking.account.client_street_zip           # KANN/PFLICHT 10b Name Zeile 3	: Straße Zeile
+      data += '%035s' % booking.account.client_city                 # KANN/PFLICHT 10b 4	: Ort
+      data += '%070s' % 0                                           # KANN/PFLICHT 11 Ordervermerk
+      data += '%035s' % booking.account.account_number              # PFLICHT 12 35 IBAN bzw. Kontonummer des
+      data += 'EUR'                                                 # KANN/PFLICHT 13 3 Auftragswährung "EUR" TODO
+      data += '%014i' % booking.value.divmod(100)[0]                # PFLICHT 14a 14 Betrag (Vorkommastellen) Rechtsbündig
+      data += '%-03i' % booking.value.divmod(100)[1]                # PFLICHT 14b 3 Betrag (Nachkommastellen) Linksbündig
+      data += '%0140s' % booking.text || default_text                          # KANN 15 4x35 Verwendungszweck
+      # i dont know what to do. TODO
+      data += "%02s" % 0                                           # N 16 Weisungsschlüssel 1 (gem. Anhang 2)  TODO
+      data += "%02s" % 0                                           # N 17 Weisungsschlüssel 2 (gem. Anhang 2)  TODO
+      data += "%02s" % 0                                           # N 18 Weisungsschlüssel 3 (gem. Anhang 2)  TODO
+      data += "%02s" % 0                                           # N 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a) TODO
+      data += '%025s' % 0                                         # N 20 Zusatzinformationen zum Weisungsschlüssel TODO
+      data += "%02i" % 0                                            # PFLICHT 21 Entgeltregelung
+      data += "%02i" % 13                                            # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
+      data += '%027s' % 0                                          # KANN 23 Variabler Text nur für Auftraggeberabrechnung
       # i dont know what to do.
-      # data += # 16 Weisungsschlüssel 1 (gem. Anhang 2)
-      # data += # 17 Weisungsschlüssel 2 (gem. Anhang 2)
-      # data += # 18 Weisungsschlüssel 3 (gem. Anhang 2)
-      # data += # 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
-      # kurze variante
-      # data += 20
-      # data += 21
-      # data += 22
-      # data += 23
-      # i dont know what to do.
-      # data += # 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
-      # kurze variante
-      # data += 25
-      data += '%051i' % 0 # 26 Reserve
-      data += # 27 2 Erweiterungskennzeichen           00 = es folgt kein Meldeteil
-      raise "DTAUS: Längenfehler T (#{data.size} <> 572)\n" if data.size != 572
+      data += '%035s' % 0                                          # KANN/PFLICHT 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
+      data += '%01i' % 0                                            # KANN/NICHT 25 Meldeschlüssel
+      data += '%051i' % 0                                           # N 26 Reserve
+      data += '%02s' % 0                                            # PFLICHT/NICHT 27 2 Erweiterungskennzeichen           00 = es folgt kein Meldeteil
+      raise "DTAUS: Längenfehler T (#{data.size} <> 768)\n" if data.size != 768
       dta_string << data
     end
 

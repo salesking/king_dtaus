@@ -37,12 +37,21 @@ module KingDta
         @pos   = false
       end
     end
-    
+
     def text=(text)
        @text = convert_text( text )
     end
 
     def pos?; @pos end
+
+    # TODO
+    # def value_pre_decimal
+    # end
+
+    # TODO
+    # def value_decimal_place
+      # sprintf("%.1f",track.ratings.average('rating'))
+    # end
 
   end  #class Buchung
 end  #module dtaus
