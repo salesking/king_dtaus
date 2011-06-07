@@ -6,6 +6,7 @@ describe KingDta::DtazvSegments do
     @date = Date.today
     @dudes_dtazv_export = KingDta::Dtazv.new(@date)
     @dudes_konto = dudes_konto
+    @fidel_castros_account = fidel_castros_account
     @dudes_dtazv_export.account = KingDta::Account.new(
                         @dudes_konto.account_number,
                         @dudes_konto.bank_number,
@@ -19,7 +20,8 @@ describe KingDta::DtazvSegments do
                         @dudes_konto.client_city,
                         @dudes_konto.client_zip_code
                       )
-    # @fidel_castros_booking = KingDta::Booking.new(...)
+
+    @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(@fidel_castros_account.account_number, @fidel_castros_account.bank_number, @fidel_castros_account.client_name, @fidel_castros_account.bank_name), 220.25)
   end
 
   it "should return the proper P segment" do

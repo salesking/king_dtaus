@@ -49,6 +49,24 @@ def dudes_konto
   TestKonto.new(opts)
 end
 
+def fidel_castros_account
+  opts = {
+            :account_number => 'GR1601101250000000012300695',
+            :bank_number => 'MARKF1100',
+            :bank_name => 'Kuba National Bank',
+            :zweck => 'President-Fee',
+            :account_street => "5th avenue",
+            :account_city => "los angeles",
+            :account_zip_code => "55323",
+            :client_number => "",
+            :client_name =>'Fidel Castro',
+            :client_street => "Bush-Avenue 55",
+            :client_city => "Kuba",
+            :client_zip_code => "066600"
+          }
+  TestKonto.new(opts)
+end
+
 def test_kto1
   opts = {
             :account_number => '7828970037',

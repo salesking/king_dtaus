@@ -14,8 +14,8 @@ module KingDta
                     client_street = nil, client_city = nil, client_zip_code = nil
                   )
 
-      @account_number         = account_number.kind_of?( Integer ) ? account_number : account_number.gsub(/\s/, '').to_i
-      @bank_number            = bank_number.kind_of?( Integer ) ? bank_number :  bank_number.gsub(/\s/, '').to_i
+      @account_number         = account_number #account_number.kind_of?( Integer ) ? account_number : account_number.gsub(/\s/, '').to_i
+      @bank_number            = bank_number #bank_number.kind_of?( Integer ) ? bank_number :  bank_number.gsub(/\s/, '').to_i
       @client_number          = client_number.kind_of?( Integer ) ? client_number : client_number.gsub(/\s/, '').to_i
       @street                 = street
       @city                   = city
@@ -27,11 +27,11 @@ module KingDta
       @client_zip_code        = client_zip_code
       @bank_country_code      = bank_country_code
 
-      raise ArgumentError.new('Account number too long, max 35 allowed') if "#{@account_number}".length > 35
-      raise ArgumentError.new('Bank number too long, max 11 allowed') if "#{@bank_number}".length > 11
-      raise ArgumentError.new('Client number too long, max 10 allowed') if "#{@client_number}".length > 10
-      raise ArgumentError.new("Bank account number cannot be 0")  if @bank_account_number == 0
-      raise ArgumentError.new("Bank number cannot be 0")   if @bank_number == 0
+      raise ArgumentError.new('Account number too long, max 35 allowed') if @account_number && "#{@account_number}".length > 35
+      raise ArgumentError.new('Bank number too long, max 11 allowed') if @bank_number && "#{@bank_number}".length > 11
+      raise ArgumentError.new('Client number too long, max 10 allowed') if @client_number && "#{@client_number}".length > 10
+      raise ArgumentError.new("Bank account number cannot be 0")  if @account_number && @account_number == 0
+      raise ArgumentError.new("Bank number cannot be 0")   if @bank_number && @bank_number == 0
       raise ArgumentError.new("Street and/or Zip Code too long, max 35 allowed") if @street && @zip_code && "#{@street} #{@zip_code}".length > 35
       raise ArgumentError.new("City too long, max 35 allowed") if @city && @city.length > 35
       raise ArgumentError.new("Bank Name too long, max 35 allowed") if @bank_name && @bank_name.length > 35
