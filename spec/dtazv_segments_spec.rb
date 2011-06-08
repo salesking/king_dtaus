@@ -39,19 +39,21 @@ describe KingDta::DtazvSegments do
       @fidel_castros_account.client_country_code
     ), 220.25)
 
+    @bookings = []
+    @bookings << @fidel_castros_booking
   end
 
 
-  it "should return the proper P segment" do
-    # @dudes_dtazv_export.add_p.should == "0256P37040044                                                     Commerzbank K\303\266ln                   5th avenue 55323                        los angeles11060801                                                                                               "
-  end
+  # P SEGMENT NOT IMPLEMENTED AND USED YET
+  # it "should return the proper P segment" do
+  #   @dudes_dtazv_export.add_p.should == "0256P37040044                                                     Commerzbank K\303\266ln                   5th avenue 55323                        los angeles11060801                                                                                               "
+  # end
 
-  it "should return the proper length of P segment" do
-    # @dudes_dtazv_export.add_p.size.should == 256
-  end
+  # it "should return the proper length of P segment" do
+  #   @dudes_dtazv_export.add_p.size.should == 256
+  # end
 
   it "should return the proper Q segment" do
-    # @dudes_dtazv_export.add_q.should == "0256Q370400447828970037                                                   GIMME YOUR MONEY AG                  6th avenue 445555                        los angeles11060801110608N0000000000                                                                    "
     @dudes_dtazv_export.add_q.should == "0256Q370502991326049634JAN                                KUS                                MEINE EINE STRASSE 2               51063 MEINE KOELN                  11060801110608N0000000000                                                                    "
   end
 
@@ -60,24 +62,23 @@ describe KingDta::DtazvSegments do
   end
 
   it "should return the proper T segment" do
-    # @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0572T37040044EUR782897003711060837040044EUR0037040044  MARKF1100                                                                                                                                                                                                            FIDEL CASTRO                                                                                                                                                    GR1601101250000000012300695EUR00000000000220025                                                                                                                                            00000000                         0013                                                              0                                                   00"
-    @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0768T37050299EUR1326049634#{@date.strftime("%y%m%d")}00000000   000000000037050299                                                                                                                                                  DE JAN KUS                            JUAN                               AM BUESCHEL 6                      50766 KOELN                                                                                              /DE93680400070140557000            EUR00000000000050000ZWEICK 7                           ZWECKJE 3                                                                                                00000000                         0013                                                              0                                                   "
-
-
+    @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0768T37050299EUR132604963411060800000000   0000000000MARKF1100                                                                                                                                                 DE FIDEL                              CASTRO                             BUSH-AVENUE 55                     445555 KUBA                                                                                              /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
   end
 
   it "should return the proper length of T segment" do
     @dudes_dtazv_export.add_t(@fidel_castros_booking).size.should == 768
   end
 
-  it "should return the proper V segment" do
-    # @dudes_dtazv_export.add_t.should == "..........."
-  end
+  # V SEGMENT NOT IMPLEMENTED AND USED YET
+  # it "should return the proper V segment" do
+  #   @dudes_dtazv_export.add_t.should == "..........."
+  # end
 
   # it "should return the proper length of V segment" do
   #   @dudes_dtazv_export.add_t.size.should == 256
   # end
 
+  # V SEGMENT NOT IMPLEMENTED AND USED YET
   # it "should return the proper W segment" do
   #   @dudes_dtazv_export.add_t.should == "..........."
   # end
@@ -86,12 +87,21 @@ describe KingDta::DtazvSegments do
   #   @dudes_dtazv_export.add_t.size.should == 256
   # end
 
-  it "should return the proper Y segment" do
-    # @dudes_dtazv_export.add_y(1).should == "0256Y000000000000000000000000000000000000000000000000000000000000000000000001                                                                                                                                                                                   "
+  # P SEGMENT NOT IMPLEMENTED AND USED YET
+  # it "should return the proper Y segment" do
+  #   @dudes_dtazv_export.add_y(1).should == "........."
+  # end
+
+  # it "should return the proper length of Y segment" do
+  #   @dudes_dtazv_export.add_y(1).size.should == 256
+  # end
+
+  it "should return the proper Z segment" do
+    @dudes_dtazv_export.add_z(@bookings).should == "0256Z000000000000220000000000000001                                                                                                                                                                                                                             "
   end
 
-  it "should return the proper length of Y segment" do
-    # @dudes_dtazv_export.add_y(1).size.should == 256
+  it "should return the proper length of Z segment" do
+    @dudes_dtazv_export.add_z(@bookings).size.should == 256
   end
 
 end
