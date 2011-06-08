@@ -3,10 +3,10 @@ require 'spec/spec_helper'
 describe KingDta::Dtazv do
 
   before :each do
-    @dtaus = KingDta::Dtazv.new(Date.today)
+    @dtazv = KingDta::Dtazv.new(Date.today)
     @kto1 = test_kto1
     @kto2 = test_kto2
-    @dtaus.account = KingDta::Account.new( @kto1.account_number, @kto1.bank_number, @kto1.client_name, @kto1.bank_name )
+    @dtazv.account = KingDta::Account.new( @kto1.account_number, @kto1.bank_number, @kto1.client_name, @kto1.bank_name )
     @booking = KingDta::Booking.new(KingDta::Account.new( @kto2.account_number, @kto2.bank_number, @kto2.client_name, @kto2.bank_name ), 220.25 )
   end
 
@@ -28,7 +28,7 @@ describe KingDta::Dtazv do
   end
 
   it "should deny invalid accounts" do
-    lambda{ @dtaus.account = "account" }.should raise_error(KingDta::Exception)
+    lambda{ @dtazv.account = "account" }.should raise_error(KingDta::Exception)
   end
 
   # TODO
