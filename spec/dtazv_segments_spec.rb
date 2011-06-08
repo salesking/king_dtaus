@@ -8,30 +8,30 @@ describe KingDta::DtazvSegments do
     @dudes_konto = dudes_konto
     @fidel_castros_account = fidel_castros_account
     @dudes_dtazv_export.account = KingDta::Account.new(
-                        @dudes_konto.account_number,
-                        @dudes_konto.bank_number,
-                        @dudes_konto.client_name,
-                        @dudes_konto.client_number,
-                        @dudes_konto.account_street,
-                        @dudes_konto.account_city,
-                        @dudes_konto.account_zip_code,
-                        @dudes_konto.bank_name,
-                        @dudes_konto.client_street,
-                        @dudes_konto.client_city,
-                        @dudes_konto.client_zip_code,
-                        @dudes_konto.bank_country_code,
-                        @dudes_konto.client_country_code
-                      )
+      @dudes_konto.account_number,
+      @dudes_konto.bank_number,
+      @dudes_konto.client_name,
+      @dudes_konto.bank_name,
+      @dudes_konto.client_number,
+      @dudes_konto.account_street,
+      @dudes_konto.account_city,
+      @dudes_konto.account_zip_code,
+      @dudes_konto.client_street,
+      @dudes_konto.client_city,
+      @dudes_konto.client_zip_code,
+      @dudes_konto.bank_country_code,
+      @dudes_konto.client_country_code
+    )
 
     @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
       @fidel_castros_account.account_number,
       @fidel_castros_account.bank_number,
       @fidel_castros_account.client_name,
       @fidel_castros_account.bank_name,
+      @fidel_castros_account.client_number,
       @fidel_castros_account.account_street,
       @fidel_castros_account.account_city,
       @fidel_castros_account.account_zip_code,
-      @fidel_castros_account.bank_name,
       @fidel_castros_account.client_street,
       @fidel_castros_account.client_city,
       @fidel_castros_account.client_zip_code,

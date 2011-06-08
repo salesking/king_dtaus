@@ -9,8 +9,8 @@ module KingDta
                   :client_name, :client_street, :client_city, :client_zip_code,
                   :bank_country_code, :client_country_code)
 
-    def initialize( account_number, bank_number, client_name, client_number="",
-                    street = nil, city = nil, zip_code = nil, bank_name = nil,
+    def initialize( account_number, bank_number, client_name, bank_name = nil, client_number="",
+                    street = nil, city = nil, zip_code = nil,
                     client_street = nil, client_city = nil, client_zip_code = nil,
                     bank_country_code = nil, client_country_code = nil
                   )

@@ -6,8 +6,8 @@ describe KingDta::Dtazv do
     @dtaus = KingDta::Dtazv.new(Date.today)
     @kto1 = test_kto1
     @kto2 = test_kto2
-    @dtaus.account = KingDta::Account.new( @kto1.nr, @kto1.blz, @kto1.name, @kto1.bank )
-    @booking = KingDta::Booking.new(KingDta::Account.new( @kto2.nr, @kto2.blz, @kto2.name, @kto2.bank ), 220.25 )
+    @dtaus.account = KingDta::Account.new( @kto1.account_number, @kto1.bank_number, @kto1.client_name, @kto1.bank_name )
+    @booking = KingDta::Booking.new(KingDta::Account.new( @kto2.account_number, @kto2.bank_number, @kto2.client_name, @kto2.bank_name ), 220.25 )
   end
 
   it "should init without values" do
