@@ -135,7 +135,7 @@ describe KingDta::Account do
       @dudes_konto.client_city,
       @dudes_konto.client_zip_code
     )
-    konto.account_street_zip.should == "5th avenue 55323"
+    konto.zip_city.should == "51063 Meine Köln"
   end
 
   it "should return sender street and zip" do
@@ -152,7 +152,7 @@ describe KingDta::Account do
       @dudes_konto.client_city,
       @dudes_konto.client_zip_code
     )
-    konto.client_street_zip.should == "6th avenue 445555"
+    konto.client_zip_city.should == "51063 Meine Köln"
   end
 
 end
