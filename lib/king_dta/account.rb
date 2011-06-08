@@ -18,13 +18,13 @@ module KingDta
       @account_number         = account_number #account_number.kind_of?( Integer ) ? account_number : account_number.gsub(/\s/, '').to_i
       @bank_number            = bank_number #bank_number.kind_of?( Integer ) ? bank_number :  bank_number.gsub(/\s/, '').to_i
       @client_number          = client_number.kind_of?( Integer ) ? client_number : client_number.gsub(/\s/, '').to_i
-      @street                 = street
-      @city                   = city
+      @street                 = convert_text(street)
+      @city                   = convert_text(city)
       @zip_code               = zip_code
-      @bank_name              = bank_name
-      @client_name            = convert_text( client_name )
-      @client_street          = client_street
-      @client_city            = client_city
+      @bank_name              = convert_text(bank_name)
+      @client_name            = convert_text(client_name)
+      @client_street          = convert_text(client_street)
+      @client_city            = convert_text(client_city)
       @client_zip_code        = client_zip_code
       # TODO test
       @bank_country_code      = bank_country_code
@@ -44,12 +44,21 @@ module KingDta
       raise ArgumentError.new("Client Country code too long, max 2 allowed") if @client_country_code && @client_country_code.length > 2
     end
 
-    def account_street_zip
-      "#{@street} #{@zip_code}"
+    # TODO test
+    def client_firstname
+      @client_name.split(' ')[0]
     end
 
-    def client_street_zip
-      "#{@client_street} #{@client_zip_code}"
+    def client_surname
+      @client_name.split(' ')[1]
+    end
+
+    def zip_city
+      "#{@zip_code} #{@city}"
+    end
+
+    def client_zip_city
+      "#{@client_zip_code} #{@client_city}"
     end
 
   end

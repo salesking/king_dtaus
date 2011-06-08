@@ -68,11 +68,10 @@ module KingDta
       # bookings.each{ |b| add_c( b) }
       # add_e
       # dta_string
-      add_p
+      # add_p
       add_q
       bookings.each{ |b| add_t(b) }
-      add_y(1)
-      puts dta_string
+      add_z(bookings)
     end
 
     # TODO why this checksums are being created?

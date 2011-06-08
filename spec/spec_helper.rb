@@ -33,18 +33,18 @@ end
 
 def dudes_konto
   opts = {
-            :account_number => '7828970037',
-            :bank_number => '37040044',
-            :bank_name => 'Commerzbank Köln',
+            :account_number => '1326049634',
+            :bank_number => '37050299',
+            :bank_name => 'Kreissparkasse Köln',
             :zweck => 'Monatsbeitrag',
-            :account_street => "5th avenue",
-            :account_city => "los angeles",
-            :account_zip_code => "55323",
+            :account_street => "Bank Eine Straße 2",
+            :account_city => "Bank Köln",
+            :account_zip_code => "51063",
             :client_number => "",
-            :client_name =>'Gimme your Money AG',
-            :client_street => "6th avenue",
-            :client_city => "los angeles",
-            :client_zip_code => "445555",
+            :client_name =>'Jan Kus',
+            :client_street => "Meine Eine Straße 2",
+            :client_city => "Meine Köln",
+            :client_zip_code => "51063",
             :bank_country_code => "DE",
             :client_country_code => "DE"
           }
