@@ -81,7 +81,7 @@ module KingDta
 
     # Create a DTA-File, from current dta information
     # === Parameter
-    # filename<String>:: defaults to DTAUS0.TXT
+    # filename<String>:: defaults to DTAZV0.TXT
     def create_file(filename ='DTAZV0.TXT')
       file = open( filename, 'w')
       file  << create
