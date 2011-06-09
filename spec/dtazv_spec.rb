@@ -75,12 +75,11 @@ describe KingDta::Dtazv do
     File.delete(filename)
   end
 
-  # TODO
-  # it "should not add a booking if closed" do
-  #   @dtaus.add(@booking)
-  #   @dtaus.create
-  #   lambda{ @dtaus.add(@booking) }.should raise_error(KingDta::Exception)
-  # end
+  it "should not add a booking if closed" do
+    @dtazv.add(@booking)
+    @dtazv.create
+    lambda{ @dtazv.add(@booking) }.should raise_error(KingDta::Exception)
+  end
 
   # TODO
   # it "should not add a booking if closed" do
