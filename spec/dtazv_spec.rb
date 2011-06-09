@@ -76,22 +76,34 @@ describe KingDta::Dtazv do
   end
 
   it "should not add a booking if closed" do
-    @dtazv.add(@booking)
+    @dtazv.add(@fidel_castros_booking)
     @dtazv.create
-    lambda{ @dtazv.add(@booking) }.should raise_error(KingDta::Exception)
+    lambda{ @dtazv.add(@fidel_castros_booking) }.should raise_error(KingDta::Exception)
   end
 
-  # TODO
-  # it "should not add a booking if closed" do
-  #   @dtaus.add(@booking)
-  #   negative_booking = KingDta::Booking.new(KingDta::Account.new( @kto2.nr, @kto2.blz, @kto2.name, @kto2.bank ), -120.25 )
-  #   lambda{ @dtaus.add(negative_booking) }.should raise_error(KingDta::Exception)
-  # end
+  it "should not add a booking if closed" do
+    @dtazv.add(@fidel_castros_booking)
+    negative_booking = KingDta::Booking.new(KingDta::Account.new(
+      @fidel_castros_account.account_number,
+      @fidel_castros_account.bank_number,
+      @fidel_castros_account.client_name,
+      @fidel_castros_account.bank_name,
+      @fidel_castros_account.account_street,
+      @fidel_castros_account.account_city,
+      @fidel_castros_account.account_zip_code,
+      @fidel_castros_account.bank_name,
+      @fidel_castros_account.client_street,
+      @fidel_castros_account.client_city,
+      @fidel_castros_account.client_zip_code,
+      @fidel_castros_account.bank_country_code,
+      @fidel_castros_account.client_country_code
+    ), -220.25)
+    lambda{ @dtazv.add(negative_booking) }.should raise_error(KingDta::Exception)
+  end
 
-  # TODO
-  # it "should not create if there are no bookings" do
-  #   lambda{ @dtaus.create}.should raise_error(KingDta::Exception)
-  # end
+  it "should not create if there are no bookings" do
+    lambda{ @dtazv.create}.should raise_error(KingDta::Exception)
+  end
 
   # TODO
   # it "should create header" do
