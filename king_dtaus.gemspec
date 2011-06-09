@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{king_dtaus}
-  s.version = "1.0.2"
+  s.version = "2.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Georg Leciejewski", "Georg Ledermann", "Jan Kus"]
   s.date = %q{2011-05-11}
-  s.description = %q{DTAUS/DTAZV is a text-based format, to create bank transfers for german and international banks. This gem helps with the creation of those transfer files.}
+  s.description = %q{DTAUS & DTAZV are text-based formated files, to create bank transfers for german and international banks. This gem helps with the creation of those transfer files.}
   s.email = %q{gl@salesking.eu}
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -35,7 +35,8 @@ Gem::Specification.new do |s|
     "spec/helper_spec.rb",
     "spec/spec_helper.rb",
     "spec/dtazv_segments.rb",
-    "spec/dtazv_spec.rb"
+    "spec/dtazv_spec.rb",
+    "spec/dtazv_test.rb"
   ]
   s.homepage = %q{http://github.com/salesking/king_dtaus}
   s.require_paths = ["lib"]

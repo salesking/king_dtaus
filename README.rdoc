@@ -1,43 +1,14 @@
-= Dtazv
+= DTAUS & DTAZV always comes together
 
-DTAZV is a format ....
-
-== Install
-
-  gem install king_dtazv
-
-== Features
-
-*
-*
-*
-
-== Example
-
-== Credits
-
-Bugfixes and enhancements by
-
-* Georg Ledermann - https://github.com/ledermann
-* Kim Rudolph - https://github.com/krudolph
-* Railslove - Thorsten Böttger https://github.com/alto
-
-This gem used https://rubygems.org/gems/DTAUS as a starting point.
-It was disected, turned into a real class structure, bugs where fixed and
-of course a full test suite ensures its functionality.
-
-
-Copyright (c) 2009-2011 Georg Leciejewski (SalesKing), Jan Kus (Railslove), released under the MIT license
-
-= Dtaus
-
-DTAUS is a format for German bank transfers and is short for
+DTAUS & DTAZV are formats for German bank transfers and is short for
 "Datenträgeraustausch". The format itself totally sucks because it was
 established in the last century, to be used on floppy disks. Still almost
-all German banks use it(they only seem innovative at robbing), and it is
+all German banks use it (they only seem innovative at robbing), and it is
 therefore supported in common banking programs too.
 
-This gem saves you all the trouble when generating dtaus-text.
+This gem saves you all the trouble when generating DTAUS- or DTAZV-text.
+
+We love building payment applications
 
 == Install
 
@@ -45,13 +16,30 @@ This gem saves you all the trouble when generating dtaus-text.
 
 == Features
 
-* create lastschrift
-* create gutschrift
-* 100% Test coverage
+* create DTAUS debit advice (Lastschrift)
+* create DTAUS credit advice (Gutschrift)
+* create DTAZV debit advice
 
-== Example
+== TODOs
 
-  #create a new dtaus object
+* Increase Testcoverage
+
+== Resources
+
+* DTAZV-Viewer: http://www.meta-evolutions.de/pages/artikel-20070630-dtazv-datei-betrachter.html
+* DTA/DTAZV PHP Pear: http://pear.php.net/package/Payment_DTA
+* Ruby Kernel Module: http://www.ruby-doc.org/core/classes/Kernel.html
+* Windata ZV-Tools: http://www.windata.de/Site/2Produkte2/ZVTools.aspx
+* The Swift Codes: http://www.theswiftcodes.com/
+* StarMoney: http://www.starmoney.de/index.php?id=starmoneybusiness_testen
+
+== Examples
+
+Here are some examples how to create a DTA- or DTAZV-File. Also check out the spec/dtazv_test.rb to have a running Example of an Export.
+
+=== DTA
+
+  # create a new dtaus object
   dta = KingDta::Dtaus.new('LK')
   # set sender account
   dta.account = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner")
@@ -69,8 +57,50 @@ This gem saves you all the trouble when generating dtaus-text.
   # create datausstring and do with it whatever fits your workflow
   my_str = dta.create
 
-also make sure to read the specs
+=== DTAZV
 
+  @date = Date.today
+  @dudes_dtazv_export = KingDta::Dtazv.new(@date)
+  @dudes_konto = self.dudes_konto
+  @fidel_castros_account = self.fidel_castros_account
+  @dudes_dtazv_export.account = KingDta::Account.new(
+    @dudes_konto.account_number,
+    @dudes_konto.bank_number,
+    @dudes_konto.client_name,
+    @dudes_konto.client_number,
+    @dudes_konto.account_street,
+    @dudes_konto.account_city,
+    @dudes_konto.account_zip_code,
+    @dudes_konto.bank_name,
+    @dudes_konto.client_street,
+    @dudes_konto.client_city,
+    @dudes_konto.client_zip_code,
+    @dudes_konto.bank_country_code,
+    @dudes_konto.client_country_code
+  )
+
+  @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
+    @fidel_castros_account.account_number,
+    @fidel_castros_account.bank_number,
+    @fidel_castros_account.client_name,
+    @fidel_castros_account.bank_name,
+    @fidel_castros_account.account_street,
+    @fidel_castros_account.account_city,
+    @fidel_castros_account.account_zip_code,
+    @fidel_castros_account.bank_name,
+    @fidel_castros_account.client_street,
+    @fidel_castros_account.client_city,
+    @fidel_castros_account.client_zip_code,
+    @fidel_castros_account.bank_country_code,
+    @fidel_castros_account.client_country_code
+  ), 220.25)
+
+  @dudes_dtazv_export.add(@fidel_castros_booking)
+  @dudes_dtazv_export.create_file
+
+  # Output is DTAZV0.TXT
+
+also make sure to read the specs
 
 == Credits
 
@@ -78,11 +108,11 @@ Bugfixes and enhancements by
 
 * Georg Ledermann - https://github.com/ledermann
 * Kim Rudolph - https://github.com/krudolph
-* Railslove - Thorsten Böttger https://github.com/alto
+* Thorsten Böttger - https://github.com/alto
+* Jan Kus - https://github.com/koos
 
 This gem used https://rubygems.org/gems/DTAUS as a starting point.
 It was disected, turned into a real class structure, bugs where fixed and
 of course a full test suite ensures its functionality.
 
-
-Copyright (c) 2009-2011 Georg Leciejewski, released under the MIT license
+Copyright (c) 2009-2011 Georg Leciejewski (SalesKing), Jan Kus (Railslove), released under the MIT license

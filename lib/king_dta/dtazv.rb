@@ -64,11 +64,6 @@ module KingDta
       # cleanup before we start
       @dta_string = dta_string.empty? ? dta_string : ''
       # set_checksums
-      # add_a
-      # bookings.each{ |b| add_c( b) }
-      # add_e
-      # dta_string
-      # add_p
       add_q
       bookings.each{ |b| add_t(b) }
       add_z(bookings)
@@ -87,7 +82,7 @@ module KingDta
     # Create a DTA-File, from current dta information
     # === Parameter
     # filename<String>:: defaults to DTAUS0.TXT
-    def create_file(filename ='DTAUS0.TXT')
+    def create_file(filename ='DTAZV0.TXT')
       file = open( filename, 'w')
       file  << create
       file.close()
