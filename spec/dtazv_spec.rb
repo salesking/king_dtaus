@@ -105,14 +105,13 @@ describe KingDta::Dtazv do
     lambda{ @dtazv.create}.should raise_error(KingDta::Exception)
   end
 
-  # TODO
-  # it "should create checksums" do
-  #   @dtaus.add(@booking)
-  #   @dtaus.set_checksums
-  #   @dtaus.sum_bank_account_numbers.should == 2787777
-  #   @dtaus.sum_bank_numbers.should == 37040044
-  #   @dtaus.sum_values.should == 22025
-  # end
+  it "should create checksums" do
+    @dtazv.add(@fidel_castros_booking)
+    @dtazv.set_checksums
+    @dtazv.sum_account_numbers.should == 1601101250000000012300695
+    @dtazv.sum_bank_numbers.should == 1100
+    @dtazv.sum_values.should == 22025
+  end
 
   # TODO
   # it "should create the whole dta string with a single booking" do

@@ -4,7 +4,7 @@ module KingDta
     include KingDta::DtazvSegments
 
     # needed?
-    attr_reader :default_text #, :sum_bank_account_numbers, :sum_bank_numbers, :sum_values
+    attr_reader :default_text, :sum_account_numbers, :sum_bank_numbers, :sum_values
 
     # Create a new dtazv file/string.
     # ===Parameter
@@ -69,12 +69,15 @@ module KingDta
       add_z(bookings)
     end
 
-    # TODO why this checksums are being created?
+    # Generate checknums, gsub the Literals from Accounts and Bank Numbers
+    # Sum up everything
     def set_checksums
-      @sum_bank_account_numbers, @sum_bank_numbers, @sum_values  = 0,0,0
+      @sum_account_numbers, @sum_bank_numbers, @sum_values  = 0,0,0
       bookings.each do |b|
-        @sum_bank_account_numbers  += b.account.bank_account_number
-        @sum_bank_numbers += b.account.bank_number
+        account_number = b.account.account_number.gsub(/[A-Z]/, '').to_i
+        bank_number = b.account.bank_number.gsub(/[A-Z]/, '').to_i
+        @sum_account_numbers  += account_number
+        @sum_bank_numbers += bank_number
         @sum_values += b.value
       end
     end
