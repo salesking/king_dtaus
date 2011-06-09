@@ -106,46 +106,12 @@ describe KingDta::Dtazv do
   end
 
   # TODO
-  # it "should create header" do
-  #   str = @dtaus.add_a
-  #   str.length.should == 128
-  #   out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"
-  #   str.should == out
-  #   #60-70 kontonummer mit nullen aufgefüllt - hier nicht da ktnr == 10 stellen
-  #   str[60...70].should == "#{test_kto1.nr}"
-  #   str.should include(test_kto1.blz)
-  # end
-
-  # TODO
   # it "should create checksums" do
   #   @dtaus.add(@booking)
   #   @dtaus.set_checksums
   #   @dtaus.sum_bank_account_numbers.should == 2787777
   #   @dtaus.sum_bank_numbers.should == 37040044
   #   @dtaus.sum_values.should == 22025
-  # end
-
-  # TODO
-  # it "should create c-sektion with booking text at 19" do
-  #   @dtaus.add(@booking)
-  #   @dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
-  #   @dtaus.add_c(@booking)
-  #   str = @dtaus.dta_string
-  #   str.length.should == 256
-  #   str.should include(@kto2.name.upcase)
-  #   out = "0216C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
-  #   str.should == out
-  # end
-
-  # TODO
-  # it "should create c-sektion with default booking text" do
-  #   @dtaus.default_text = 'Default verwendungszweck'
-  #   @dtaus.add_c(@booking)
-  #   str = @dtaus.dta_string
-  #   str.length.should == 256
-  #   str.should include(@kto2.name.upcase)
-  #   out = "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "
-  #   str.should == out
   # end
 
   # TODO
