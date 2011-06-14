@@ -1,4 +1,5 @@
-require 'spec/spec_helper'
+# encoding: utf-8
+require 'spec_helper'
 
 # All Test DTAZV output strings are validated with sFirm => lokal Sparkassen Software
 

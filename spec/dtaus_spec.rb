@@ -1,4 +1,5 @@
-require 'spec/spec_helper'
+# encoding: utf-8
+require 'spec_helper'
 # All Test DTA output strings are validated with sFirm => lokal Sparkassen Software
 describe KingDta::Dtaus do
 
