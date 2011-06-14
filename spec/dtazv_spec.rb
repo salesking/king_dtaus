@@ -59,7 +59,6 @@ describe KingDta::Dtazv do
     lambda{ @dtazv.account = "account" }.should raise_error(KingDta::Exception)
   end
 
-  # TODO
   it "should create file" do
     @dtazv.default_text = 'Default Verwendungszweck'
     6.times { @dtazv.add(@fidel_castros_booking) }
@@ -161,9 +160,4 @@ describe KingDta::Dtazv do
   #   str.should == out
   # end
 
-
-  # Deprecated
-  # it "should not init with an unknown type" do
-  #   lambda{ KingDta::Dtaus.new('UNKNOWN', "date") }.should raise_error(ArgumentError)
-  # end
 end

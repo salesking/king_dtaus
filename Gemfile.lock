@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    king_dtaus (1.0.2)
+    king_dtaus (2.0.0)
 
 GEM
   remote: http://rubygems.org/
