@@ -12,6 +12,7 @@ GEM
       bundler (~> 1.0)
       git (>= 1.2.5)
       rake
+    mocha (0.9.12)
     rake (0.9.1)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
@@ -31,5 +32,6 @@ PLATFORMS
 DEPENDENCIES
   jeweler
   king_dtaus!
+  mocha
   rspec
   simplecov

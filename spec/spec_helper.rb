@@ -2,15 +2,16 @@
 $:.unshift(File.dirname(__FILE__))
 $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-# require 'simplecov'
-# SimpleCov.start 'rails'
-# SimpleCov.coverage_dir 'coverage/rspec'
+require 'simplecov'
+SimpleCov.start 'rails'
+SimpleCov.coverage_dir 'coverage/rspec'
 
 require 'rubygems'
 require "king_dtaus"
 require 'rspec'
 require 'ostruct'
 require 'date'
+require 'mocha'
 
 RSpec.configure do |config|
 end

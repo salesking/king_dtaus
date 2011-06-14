@@ -101,7 +101,7 @@ describe KingDta::DtazvSegments do
   #   @dudes_dtazv_export.add_t.size.should == 256
   # end
 
-  # V SEGMENT NOT IMPLEMENTED AND USED YET
+  # W SEGMENT NOT IMPLEMENTED AND USED YET
   # it "should return the proper W segment" do
   #   @dudes_dtazv_export.add_t.should == "..........."
   # end
@@ -110,14 +110,13 @@ describe KingDta::DtazvSegments do
   #   @dudes_dtazv_export.add_t.size.should == 256
   # end
 
-  # P SEGMENT NOT IMPLEMENTED AND USED YET
-  # it "should return the proper Y segment" do
-  #   @dudes_dtazv_export.add_y(1).should == "........."
-  # end
+  it "should return the proper Y segment" do
+    @dudes_dtazv_export.add_y(@bookings).should == "0256Y000000000000000000000000000000000000000000000000000000000000000000000001                                                                                                                                                                                   "
+  end
 
-  # it "should return the proper length of Y segment" do
-  #   @dudes_dtazv_export.add_y(1).size.should == 256
-  # end
+  it "should return the proper length of Y segment" do
+    @dudes_dtazv_export.add_y(@bookings).size.should == 256
+  end
 
   it "should return the proper Z segment" do
     @dudes_dtazv_export.add_z(@bookings).should == "0256Z000000000000220000000000000001                                                                                                                                                                                                                             "

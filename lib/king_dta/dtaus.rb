@@ -210,7 +210,8 @@ module KingDta
       data1 +=  '%08i' % 0  #freigestellt
       data1 +=  '%08i' % booking.account.bank_number
       data1 +=  '%010i' % booking.account.account_number
-      data1 +=  '0%011i0' % booking.account.client_number   #interne Kundennummer
+      # TODO RUBY 1.9 FIX => || 0
+      data1 +=  '0%011i0' % (booking.account.client_number || 0)   #interne Kundennummer
       data1 +=  zahlungsart
       data1 +=  ' ' #bankintern
       data1 +=  '0' * 11   #Reserve

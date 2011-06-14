@@ -416,7 +416,7 @@ module KingDta
     # 9     179             78                P       alpha       Leerzeichen             Reserve
     def add_y(bookings)
       data3  = '0256'                        # 1 Länge des Datensatzes
-      data3 += 'Z'                           # 2 Satzart
+      data3 += 'Y'                           # 2 Satzart
       data3 += '%015i'   % 0                 # 3 Betragssumme
       data3 += '%015i'   % 0                 # 4 Betragssumme
       data3 += '%015i'   % 0                 # 5 Betragssumme
