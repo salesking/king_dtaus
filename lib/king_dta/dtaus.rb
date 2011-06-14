@@ -74,12 +74,12 @@ module KingDta
       dta_string
     end
 
+    # TODO do it works? the .to_i stuff
     def set_checksums
       @sum_bank_account_numbers, @sum_bank_numbers, @sum_values  = 0,0,0
       bookings.each do |b|
-        @sum_bank_account_numbers  += b.account.account_number
-        # todo fixit
-        @sum_bank_numbers += b.account.bank_number
+        @sum_bank_account_numbers  += b.account.account_number.to_i
+        @sum_bank_numbers += b.account.bank_number.to_i
         @sum_values += b.value
       end
     end

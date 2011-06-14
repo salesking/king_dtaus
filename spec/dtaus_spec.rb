@@ -6,10 +6,8 @@ describe KingDta::Dtaus do
     @dtaus = KingDta::Dtaus.new('LK', Date.today)
     @kto1 = test_kto1
     @kto2 = test_kto2
-    @dtaus.account = KingDta::Account.new( @kto1.account_number, @kto1.bank_number, @kto1.client_name, @kto1.bank_name )
-    @booking = KingDta::Booking.new(
-                KingDta::Account.new( @kto2.account_number, @kto2.bank_number, @kto2.client_name, @kto2.bank_name ),
-                220.25 )
+    @dtaus.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
+    @booking = KingDta::Booking.new(KingDta::Account.new(:account_number => @kto2.account_number, :bank_number => @kto2.bank_number, :client_name => @kto2.client_name, :bank_name => @kto2.bank_name), 220.25 )
   end
 
   it "should not init without values" do
@@ -40,7 +38,7 @@ describe KingDta::Dtaus do
 
   it "should not add a booking if closed" do
     @dtaus.add(@booking)
-    negative_booking = KingDta::Booking.new(KingDta::Account.new( @kto2.account_number, @kto2.bank_number, @kto2.client_name, @kto2.bank_name ), -120.25 )
+    negative_booking = KingDta::Booking.new(KingDta::Account.new(:account_number => @kto2.account_number, :bank_number => @kto2.bank_number, :client_name => @kto2.client_name, :bank_name => @kto2.bank_name ), -120.25 )
     lambda{ @dtaus.add(negative_booking) }.should raise_error(KingDta::Exception)
   end
 

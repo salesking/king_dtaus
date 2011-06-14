@@ -5,7 +5,7 @@ describe KingDta::Booking do
   before :each do
     kto1 = test_kto1
     kto2 = test_kto2
-    @account = KingDta::Account.new( kto2.nr, kto2.blz, kto2.name, kto2.bank )
+    @account = KingDta::Account.new(:account_number => kto2.account_number, :bank_number => kto2.bank_number, :client_name => kto2.client_name, :bank_name => kto2.bank_name )
   end
 
   it "should have no rounding error for string" do

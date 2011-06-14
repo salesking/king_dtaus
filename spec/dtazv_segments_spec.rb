@@ -8,35 +8,35 @@ describe KingDta::DtazvSegments do
     @dudes_konto = dudes_konto
     @fidel_castros_account = fidel_castros_account
     @dudes_dtazv_export.account = KingDta::Account.new(
-      @dudes_konto.account_number,
-      @dudes_konto.bank_number,
-      @dudes_konto.client_name,
-      @dudes_konto.bank_name,
-      @dudes_konto.client_number,
-      @dudes_konto.account_street,
-      @dudes_konto.account_city,
-      @dudes_konto.account_zip_code,
-      @dudes_konto.client_street,
-      @dudes_konto.client_city,
-      @dudes_konto.client_zip_code,
-      @dudes_konto.bank_country_code,
-      @dudes_konto.client_country_code
+      :account_number =>      @dudes_konto.account_number,
+      :bank_number =>         @dudes_konto.bank_number,
+      :client_name =>         @dudes_konto.client_name,
+      :bank_name =>           @dudes_konto.bank_name,
+      :client_number =>       @dudes_konto.client_number,
+      :bank_street =>         @dudes_konto.account_street,
+      :bank_city =>           @dudes_konto.account_city,
+      :bank_zip_code =>       @dudes_konto.account_zip_code,
+      :client_street =>       @dudes_konto.client_street,
+      :client_city =>         @dudes_konto.client_city,
+      :client_zip_code =>     @dudes_konto.client_zip_code,
+      :bank_country_code =>   @dudes_konto.bank_country_code,
+      :client_country_code => @dudes_konto.client_country_code
     )
 
     @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
-      @fidel_castros_account.account_number,
-      @fidel_castros_account.bank_number,
-      @fidel_castros_account.client_name,
-      @fidel_castros_account.bank_name,
-      @fidel_castros_account.client_number,
-      @fidel_castros_account.account_street,
-      @fidel_castros_account.account_city,
-      @fidel_castros_account.account_zip_code,
-      @fidel_castros_account.client_street,
-      @fidel_castros_account.client_city,
-      @fidel_castros_account.client_zip_code,
-      @fidel_castros_account.bank_country_code,
-      @fidel_castros_account.client_country_code
+      :account_number =>      @fidel_castros_account.account_number,
+      :bank_number =>         @fidel_castros_account.bank_number,
+      :client_name =>         @fidel_castros_account.client_name,
+      :bank_name =>           @fidel_castros_account.bank_name,
+      :client_number =>       @fidel_castros_account.client_number,
+      :bank_street =>         @fidel_castros_account.account_street,
+      :bank_city =>           @fidel_castros_account.account_city,
+      :bank_zip_code =>       @fidel_castros_account.account_zip_code,
+      :client_street =>       @fidel_castros_account.client_street,
+      :client_city =>         @fidel_castros_account.client_city,
+      :client_zip_code =>     @fidel_castros_account.client_zip_code,
+      :bank_country_code =>   @fidel_castros_account.bank_country_code,
+      :client_country_code => @fidel_castros_account.client_country_code
     ), 220.25)
 
     @bookings = []
@@ -54,7 +54,7 @@ describe KingDta::DtazvSegments do
   # end
 
   it "should return the proper Q segment" do
-    @dudes_dtazv_export.add_q.should == "0256Q370502991326049634JAN                                KUS                                MEINE EINE STRASSE 2               51063 MEINE KOELN                  11060801110608N0000000000                                                                    "
+    @dudes_dtazv_export.add_q.should == "0256Q370502991326049634JAN                                KUS                                MEINE EINE STRASSE 2               51063 MEINE KOELN                  #{@date.strftime("%y%m%d")}01#{@date.strftime("%y%m%d")}N0000000000                                                                    "
   end
 
   it "should return the proper length of P segment" do
@@ -72,7 +72,7 @@ describe KingDta::DtazvSegments do
   # end
 
   it "should return the proper T segment" do
-    @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0768T37050299EUR132604963411060800000000   0000000000MARKF1100                                                                                                                                                 DE FIDEL                              CASTRO                             BUSH-AVENUE 55                     445555 KUBA                                                                                              /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
+    @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0768T37050299EUR1326049634#{@date.strftime("%y%m%d")}00000000   0000000000MARKF1100                                                                                                                                                 DE FIDEL                              CASTRO                             BUSH-AVENUE 55                     445555 KUBA                                                                                              /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
   end
 
   it "should return the proper length of T segment" do
