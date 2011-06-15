@@ -36,27 +36,6 @@ module KingDta
 
     end
 
-    # @account_number         = account_number #account_number.kind_of?( Integer ) ? account_number : account_number.gsub(/\s/, '').to_i
-    # @bank_number            = bank_number #bank_number.kind_of?( Integer ) ? bank_number :  bank_number.gsub(/\s/, '').to_i
-    # @client_number          = client_number.kind_of?( Integer ) ? client_number : client_number.gsub(/\s/, '').to_i
-    # @street                 = convert_text(street)
-    # @city                   = convert_text(city)
-    # @zip_code               = zip_code
-    # @bank_name              = convert_text(bank_name)
-    # @client_name            = convert_text(client_name)
-    # @client_street          = convert_text(client_street)
-    # @client_city            = convert_text(client_city)
-    # @client_zip_code        = client_zip_code
-    # # TODO test
-    # @bank_country_code      = bank_country_code
-    # @client_country_code    = client_country_code
-
-    # def initialize( account_number, bank_number, client_name, client_number="",
-    #                 street = nil, city = nil, zip_code = nil, bank_name = nil,
-    #                 client_street = nil, client_city = nil, client_zip_code = nil,
-    #                 bank_country_code = nil, client_country_code = nil
-    #               )
-
     # TODO test
     def client_firstname
       @client_name.split(' ')[0]

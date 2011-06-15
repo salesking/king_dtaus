@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "king_dtaus.gemspec",
+    "lib/king_dta/dta.rb",
     "lib/king_dta/account.rb",
     "lib/king_dta/booking.rb",
     "lib/king_dta/dtaus.rb",

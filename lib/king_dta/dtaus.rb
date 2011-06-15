@@ -5,9 +5,8 @@
 #Infos zu DTAUS: http://www.infodrom.org/projects/dtaus/dtaus.php3
 
 module KingDta
-  class Dtaus
-    include KingDta::Helper
-    attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values, :default_text
+  class Dtaus < KingDta::Dta
+    attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values
 
     # Create a new dtaus file/string.
     # === Parameter
@@ -21,42 +20,6 @@ module KingDta
       @value_pos  = true  #all values are positive by default. Variable changes with first booking entry
       @closed     = false
       @default_text = '' # default verwendungzweck
-    end
-
-    #  Set the sending account(you own)
-    # === Parameter
-    # account<Account>:: the sending account, must be an instance of class
-    # KingDta::Account
-    def account=( account )
-      raise Exception.new("Come on, i need an Account object") unless account.kind_of?( Account )
-      @account = account
-    end
-
-    # The dtaus format as string. All data is appended to it during creation
-    def dta_string
-      @dta_string ||= ''
-    end
-    # Array of bookings
-    def bookings
-      @bookings ||= []
-    end
-    # default text used on all bookings with emtpy text
-    def default_text=(text='')
-      @default_text = convert_text( text )
-    end
-
-    # Add a booking. The prefix (pos/neg) is beeing checked if it is identical
-    # with the last one
-    # === Parameter
-    # booking<Booking>:: KingDta::Booking object
-    # === Raises
-    # error if the prefix within the bookings has changed
-    def add ( booking )
-      raise Exception.new("The file has alreay been closed, cannot add new booking") if @closed
-      #the first booking decides wether all values are po or negative
-      @value_pos = booking.pos?  if bookings.empty?
-      raise Exception.new("The prefix within bookings changed from #{@value_pos} to #{booking.pos?}") if @value_pos != booking.pos?
-      bookings << booking
     end
 
     # Creates the whole dta string(in the right order) and returns it
@@ -83,17 +46,6 @@ module KingDta
         @sum_values += b.value
       end
     end
-
-    # Create a DTA-File, from current dta information
-    # === Parameter
-    # filename<String>:: defaults to DTAUS0.TXT
-    def create_file(filename ='DTAUS0.TXT')
-      file = open( filename, 'w')
-      file  << create
-      file.close()
-      print "#{filename} created containing #{@bookings.size} bookings\n"
-    end
-
 
     #Erstellen A-Segment der DTAUS-Datei
     #Aufbau des Segments:
@@ -196,11 +148,9 @@ module KingDta
     # <String>:: The current dta_string
     def add_c( booking )
       zahlungsart = if @typ == 'LK'
-                      booking.schluessel || Booking::LASTSCHRIFT_EINZUGSERMAECHTIGUNG
+                      booking.account_key || Booking::LASTSCHRIFT_EINZUGSERMAECHTIGUNG
                     elsif @typ == 'GK'
-                      booking.schluessel || Booking::UEBERWEISUNG_GUTSCHRIFT
-                    else
-                      raise 'Wrong booking type'
+                      booking.account_key || Booking::UEBERWEISUNG_GUTSCHRIFT
                     end
       #Extended segments Long name & booking texts
       exts = []  #('xx', 'inhalt') xx: 01=Name 02=Verwendung 03=Name
@@ -210,7 +160,9 @@ module KingDta
       data1 +=  '%08i' % 0  #freigestellt
       data1 +=  '%08i' % booking.account.bank_number
       data1 +=  '%010i' % booking.account.account_number
-      # TODO RUBY 1.9 FIX => || 0
+      # RUBY 1.9 workaround => || 0
+      # Ruby 1.9 '0%011i0' % nil => Exception
+      # Ruby 1.8 '0%011i0' % nil => "00000000000"
       data1 +=  '0%011i0' % (booking.account.client_number || 0)   #interne Kundennummer
       data1 +=  zahlungsart
       data1 +=  ' ' #bankintern

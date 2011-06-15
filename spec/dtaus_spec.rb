@@ -67,8 +67,8 @@ describe KingDta::Dtaus do
     @dtaus.sum_values.should == 22025
   end
 
-  it "should create c-sektion with default GK schluessel" do
-    @booking.schluessel = nil
+  it "should create c-sektion with default GK account_key" do
+    @booking.account_key = nil
     @dtaus_gk.add(@booking)
     @dtaus_gk.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
     @dtaus_gk.add_c(@booking)
@@ -77,22 +77,6 @@ describe KingDta::Dtaus do
     str.should include("51000")
     out = "0216C00000000370400440002787777000000000000051000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
     str.should == out
-  end
-
-  # TODO spec that
-  it "should raise within the c section if wrong booking type given" do
-    # KingDta::Dtaus.any_instance.stubs(:typ).returns("FK")
-    # # @dtaus.stubs(:typ).returns("HollaHop")
-    # # @dtaus.typ.inspect
-    # @dtaus.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
-    # @booking.schluessel = nil
-    # @dtaus.add(@booking)
-    # @dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
-    # @dtaus.add_c(@booking)
-    # str = @dtaus.dta_string
-    # str.length.should == 256
-    # out = "0216C00000000370400440002787777000000000000051000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
-    # str.should == out
   end
 
   it "should create c-sektion with booking text at 19" do
