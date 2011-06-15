@@ -80,7 +80,7 @@ module KingDta
       data += '%-27.27s' % @account.client_name
       data += @date.strftime("%d%m%y")  #aktuelles Datum im Format DDMMJJ
       data += ' ' * 4  #bankinternes Feld
-      data += '%010i' % @account.account_number
+      data += '%010i' % @account.account_number.to_i
       data += '%010i' % 0 #Referenznummer
       data += ' '  * 15  #Reserve
       data += '%8s' % @date.strftime("%d%m%Y")     #Ausführungsdatum (ja hier 8 Stellen, Erzeugungsdat. hat 6 Stellen)
@@ -159,7 +159,7 @@ module KingDta
       data1 = 'C'
       data1 +=  '%08i' % 0  #freigestellt
       data1 +=  '%08i' % booking.account.bank_number
-      data1 +=  '%010i' % booking.account.account_number
+      data1 +=  '%010i' % booking.account.account_number.to_i
       # RUBY 1.9 workaround => || 0
       # Ruby 1.9 '0%011i0' % nil => Exception
       # Ruby 1.8 '0%011i0' % nil => "00000000000"
@@ -168,7 +168,7 @@ module KingDta
       data1 +=  ' ' #bankintern
       data1 +=  '0' * 11   #Reserve
       data1 +=  '%08i' % @account.bank_number
-      data1 +=  '%010i' % @account.account_number
+      data1 +=  '%010i' % @account.account_number.to_i
       data1 +=  '%011i' % booking.value #Betrag in Euro einschl. Nachkomma
       data1 +=  ' ' * 3
       data1 +=  '%-27.27s' % booking.account.client_name #Name Begünstigter/Zahlungspflichtiger
