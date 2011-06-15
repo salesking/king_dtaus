@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{king_dtaus}
-  s.version = "2.0.0.pre"
+  s.version = "2.0.1.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Georg Leciejewski", "Georg Ledermann"]
@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".rvmrc",
-    "DTAUS0.TXT",
     "Gemfile",
     "Gemfile.lock",
     "MIT-LICENSE",
@@ -46,11 +45,10 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/salesking/king_dtaus}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.5.0}
   s.summary = %q{Generate DTAUS strings and files}
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
