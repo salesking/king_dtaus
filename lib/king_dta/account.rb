@@ -36,13 +36,12 @@ module KingDta
 
     end
 
-    # TODO test
-    def client_firstname
-      @client_name.split(' ')[0]
+    def client_name_1
+      @client_name[0..35]
     end
 
-    def client_surname
-      @client_name.split(' ')[1]
+    def client_name_2
+      @client_name[36..70]
     end
 
     def zip_city

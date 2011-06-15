@@ -113,8 +113,8 @@ module KingDta
       data1 += 'Q'                                     # Satzart, PFLICHT
       data1 += '%08i'   %  @account.bank_number        # BLZ des Einreichinstituts, PFLICHT
       data1 += '%010i'  %  @account.account_number     # Kundennummer, PFLICHT
-      data1 += '%-035s'  %  @account.client_firstname        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
-      data1 += '%-035s'  %  @account.client_surname        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
+      data1 += '%-035s'  %  @account.client_name_1        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
+      data1 += '%-035s'  %  @account.client_name_2        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
       data1 += '%-035s'  %  @account.client_street  # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
       data1 += '%-035s'  %  @account.client_zip_city        # Einreichinstitut  Zeile 4: Ort, PFLICHT
       data1 += @date.strftime("%y%m%d")                # Erstellungsdatum  In der Form JJMMTT, PFLICHT
@@ -296,8 +296,8 @@ module KingDta
       data2 += '%035s' % ''  #booking.account.street                      # KANN/PFLICHT 9b Name Zeile 3	: Straße Zeile
       data2 += '%035s' % ''  #booking.account.zip_city                    # KANN/PFLICHT 9b 4	: Ort
       data2 += '%-03s' % booking.account.client_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers bzw. Scheckempfängers
-      data2 += '%-035s' % booking.account.client_firstname                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%-035s' % booking.account.client_surname                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data2 += '%-035s' % booking.account.client_name_1                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data2 += '%-035s' % booking.account.client_name_2                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
       data2 += '%-035s' % booking.account.client_street               # KANN/PFLICHT 10b Name Zeile 3	: Straße Zeile
       data2 += '%-035s' % booking.account.client_zip_city             # KANN/PFLICHT 10b 4	: Ort
       data2 += '%070s' % ''                                          # KANN/PFLICHT 11 Ordervermerk

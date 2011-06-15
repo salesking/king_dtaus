@@ -1,5 +1,4 @@
 require 'rake'
-require 'rdoc/task'
 require 'rspec/core/rake_task'
 
 desc "Run specs"

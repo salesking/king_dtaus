@@ -11,7 +11,6 @@ require "king_dtaus"
 require 'rspec'
 require 'ostruct'
 require 'date'
-require 'mocha'
 
 RSpec.configure do |config|
 end
@@ -59,15 +58,15 @@ def dalai_lamas_account
   opts = {
             :account_number => 'GR1601101250000000012300695',
             :bank_number => 'MARKF1100',
-            :bank_name => 'Kuba National Bank',
-            :zweck => 'President-Fee',
+            :bank_name => 'Dalai Lamas Bank',
+            :zweck => 'Lama Fee',
             :account_street => "5th avenue",
             :account_city => "los angeles",
             :account_zip_code => "55323",
             :client_number => "",
-            :client_name =>'Fidel Castro',
+            :client_name =>'Dalai Lama',
             :client_street => "Bush-Avenue 55",
-            :client_city => "Kuba",
+            :client_city => "India",
             :client_zip_code => "066600",
             :client_zip_code => "445555",
             :bank_country_code => "DE",

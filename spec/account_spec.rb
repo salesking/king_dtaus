@@ -156,4 +156,38 @@ describe KingDta::Account do
     konto.client_zip_city.should == "51063 MEINE KOELN"
   end
 
+  it "should return sender name1 - the first 35 characters of a name" do
+    konto = KingDta::Account.new(
+      :account_number =>    @dudes_konto.account_number,
+      :bank_number =>       @dudes_konto.bank_number,
+      :client_name =>       @dudes_konto.client_name,
+      :client_number =>     @dudes_konto.client_number,
+      :bank_street =>       @dudes_konto.account_street,
+      :bank_city =>         @dudes_konto.account_city,
+      :bank_zip_code =>     @dudes_konto.account_zip_code,
+      :bank_name =>         @dudes_konto.bank_name,
+      :client_street =>     @dudes_konto.client_street,
+      :client_city =>       @dudes_konto.client_city,
+      :client_zip_code =>   @dudes_konto.client_zip_code
+    )
+    konto.client_name_1.should == "JAN KUS"
+  end
+
+  it "should return sender name1 - the characters 36 - 70 of a name" do
+    konto = KingDta::Account.new(
+      :account_number =>    @dudes_konto.account_number,
+      :bank_number =>       @dudes_konto.bank_number,
+      :client_name =>       @dudes_konto.client_name,
+      :client_number =>     @dudes_konto.client_number,
+      :bank_street =>       @dudes_konto.account_street,
+      :bank_city =>         @dudes_konto.account_city,
+      :bank_zip_code =>     @dudes_konto.account_zip_code,
+      :bank_name =>         @dudes_konto.bank_name,
+      :client_street =>     @dudes_konto.client_street,
+      :client_city =>       @dudes_konto.client_city,
+      :client_zip_code =>   @dudes_konto.client_zip_code
+    )
+    konto.client_name_2.should == nil
+  end
+
 end
