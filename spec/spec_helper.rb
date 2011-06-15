@@ -55,7 +55,7 @@ def dudes_konto
   TestKonto.new(opts)
 end
 
-def fidel_castros_account
+def dalai_lamas_account
   opts = {
             :account_number => 'GR1601101250000000012300695',
             :bank_number => 'MARKF1100',

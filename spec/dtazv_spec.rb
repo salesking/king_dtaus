@@ -8,7 +8,7 @@ describe KingDta::Dtazv do
   before :each do
     @dtazv = KingDta::Dtazv.new(Date.today)
     @dudes_konto = dudes_konto
-    @fidel_castros_account = fidel_castros_account
+    @dalai_lamas_account = dalai_lamas_account
 
     @dtazv.account = KingDta::Account.new(
       :account_number =>      @dudes_konto.account_number,
@@ -27,19 +27,19 @@ describe KingDta::Dtazv do
     )
 
     @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
-      :account_number =>      @fidel_castros_account.account_number,
-      :bank_number =>         @fidel_castros_account.bank_number,
-      :client_name =>         @fidel_castros_account.client_name,
-      :client_number =>       @fidel_castros_account.client_number,
-      :bank_street =>         @fidel_castros_account.account_street,
-      :bank_city =>           @fidel_castros_account.account_city,
-      :bank_zip_code =>       @fidel_castros_account.account_zip_code,
-      :bank_name =>           @fidel_castros_account.bank_name,
-      :client_street =>       @fidel_castros_account.client_street,
-      :client_city =>         @fidel_castros_account.client_city,
-      :client_zip_code =>     @fidel_castros_account.client_zip_code,
-      :bank_country_code =>   @fidel_castros_account.bank_country_code,
-      :client_country_code => @fidel_castros_account.client_country_code
+      :account_number =>      @dalai_lamas_account.account_number,
+      :bank_number =>         @dalai_lamas_account.bank_number,
+      :client_name =>         @dalai_lamas_account.client_name,
+      :client_number =>       @dalai_lamas_account.client_number,
+      :bank_street =>         @dalai_lamas_account.account_street,
+      :bank_city =>           @dalai_lamas_account.account_city,
+      :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+      :bank_name =>           @dalai_lamas_account.bank_name,
+      :client_street =>       @dalai_lamas_account.client_street,
+      :client_city =>         @dalai_lamas_account.client_city,
+      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+      :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+      :client_country_code => @dalai_lamas_account.client_country_code
     ), 220.25)
 
   end
@@ -84,19 +84,19 @@ describe KingDta::Dtazv do
   it "should not add a booking if closed" do
     @dtazv.add(@fidel_castros_booking)
     negative_booking = KingDta::Booking.new(KingDta::Account.new(
-      :account_number =>      @fidel_castros_account.account_number,
-      :bank_number =>         @fidel_castros_account.bank_number,
-      :client_name =>         @fidel_castros_account.client_name,
-      :client_number =>       @fidel_castros_account.client_number,
-      :bank_street =>         @fidel_castros_account.account_street,
-      :bank_city =>           @fidel_castros_account.account_city,
-      :bank_zip_code =>       @fidel_castros_account.account_zip_code,
-      :bank_name =>           @fidel_castros_account.bank_name,
-      :client_street =>       @fidel_castros_account.client_street,
-      :client_city =>         @fidel_castros_account.client_city,
-      :client_zip_code =>     @fidel_castros_account.client_zip_code,
-      :bank_country_code =>   @fidel_castros_account.bank_country_code,
-      :client_country_code => @fidel_castros_account.client_country_code
+      :account_number =>      @dalai_lamas_account.account_number,
+      :bank_number =>         @dalai_lamas_account.bank_number,
+      :client_name =>         @dalai_lamas_account.client_name,
+      :client_number =>       @dalai_lamas_account.client_number,
+      :bank_street =>         @dalai_lamas_account.account_street,
+      :bank_city =>           @dalai_lamas_account.account_city,
+      :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+      :bank_name =>           @dalai_lamas_account.bank_name,
+      :client_street =>       @dalai_lamas_account.client_street,
+      :client_city =>         @dalai_lamas_account.client_city,
+      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+      :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+      :client_country_code => @dalai_lamas_account.client_country_code
     ), -220.25)
     lambda{ @dtazv.add(negative_booking) }.should raise_error(KingDta::Exception)
   end
@@ -161,7 +161,7 @@ describe "KingDta::DtazvSegments" do
     @date = Date.today
     @dudes_dtazv_export = KingDta::Dtazv.new(@date)
     @dudes_konto = dudes_konto
-    @fidel_castros_account = fidel_castros_account
+    @dalai_lamas_account = dalai_lamas_account
     @dudes_dtazv_export.account = KingDta::Account.new(
       :account_number =>      @dudes_konto.account_number,
       :bank_number =>         @dudes_konto.bank_number,
@@ -179,19 +179,19 @@ describe "KingDta::DtazvSegments" do
     )
 
     @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
-      :account_number =>      @fidel_castros_account.account_number,
-      :bank_number =>         @fidel_castros_account.bank_number,
-      :client_name =>         @fidel_castros_account.client_name,
-      :bank_name =>           @fidel_castros_account.bank_name,
-      :client_number =>       @fidel_castros_account.client_number,
-      :bank_street =>         @fidel_castros_account.account_street,
-      :bank_city =>           @fidel_castros_account.account_city,
-      :bank_zip_code =>       @fidel_castros_account.account_zip_code,
-      :client_street =>       @fidel_castros_account.client_street,
-      :client_city =>         @fidel_castros_account.client_city,
-      :client_zip_code =>     @fidel_castros_account.client_zip_code,
-      :bank_country_code =>   @fidel_castros_account.bank_country_code,
-      :client_country_code => @fidel_castros_account.client_country_code
+      :account_number =>      @dalai_lamas_account.account_number,
+      :bank_number =>         @dalai_lamas_account.bank_number,
+      :client_name =>         @dalai_lamas_account.client_name,
+      :bank_name =>           @dalai_lamas_account.bank_name,
+      :client_number =>       @dalai_lamas_account.client_number,
+      :bank_street =>         @dalai_lamas_account.account_street,
+      :bank_city =>           @dalai_lamas_account.account_city,
+      :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+      :client_street =>       @dalai_lamas_account.client_street,
+      :client_city =>         @dalai_lamas_account.client_city,
+      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+      :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+      :client_country_code => @dalai_lamas_account.client_country_code
     ), 220.25)
 
     @bookings = []

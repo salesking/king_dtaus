@@ -22,7 +22,7 @@ We love building payment applications
 
 == TODOs
 
-* Increase Testcoverage
+* first gem with no todo's - never seen it, huh?
 
 == Resources
 
@@ -32,6 +32,7 @@ We love building payment applications
 * Windata ZV-Tools: http://www.windata.de/Site/2Produkte2/ZVTools.aspx
 * The Swift Codes: http://www.theswiftcodes.com/
 * StarMoney: http://www.starmoney.de/index.php?id=starmoneybusiness_testen
+* SalesKing: http://salesking.eu
 
 == Examples
 
@@ -42,10 +43,10 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
   # create a new dtaus object
   dta = KingDta::Dtaus.new('LK')
   # set sender account
-  dta.account = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner")
+  dta.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
   # the following should be done in a loop to add multiple bookings
   # create receiving account
-  rec_acnt = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner" )
+  rec_acnt = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
   # create booking
   booking = KingDta::Booking.new(rec_acnt, 100.00 )
   # set booking text if you want to
@@ -62,37 +63,37 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
   @date = Date.today
   @dudes_dtazv_export = KingDta::Dtazv.new(@date)
   @dudes_konto = self.dudes_konto
-  @fidel_castros_account = self.fidel_castros_account
+  @dalai_lamas_account = self.dalai_lamas_account
   @dudes_dtazv_export.account = KingDta::Account.new(
-    @dudes_konto.account_number,
-    @dudes_konto.bank_number,
-    @dudes_konto.client_name,
-    @dudes_konto.client_number,
-    @dudes_konto.account_street,
-    @dudes_konto.account_city,
-    @dudes_konto.account_zip_code,
-    @dudes_konto.bank_name,
-    @dudes_konto.client_street,
-    @dudes_konto.client_city,
-    @dudes_konto.client_zip_code,
-    @dudes_konto.bank_country_code,
-    @dudes_konto.client_country_code
+    :account_number =>      @dudes_konto.account_number,
+    :bank_number =>         @dudes_konto.bank_number,
+    :client_name =>         @dudes_konto.client_name,
+    :client_number =>       @dudes_konto.client_number,
+    :bank_street =>         @dudes_konto.account_street,
+    :bank_city =>           @dudes_konto.account_city,
+    :bank_zip_code =>       @dudes_konto.account_zip_code,
+    :bank_name =>           @dudes_konto.bank_name,
+    :client_street =>       @dudes_konto.client_street,
+    :client_city =>         @dudes_konto.client_city,
+    :client_zip_code =>     @dudes_konto.client_zip_code,
+    :bank_country_code =>   @dudes_konto.bank_country_code,
+    :client_country_code => @dudes_konto.client_country_code
   )
 
   @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
-    @fidel_castros_account.account_number,
-    @fidel_castros_account.bank_number,
-    @fidel_castros_account.client_name,
-    @fidel_castros_account.bank_name,
-    @fidel_castros_account.account_street,
-    @fidel_castros_account.account_city,
-    @fidel_castros_account.account_zip_code,
-    @fidel_castros_account.bank_name,
-    @fidel_castros_account.client_street,
-    @fidel_castros_account.client_city,
-    @fidel_castros_account.client_zip_code,
-    @fidel_castros_account.bank_country_code,
-    @fidel_castros_account.client_country_code
+    :account_number =>      @dalai_lamas_account.account_number,
+    :bank_number =>         @dalai_lamas_account.bank_number,
+    :client_name =>         @dalai_lamas_account.client_name,
+    :client_number =>       @dalai_lamas_account.bank_name,
+    :bank_street =>         @dalai_lamas_account.account_street,
+    :bank_city =>           @dalai_lamas_account.account_city,
+    :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+    :bank_name =>           @dalai_lamas_account.bank_name,
+    :client_street =>       @dalai_lamas_account.client_street,
+    :client_city =>         @dalai_lamas_account.client_city,
+    :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+    :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+    :client_country_code => @dalai_lamas_account.client_country_code
   ), 220.25)
 
   @dudes_dtazv_export.add(@fidel_castros_booking)

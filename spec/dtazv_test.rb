@@ -29,7 +29,7 @@ class Dtazv
     TestKonto.new(opts)
   end
 
-  def fidel_castros_account
+  def dalai_lamas_account
     opts = {
       :account_number => 'GR1601101250000000012300695',
       :bank_number => 'MARKF1100',
@@ -59,7 +59,7 @@ class Dtazv
     @date = Date.today
     @dudes_dtazv_export = KingDta::Dtazv.new(@date)
     @dudes_konto = self.dudes_konto
-    @fidel_castros_account = self.fidel_castros_account
+    @dalai_lamas_account = self.dalai_lamas_account
     @dudes_dtazv_export.account = KingDta::Account.new(
       @dudes_konto.account_number,
       @dudes_konto.bank_number,
@@ -77,19 +77,19 @@ class Dtazv
     )
 
     @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
-      @fidel_castros_account.account_number,
-      @fidel_castros_account.bank_number,
-      @fidel_castros_account.client_name,
-      @fidel_castros_account.bank_name,
-      @fidel_castros_account.account_street,
-      @fidel_castros_account.account_city,
-      @fidel_castros_account.account_zip_code,
-      @fidel_castros_account.bank_name,
-      @fidel_castros_account.client_street,
-      @fidel_castros_account.client_city,
-      @fidel_castros_account.client_zip_code,
-      @fidel_castros_account.bank_country_code,
-      @fidel_castros_account.client_country_code
+      @dalai_lamas_account.account_number,
+      @dalai_lamas_account.bank_number,
+      @dalai_lamas_account.client_name,
+      @dalai_lamas_account.bank_name,
+      @dalai_lamas_account.account_street,
+      @dalai_lamas_account.account_city,
+      @dalai_lamas_account.account_zip_code,
+      @dalai_lamas_account.bank_name,
+      @dalai_lamas_account.client_street,
+      @dalai_lamas_account.client_city,
+      @dalai_lamas_account.client_zip_code,
+      @dalai_lamas_account.bank_country_code,
+      @dalai_lamas_account.client_country_code
     ), 220.25)
 
     @dudes_dtazv_export.add(@fidel_castros_booking)
