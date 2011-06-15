@@ -33,13 +33,13 @@ class Dtazv
     opts = {
       :account_number => 'GR1601101250000000012300695',
       :bank_number => 'MARKF1100',
-      :bank_name => 'Kuba National Bank',
-      :zweck => 'President-Fee',
+      :bank_name => 'India Bank',
+      :zweck => 'Lama-Fee',
       :account_street => "5th avenue",
       :account_city => "los angeles",
       :account_zip_code => "55323",
       :client_number => "",
-      :client_name =>'Fidel Castro',
+      :client_name =>'Dalai Lama',
       :client_street => "Bush-Avenue 55",
       :client_city => "Kuba",
       :client_zip_code => "066600",
@@ -61,35 +61,35 @@ class Dtazv
     @dudes_konto = self.dudes_konto
     @dalai_lamas_account = self.dalai_lamas_account
     @dudes_dtazv_export.account = KingDta::Account.new(
-      @dudes_konto.account_number,
-      @dudes_konto.bank_number,
-      @dudes_konto.client_name,
-      @dudes_konto.client_number,
-      @dudes_konto.account_street,
-      @dudes_konto.account_city,
-      @dudes_konto.account_zip_code,
-      @dudes_konto.bank_name,
-      @dudes_konto.client_street,
-      @dudes_konto.client_city,
-      @dudes_konto.client_zip_code,
-      @dudes_konto.bank_country_code,
-      @dudes_konto.client_country_code
+      :account_number =>      @dudes_konto.account_number,
+      :bank_number =>         @dudes_konto.bank_number,
+      :client_name =>         @dudes_konto.client_name,
+      :client_number =>       @dudes_konto.client_number,
+      :bank_street =>         @dudes_konto.account_street,
+      :bank_city =>           @dudes_konto.account_city,
+      :bank_zip_code =>       @dudes_konto.account_zip_code,
+      :bank_name =>           @dudes_konto.bank_name,
+      :client_street =>       @dudes_konto.client_street,
+      :client_city =>         @dudes_konto.client_city,
+      :client_zip_code =>     @dudes_konto.client_zip_code,
+      :bank_country_code =>   @dudes_konto.bank_country_code,
+      :client_country_code => @dudes_konto.client_country_code
     )
 
     @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
-      @dalai_lamas_account.account_number,
-      @dalai_lamas_account.bank_number,
-      @dalai_lamas_account.client_name,
-      @dalai_lamas_account.bank_name,
-      @dalai_lamas_account.account_street,
-      @dalai_lamas_account.account_city,
-      @dalai_lamas_account.account_zip_code,
-      @dalai_lamas_account.bank_name,
-      @dalai_lamas_account.client_street,
-      @dalai_lamas_account.client_city,
-      @dalai_lamas_account.client_zip_code,
-      @dalai_lamas_account.bank_country_code,
-      @dalai_lamas_account.client_country_code
+      :account_number =>      @dalai_lamas_account.account_number,
+      :bank_number =>         @dalai_lamas_account.bank_number,
+      :client_name =>         @dalai_lamas_account.client_name,
+      :client_number =>       @dalai_lamas_account.client_number,
+      :bank_street =>         @dalai_lamas_account.account_street,
+      :bank_city =>           @dalai_lamas_account.account_city,
+      :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+      :bank_name =>           @dalai_lamas_account.bank_name,
+      :client_street =>       @dalai_lamas_account.client_street,
+      :client_city =>         @dalai_lamas_account.client_city,
+      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+      :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+      :client_country_code => @dalai_lamas_account.client_country_code
     ), 220.25)
 
     @dudes_dtazv_export.add(@dalai_lamas_booking)
