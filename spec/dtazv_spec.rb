@@ -26,7 +26,7 @@ describe KingDta::Dtazv do
       :client_country_code => @dudes_konto.client_country_code
     )
 
-    @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
+    @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
       :account_number =>      @dalai_lamas_account.account_number,
       :bank_number =>         @dalai_lamas_account.bank_number,
       :client_name =>         @dalai_lamas_account.client_name,
@@ -62,7 +62,7 @@ describe KingDta::Dtazv do
 
   it "should create file" do
     @dtazv.default_text = 'Default Verwendungszweck'
-    6.times { @dtazv.add(@fidel_castros_booking) }
+    6.times { @dtazv.add(@dalai_lamas_booking) }
     # create test output file in spec dir
     filename = File.join(File.dirname(__FILE__), 'test_output.dta')
     @dtazv.create_file(filename)
@@ -76,13 +76,13 @@ describe KingDta::Dtazv do
   end
 
   it "should not add a booking if closed" do
-    @dtazv.add(@fidel_castros_booking)
+    @dtazv.add(@dalai_lamas_booking)
     @dtazv.create
-    lambda{ @dtazv.add(@fidel_castros_booking) }.should raise_error(KingDta::Exception)
+    lambda{ @dtazv.add(@dalai_lamas_booking) }.should raise_error(KingDta::Exception)
   end
 
   it "should not add a booking if closed" do
-    @dtazv.add(@fidel_castros_booking)
+    @dtazv.add(@dalai_lamas_booking)
     negative_booking = KingDta::Booking.new(KingDta::Account.new(
       :account_number =>      @dalai_lamas_account.account_number,
       :bank_number =>         @dalai_lamas_account.bank_number,
@@ -178,7 +178,7 @@ describe "KingDta::DtazvSegments" do
       :client_country_code => @dudes_konto.client_country_code
     )
 
-    @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
+    @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
       :account_number =>      @dalai_lamas_account.account_number,
       :bank_number =>         @dalai_lamas_account.bank_number,
       :client_name =>         @dalai_lamas_account.client_name,
@@ -195,7 +195,7 @@ describe "KingDta::DtazvSegments" do
     ), 220.25)
 
     @bookings = []
-    @bookings << @fidel_castros_booking
+    @bookings << @dalai_lamas_booking
   end
 
 
@@ -217,11 +217,11 @@ describe "KingDta::DtazvSegments" do
   end
 
   it "should return the proper T segment" do
-    @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0768T37050299EUR1326049634#{@date.strftime("%y%m%d")}00000000   0000000000MARKF1100                                                                                                                                                 DE FIDEL                              CASTRO                             BUSH-AVENUE 55                     445555 KUBA                                                                                              /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
+    @dudes_dtazv_export.add_t(@dalai_lamas_booking).should == "0768T37050299EUR1326049634#{@date.strftime("%y%m%d")}00000000   0000000000MARKF1100                                                                                                                                                 DE FIDEL                              CASTRO                             BUSH-AVENUE 55                     445555 KUBA                                                                                              /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
   end
 
   it "should return the proper length of T segment" do
-    @dudes_dtazv_export.add_t(@fidel_castros_booking).size.should == 768
+    @dudes_dtazv_export.add_t(@dalai_lamas_booking).size.should == 768
   end
 
   # V SEGMENT NOT IMPLEMENTED AND USED YET

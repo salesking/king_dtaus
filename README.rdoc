@@ -81,7 +81,7 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
     :client_country_code => @dudes_konto.client_country_code
   )
 
-  @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
+  @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
     :account_number =>      @dalai_lamas_account.account_number,
     :bank_number =>         @dalai_lamas_account.bank_number,
     :client_name =>         @dalai_lamas_account.client_name,
@@ -97,7 +97,7 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
     :client_country_code => @dalai_lamas_account.client_country_code
   ), 220.25)
 
-  @dudes_dtazv_export.add(@fidel_castros_booking)
+  @dudes_dtazv_export.add(@dalai_lamas_booking)
   @dudes_dtazv_export.create_file
 
   # Output is DTAZV0.TXT

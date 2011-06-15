@@ -76,7 +76,7 @@ class Dtazv
       @dudes_konto.client_country_code
     )
 
-    @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
+    @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
       @dalai_lamas_account.account_number,
       @dalai_lamas_account.bank_number,
       @dalai_lamas_account.client_name,
@@ -92,7 +92,7 @@ class Dtazv
       @dalai_lamas_account.client_country_code
     ), 220.25)
 
-    @dudes_dtazv_export.add(@fidel_castros_booking)
+    @dudes_dtazv_export.add(@dalai_lamas_booking)
     @dudes_dtazv_export.create_file
   end
 
