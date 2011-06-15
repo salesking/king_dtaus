@@ -5,9 +5,8 @@
 #Infos zu DTAUS: http://www.infodrom.org/projects/dtaus/dtaus.php3
 
 module KingDta
-  class Dtaus
-    include KingDta::Helper
-    attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values, :default_text
+  class Dtaus < KingDta::Dta
+    attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values
 
     # Create a new dtaus file/string.
     # === Parameter
@@ -21,42 +20,6 @@ module KingDta
       @value_pos  = true  #all values are positive by default. Variable changes with first booking entry
       @closed     = false
       @default_text = '' # default verwendungzweck
-    end
-
-    #  Set the sending account(you own)
-    # === Parameter
-    # account<Account>:: the sending account, must be an instance of class
-    # KingDta::Account
-    def account=( account )
-      raise Exception.new("Come on, i need an Account object") unless account.kind_of?( Account )
-      @account = account
-    end
-
-    # The dtaus format as string. All data is appended to it during creation
-    def dta_string
-      @dta_string ||= ''
-    end
-    # Array of bookings
-    def bookings
-      @bookings ||= []
-    end
-    # default text used on all bookings with emtpy text
-    def default_text=(text='')
-      @default_text = convert_text( text )
-    end
-
-    # Add a booking. The prefix (pos/neg) is beeing checked if it is identical
-    # with the last one
-    # === Parameter
-    # booking<Booking>:: KingDta::Booking object
-    # === Raises
-    # error if the prefix within the bookings has changed
-    def add ( booking )
-      raise Exception.new("The file has alreay been closed, cannot add new booking") if @closed
-      #the first booking decides wether all values are po or negative
-      @value_pos = booking.pos?  if bookings.empty?
-      raise Exception.new("The prefix within bookings changed from #{@value_pos} to #{booking.pos?}") if @value_pos != booking.pos?
-      bookings << booking
     end
 
     # Creates the whole dta string(in the right order) and returns it
@@ -74,25 +37,15 @@ module KingDta
       dta_string
     end
 
+    # TODO do it works? the .to_i stuff
     def set_checksums
       @sum_bank_account_numbers, @sum_bank_numbers, @sum_values  = 0,0,0
       bookings.each do |b|
-        @sum_bank_account_numbers  += b.account.bank_account_number
-        @sum_bank_numbers += b.account.bank_number
+        @sum_bank_account_numbers  += b.account.account_number.to_i
+        @sum_bank_numbers += b.account.bank_number.to_i
         @sum_values += b.value
       end
     end
-
-    # Create a DTA-File, from current dta information
-    # === Parameter
-    # filename<String>:: defaults to DTAUS0.TXT
-    def create_file(filename ='DTAUS0.TXT')
-      file = open( filename, 'w')
-      file  << create
-      file.close()
-      print "#{filename} created containing #{@bookings.size} bookings\n"
-    end
-
 
     #Erstellen A-Segment der DTAUS-Datei
     #Aufbau des Segments:
@@ -124,10 +77,10 @@ module KingDta
       data += @typ        #Lastschriften Kunde
       data += '%8i' % @account.bank_number #.rjust(8)  #bank_number
       data += '%08i' % 0                 #belegt, wenn Bank
-      data += '%-27.27s' % @account.owner
+      data += '%-27.27s' % @account.client_name
       data += @date.strftime("%d%m%y")  #aktuelles Datum im Format DDMMJJ
       data += ' ' * 4  #bankinternes Feld
-      data += '%010i' % @account.bank_account_number
+      data += '%010i' % @account.account_number
       data += '%010i' % 0 #Referenznummer
       data += ' '  * 15  #Reserve
       data += '%8s' % @date.strftime("%d%m%Y")     #Ausführungsdatum (ja hier 8 Stellen, Erzeugungsdat. hat 6 Stellen)
@@ -195,11 +148,9 @@ module KingDta
     # <String>:: The current dta_string
     def add_c( booking )
       zahlungsart = if @typ == 'LK'
-                      booking.schluessel || Booking::LASTSCHRIFT_EINZUGSERMAECHTIGUNG
+                      booking.account_key || Booking::LASTSCHRIFT_EINZUGSERMAECHTIGUNG
                     elsif @typ == 'GK'
-                      booking.schluessel || Booking::UEBERWEISUNG_GUTSCHRIFT
-                    else
-                      raise 'Wrong booking type'
+                      booking.account_key || Booking::UEBERWEISUNG_GUTSCHRIFT
                     end
       #Extended segments Long name & booking texts
       exts = []  #('xx', 'inhalt') xx: 01=Name 02=Verwendung 03=Name
@@ -208,22 +159,25 @@ module KingDta
       data1 = 'C'
       data1 +=  '%08i' % 0  #freigestellt
       data1 +=  '%08i' % booking.account.bank_number
-      data1 +=  '%010i' % booking.account.bank_account_number
-      data1 +=  '0%011i0' % booking.account.client_number   #interne Kundennummer
+      data1 +=  '%010i' % booking.account.account_number
+      # RUBY 1.9 workaround => || 0
+      # Ruby 1.9 '0%011i0' % nil => Exception
+      # Ruby 1.8 '0%011i0' % nil => "00000000000"
+      data1 +=  '0%011i0' % (booking.account.client_number || 0)   #interne Kundennummer
       data1 +=  zahlungsart
       data1 +=  ' ' #bankintern
       data1 +=  '0' * 11   #Reserve
       data1 +=  '%08i' % @account.bank_number
-      data1 +=  '%010i' % @account.bank_account_number
+      data1 +=  '%010i' % @account.account_number
       data1 +=  '%011i' % booking.value #Betrag in Euro einschl. Nachkomma
       data1 +=  ' ' * 3
-      data1 +=  '%-27.27s' % booking.account.owner #Name Begünstigter/Zahlungspflichtiger
-      exts << ['01', booking.account.owner[27..999] ] if booking.account.owner.size > 27
+      data1 +=  '%-27.27s' % booking.account.client_name #Name Begünstigter/Zahlungspflichtiger
+      exts << ['01', booking.account.client_name[27..999] ] if booking.account.client_name.size > 27
       data1 +=  ' ' * 8
       #Einfügen erst möglich, wenn Satzlänge bekannt
 
       # 2. Satzabschnitt
-      data2 = "%27.27s" % @account.owner
+      data2 = "%27.27s" % @account.client_name
       zweck = booking.text || default_text
       #Erste 27 Zeichen
       #Wenn text < 26 Zeichen, dann mit spaces auffüllen.
@@ -234,13 +188,13 @@ module KingDta
         exts << ['02', zweck.ljust(27) ]
         zweck = zweck[27..999]
       end
-      exts << ['03', @account.owner[27..999] ] if @account.owner.size > 27
+      exts << ['03', @account.client_name[27..999] ] if @account.client_name.size > 27
 
       data2 +=  '1'     #Währungskennzeichen
       data2 +=  ' ' * 2
       # Gesamte Satzlänge ermitteln ( data1(+4) + data2 + Erweiterungen )
       data1 = "%04i#{data1}" % ( data1.size + 4 + data2.size+ 2 + exts.size * 29 )
-      raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.owner}" unless data1.size == 128
+      raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.client_name}" unless data1.size == 128
       dta_string << data1
       #Anzahl Erweiterungen anfügen
       data2 +=  '%02i' % exts.size  #Anzahl Erweiterungsteile
@@ -251,7 +205,7 @@ module KingDta
       exts[0..1].each{|e| data2 +=  "%2.2s%-27.27s" % format_ext(e[0], e[1]) }
       data2 +=  ' ' * 11
       # add the final piece of the second C section
-      raise "DTAUS: Längenfehler C/2 #{data2.size} nicht 128, #{booking.account.owner}" unless data2.size == 128
+      raise "DTAUS: Längenfehler C/2 #{data2.size} nicht 128, #{booking.account.client_name}" unless data2.size == 128
       dta_string << data2
       #Erstellen der Texterweiterungen à vier Stück
       add_ext( exts[2..5] )
@@ -313,6 +267,6 @@ module KingDta
       raise "DTAUS: Längenfehler E #{str.size} <> 128" if str.size != 128
       dta_string << str
     end
-    
+
   end  #class dtaus
 end

@@ -2,3 +2,4 @@ nbproject/*
 coverage/*
 rdoc/*
 pkg/*
+.DS_Store
