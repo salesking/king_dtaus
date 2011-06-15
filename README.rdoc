@@ -1,32 +1,52 @@
-= Dtaus
+= DTAUS & DTAZV always comes together
 
-DTAUS is a format for German bank transfers and is short for 
-"Datenträgeraustausch". The format itself totally sucks because it was 
-established in the last century, to be used on floppy disks. Still almost 
-all German banks use it(they only seem innovative at robbing), and it is 
+DTAUS & DTAZV are formats for German bank transfers and is short for
+"Datenträgeraustausch". The format itself totally sucks because it was
+established in the last century, to be used on floppy disks. Still almost
+all German banks use it (they only seem innovative at robbing), and it is
 therefore supported in common banking programs too.
 
-This gem saves you all the trouble when generating dtaus-text. 
+This gem saves you all the trouble when generating DTAUS- or DTAZV-text.
+
+We love building payment applications
 
 == Install
 
   gem install king_dtaus
 
 == Features
- 
-* create lastschrift
-* create gutschrift
-* 100% Test coverage
 
-== Example
-  
-  #create a new dtaus object
+* create DTAUS debit advice (Lastschrift)
+* create DTAUS credit advice (Gutschrift)
+* create DTAZV debit advice
+
+== TODOs
+
+* first gem with no todo's - never seen it, huh?
+
+== Resources
+
+* DTAZV-Viewer: http://www.meta-evolutions.de/pages/artikel-20070630-dtazv-datei-betrachter.html
+* DTA/DTAZV PHP Pear: http://pear.php.net/package/Payment_DTA
+* Ruby Kernel Module: http://www.ruby-doc.org/core/classes/Kernel.html
+* Windata ZV-Tools: http://www.windata.de/Site/2Produkte2/ZVTools.aspx
+* The Swift Codes: http://www.theswiftcodes.com/
+* StarMoney: http://www.starmoney.de/index.php?id=starmoneybusiness_testen
+* SalesKing: http://salesking.eu
+
+== Examples
+
+Here are some examples how to create a DTA- or DTAZV-File. Also check out the spec/dtazv_test.rb to have a running Example of an Export.
+
+=== DTA
+
+  # create a new dtaus object
   dta = KingDta::Dtaus.new('LK')
   # set sender account
-  dta.account = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner")
+  dta.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
   # the following should be done in a loop to add multiple bookings
   # create receiving account
-  rec_acnt = KingDta::Account.new( "bank_account_number", "bank_number", "bank_owner" )
+  rec_acnt = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
   # create booking
   booking = KingDta::Booking.new(rec_acnt, 100.00 )
   # set booking text if you want to
@@ -38,20 +58,62 @@ This gem saves you all the trouble when generating dtaus-text.
   # create datausstring and do with it whatever fits your workflow
   my_str = dta.create
 
-also make sure to read the specs
+=== DTAZV
 
+  @date = Date.today
+  @dudes_dtazv_export = KingDta::Dtazv.new(@date)
+  @dudes_konto = self.dudes_konto
+  @dalai_lamas_account = self.dalai_lamas_account
+  @dudes_dtazv_export.account = KingDta::Account.new(
+    :account_number =>      @dudes_konto.account_number,
+    :bank_number =>         @dudes_konto.bank_number,
+    :client_name =>         @dudes_konto.client_name,
+    :client_number =>       @dudes_konto.client_number,
+    :bank_street =>         @dudes_konto.account_street,
+    :bank_city =>           @dudes_konto.account_city,
+    :bank_zip_code =>       @dudes_konto.account_zip_code,
+    :bank_name =>           @dudes_konto.bank_name,
+    :client_street =>       @dudes_konto.client_street,
+    :client_city =>         @dudes_konto.client_city,
+    :client_zip_code =>     @dudes_konto.client_zip_code,
+    :bank_country_code =>   @dudes_konto.bank_country_code,
+    :client_country_code => @dudes_konto.client_country_code
+  )
+
+  @fidel_castros_booking = KingDta::Booking.new(KingDta::Account.new(
+    :account_number =>      @dalai_lamas_account.account_number,
+    :bank_number =>         @dalai_lamas_account.bank_number,
+    :client_name =>         @dalai_lamas_account.client_name,
+    :client_number =>       @dalai_lamas_account.bank_name,
+    :bank_street =>         @dalai_lamas_account.account_street,
+    :bank_city =>           @dalai_lamas_account.account_city,
+    :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+    :bank_name =>           @dalai_lamas_account.bank_name,
+    :client_street =>       @dalai_lamas_account.client_street,
+    :client_city =>         @dalai_lamas_account.client_city,
+    :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+    :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+    :client_country_code => @dalai_lamas_account.client_country_code
+  ), 220.25)
+
+  @dudes_dtazv_export.add(@fidel_castros_booking)
+  @dudes_dtazv_export.create_file
+
+  # Output is DTAZV0.TXT
+
+also make sure to read the specs
 
 == Credits
 
-Bugfixes and enhancements by 
+Bugfixes and enhancements by
 
 * Georg Ledermann - https://github.com/ledermann
 * Kim Rudolph - https://github.com/krudolph
-* Railslove - Thorsten Böttger https://github.com/alto
+* Thorsten Böttger - https://github.com/alto
+* Jan Kus - https://github.com/koos
 
-This gem used https://rubygems.org/gems/DTAUS as a starting point. 
-It was disected, turned into a real class structure, bugs where fixed and 
+This gem used https://rubygems.org/gems/DTAUS as a starting point.
+It was disected, turned into a real class structure, bugs where fixed and
 of course a full test suite ensures its functionality.
 
-
-Copyright (c) 2009-2011 Georg Leciejewski, released under the MIT license
+Copyright (c) 2009-2011 Georg Leciejewski (SalesKing), Jan Kus (Railslove), released under the MIT license

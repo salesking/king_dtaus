@@ -1,0 +1,38 @@
+PATH
+  remote: .
+  specs:
+    king_dtaus (1.0.2)
+      king_dtaus
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    diff-lcs (1.1.2)
+    git (1.2.5)
+    jeweler (1.6.2)
+      bundler (~> 1.0)
+      git (>= 1.2.5)
+      rake
+    mocha (0.9.12)
+    rake (0.9.1)
+    rspec (2.6.0)
+      rspec-core (~> 2.6.0)
+      rspec-expectations (~> 2.6.0)
+      rspec-mocks (~> 2.6.0)
+    rspec-core (2.6.3)
+    rspec-expectations (2.6.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.6.0)
+    simplecov (0.4.2)
+      simplecov-html (~> 0.4.4)
+    simplecov-html (0.4.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  jeweler
+  king_dtaus!
+  mocha
+  rspec
+  simplecov
