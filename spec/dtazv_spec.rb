@@ -216,16 +216,6 @@ describe "KingDta::DtazvSegments" do
     @dudes_dtazv_export.add_q.size.should == 256
   end
 
-  # it "should create header" do
-  #   str = @dtaus.add_a
-  #   str.length.should == 128
-  #   out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"
-  #   str.should == out
-  #   #60-70 kontonummer mit nullen aufgefüllt - hier nicht da ktnr == 10 stellen
-  #   str[60...70].should == "#{test_kto1.nr}"
-  #   str.should include(test_kto1.blz)
-  # end
-
   it "should return the proper T segment" do
     @dudes_dtazv_export.add_t(@fidel_castros_booking).should == "0768T37050299EUR1326049634#{@date.strftime("%y%m%d")}00000000   0000000000MARKF1100                                                                                                                                                 DE FIDEL                              CASTRO                             BUSH-AVENUE 55                     445555 KUBA                                                                                              /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
   end
@@ -233,18 +223,6 @@ describe "KingDta::DtazvSegments" do
   it "should return the proper length of T segment" do
     @dudes_dtazv_export.add_t(@fidel_castros_booking).size.should == 768
   end
-
-  # TODO
-  # it "should create c-sektion with booking text at 19" do
-  #   @dtaus.add(@booking)
-  #   @dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
-  #   @dtaus.add_c(@booking)
-  #   str = @dtaus.dta_string
-  #   str.length.should == 256
-  #   str.should include(@kto2.name.upcase)
-  #   out = "0216C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
-  #   str.should == out
-  # end
 
   # V SEGMENT NOT IMPLEMENTED AND USED YET
   # it "should return the proper V segment" do
@@ -281,6 +259,17 @@ describe "KingDta::DtazvSegments" do
   end
 
   # TODO
+  # it "should create header" do
+  #   str = @dtaus.add_a
+  #   str.length.should == 128
+  #   out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"
+  #   str.should == out
+  #   #60-70 kontonummer mit nullen aufgefüllt - hier nicht da ktnr == 10 stellen
+  #   str[60...70].should == "#{test_kto1.nr}"
+  #   str.should include(test_kto1.blz)
+  # end
+
+  # TODO
   # it "should create c-sektion with default booking text" do
   #   @dtaus.default_text = 'Default verwendungszweck'
   #   @dtaus.add_c(@booking)
@@ -288,6 +277,18 @@ describe "KingDta::DtazvSegments" do
   #   str.length.should == 256
   #   str.should include(@kto2.name.upcase)
   #   out = "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "
+  #   str.should == out
+  # end
+
+  # TODO
+  # it "should create c-sektion with booking text at 19" do
+  #   @dtaus.add(@booking)
+  #   @dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
+  #   @dtaus.add_c(@booking)
+  #   str = @dtaus.dta_string
+  #   str.length.should == 256
+  #   str.should include(@kto2.name.upcase)
+  #   out = "0216C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGSALESKING MONATSBEITRAG 08/1  010210 FREELANCER VERSION                                              "
   #   str.should == out
   # end
 

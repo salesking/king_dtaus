@@ -22,7 +22,8 @@ We love building payment applications
 
 == TODOs
 
-* first gem with no todo's - never seen it, huh?
+* first gem with no todo's - never seen it, huh? - just kidding
+* some more edge-case tests needed
 
 == Resources
 
