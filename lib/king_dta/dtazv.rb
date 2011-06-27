@@ -113,10 +113,10 @@ module KingDta
       data1 += 'Q'                                     # Satzart, PFLICHT
       data1 += '%08i'   %  @account.bank_number        # BLZ des Einreichinstituts, PFLICHT
       data1 += '%010i'  %  @account.account_number     # Kundennummer, PFLICHT
-      data1 += '%-035s'  %  @account.client_name_1        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
-      data1 += '%-035s'  %  @account.client_name_2        # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
-      data1 += '%-035s'  %  @account.client_street  # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
-      data1 += '%-035s'  %  @account.client_zip_city        # Einreichinstitut  Zeile 4: Ort, PFLICHT
+      data1 += '%-035s'  %  @account.client_name_1      # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
+      data1 += '%-035s'  %  @account.client_name_2      # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
+      data1 += '%-035s'  %  @account.bank_street        # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
+      data1 += '%-035s'  %  @account.zip_city           # Einreichinstitut  Zeile 4: Ort, PFLICHT
       data1 += @date.strftime("%y%m%d")                # Erstellungsdatum  In der Form JJMMTT, PFLICHT
       data1 += '01'                                    # laufende Nummer   Laufende Tagesnummer, PFLICHT
       data1 += @date.strftime("%y%m%d")                # (erster) Ausführungstermin Datei, PFLICHT
