@@ -115,8 +115,8 @@ module KingDta
       data1 += '%010i'  %  @account.account_number     # Kundennummer, PFLICHT
       data1 += '%-035s'  %  @account.client_name_1      # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
       data1 += '%-035s'  %  @account.client_name_2      # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
-      data1 += '%-035s'  %  @account.bank_street        # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
-      data1 += '%-035s'  %  @account.zip_city           # Einreichinstitut  Zeile 4: Ort, PFLICHT
+      data1 += '%-035s'  %  @account.client_street        # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
+      data1 += '%-035s'  %  @account.client_zip_city           # Einreichinstitut  Zeile 4: Ort, PFLICHT
       data1 += @date.strftime("%y%m%d")                # Erstellungsdatum  In der Form JJMMTT, PFLICHT
       data1 += '01'                                    # laufende Nummer   Laufende Tagesnummer, PFLICHT
       data1 += @date.strftime("%y%m%d")                # (erster) Ausführungstermin Datei, PFLICHT
@@ -293,13 +293,13 @@ module KingDta
       data2 += '%-011s' % booking.account.bank_number                 # KANN/PFLICHT 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
       data2 += '%-03s'  % '' #booking.account.bank_country_code           # KANN/PFLICHT 9a 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
       data2 += '%070s' % ''  #booking.account.bank_name                   # KANN/PFLICHT 9b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%035s' % ''  #booking.account.street                      # KANN/PFLICHT 9b Name Zeile 3	: Straße Zeile
-      data2 += '%035s' % ''  #booking.account.zip_city                    # KANN/PFLICHT 9b 4	: Ort
+      data2 += '%035.35s' % ''  #booking.account.street                      # KANN/PFLICHT 9b Name Zeile 3	: Straße Zeile
+      data2 += '%035.35s' % ''  #booking.account.zip_city                    # KANN/PFLICHT 9b 4	: Ort
       data2 += '%-03s' % booking.account.client_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers bzw. Scheckempfängers
-      data2 += '%-035s' % booking.account.client_name_1                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%-035s' % booking.account.client_name_2                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%-035s' % booking.account.client_street               # KANN/PFLICHT 10b Name Zeile 3	: Straße Zeile
-      data2 += '%-035s' % booking.account.client_zip_city             # KANN/PFLICHT 10b 4	: Ort
+      data2 += '%-035.35s' % booking.account.client_name_1                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data2 += '%-035.35s' % booking.account.client_name_2                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data2 += '%-035.35s' % booking.account.client_street               # KANN/PFLICHT 10b Name Zeile 3	: Straße Zeile
+      data2 += '%-035.35s' % booking.account.client_zip_city             # KANN/PFLICHT 10b 4	: Ort
       data2 += '%070s' % ''                                          # KANN/PFLICHT 11 Ordervermerk
       data2 += '/%-034s' % booking.account.account_number              # PFLICHT 12 35 IBAN bzw. Kontonummer des
       data2 += 'EUR'                                                 # KANN/PFLICHT 13 3 Auftragswährung "EUR"
@@ -319,6 +319,7 @@ module KingDta
       data2 += '%01i' % 0                                            # KANN/NICHT 25 Meldeschlüssel
       data2 += '%051s' % ''                                           # N 26 Reserve
       data2 += '%02i' % 0                                            # PFLICHT/NICHT 27 2 Erweiterungskennzeichen           00 = es folgt kein Meldeteil
+      puts data2
       raise "DTAUS: Längenfehler T (#{data2.size} <> 768)\n" if data2.size != 768
       dta_string << data2
     end
