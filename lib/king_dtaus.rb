@@ -1,3 +1,4 @@
+require "i18n"
 require "bigdecimal"
 require "king_dta/helper"
 require "king_dta/dta"

@@ -319,7 +319,6 @@ module KingDta
       data2 += '%01i' % 0                                            # KANN/NICHT 25 Meldeschlüssel
       data2 += '%051s' % ''                                           # N 26 Reserve
       data2 += '%02i' % 0                                            # PFLICHT/NICHT 27 2 Erweiterungskennzeichen           00 = es folgt kein Meldeteil
-      puts data2
       raise "DTAUS: Längenfehler T (#{data2.size} <> 768)\n" if data2.size != 768
       dta_string << data2
     end

@@ -13,7 +13,9 @@ module KingDta
       text.gsub!('ü', 'UE')
       text.gsub!('ö', 'OE')
       text.gsub!('ß', 'SS')
-      
+
+      text = I18n.transliterate(text)
+
       text.gsub! /[^a-zA-Z0-9\ \.\,\&\-\/\+\*\$\%]/, '' # Remove all invalid chars
       text.upcase.strip
     end

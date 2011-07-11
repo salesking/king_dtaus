@@ -170,7 +170,7 @@ describe KingDta::Account do
       :client_city =>       @dudes_konto.client_city,
       :client_zip_code =>   @dudes_konto.client_zip_code
     )
-    konto.client_name_1.should == "JAN KUS"
+    konto.client_name_1.should == "JAN"
   end
 
   it "should return sender name1 - the characters 36 - 70 of a name" do
@@ -187,7 +187,7 @@ describe KingDta::Account do
       :client_city =>       @dudes_konto.client_city,
       :client_zip_code =>   @dudes_konto.client_zip_code
     )
-    konto.client_name_2.should == nil
+    konto.client_name_2.should == "KUS"
   end
 
 end
