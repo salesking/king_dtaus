@@ -209,7 +209,7 @@ describe "KingDta::DtazvSegments" do
   # end
 
   it "should return the proper Q segment" do
-    @dudes_dtazv_export.add_q.should == "0256Q370502991326049634JAN                                KUS                                MEINE EINE STRASSE 2               51063 MEINE KOELN                  11071101110711N0000000000                                                                    "
+    @dudes_dtazv_export.add_q.should == "0256Q370502991326049634JAN                                KUS                                MEINE EINE STRASSE 2               51063 MEINE KOELN                  #{@date.strftime("%y%m%d")}01#{@date.strftime("%y%m%d")}N0000000000                                                                    "
   end
 
   it "should return the proper length of P segment" do
