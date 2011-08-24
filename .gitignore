@@ -1,4 +1,5 @@
 nbproject/*
+.rvmrc
 coverage/*
 rdoc/*
 pkg/*
