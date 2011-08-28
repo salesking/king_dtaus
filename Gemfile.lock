@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    king_dtaus (2.0.0.pre)
+    king_dtaus (2.0.2.pre)
       king_dtaus
 
 GEM

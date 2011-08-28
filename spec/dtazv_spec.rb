@@ -105,53 +105,34 @@ describe KingDta::Dtazv do
     lambda{ @dtazv.create}.should raise_error(KingDta::Exception)
   end
 
-  # TODO
-  # it "should create the whole dta string with a single booking" do
-  #   @dtaus.default_text = 'Default verwendungszweck'
-  #   @dtaus.add(@booking)
-  #   str = @dtaus.create
-  #   str.length.should == 512
-  #   str.should include(@kto1.name.upcase)
-  #   str.should include(@kto2.name.upcase)
-  #   str.should include(@dtaus.default_text.upcase)
-  #   out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0128E     0000001000000000000000000000002787777000000000370400440000000022025                                                   "
-  #   str.should == out
-  # end
+  it "should create the whole dta string with a single booking" do
+    @dtazv.add(@dalai_lamas_booking)
+    str = @dtazv.create
+    str.length.should == 1280
+    str.should include(@dalai_lamas_account.client_name.upcase)
+    out = "0256Q370502991326049634JAN KUS                                                               MEINE EINE STRASSE 2               51063 MEINE KOELN                  11082801110828N0000000000                                                                    0768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000256Z000000000000220000000000000001                                                                                                                                                                                                                             "
+    str.should == out
+  end
 
-  # TODO
-  # it "should create whole dta string with long booking text in extension" do
-  #   @dtaus.add(@booking)
-  #   @dtaus.bookings.first.text = 'Rgn R-3456-0102220 Monatsbeitrag 08/10 Freelancer Version Vielen Dank Ihre SalesKing GmbH'
-  #   str = @dtaus.create
-  #   str.length.should == 640
-  #   str.should include(@kto2.name.upcase)
-  #   out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
-  #         "0274C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGRGN R-3456-0102220 MONATSBE1  0302ITRAG 08/10 FREELANCER VERS02ION VIELEN DANK IHRE SALESK           02ING GMBH                                                                                                                      "+
-  #         "0128E     0000001000000000000000000000002787777000000000370400440000000022025                                                   "
-  #   str.should == out
-  # end
+  it "should create whole dta string with long booking text in extension" do
+    @dtazv.add(@dalai_lamas_booking)
+    @dtazv.bookings.first.text = 'Rgn R-3456-0102220 Monatsbeitrag 08/10 Freelancer Version Vielen Dank Ihre SalesKing GmbH'
+    str = @dtazv.create
+    str.length.should == 1280
+    str.should include(@dalai_lamas_account.client_name.upcase)
+    out = "0256Q370502991326049634JAN KUS                                                               MEINE EINE STRASSE 2               51063 MEINE KOELN                  11082801110828N0000000000                                                                    0768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                   RGN R-3456-0102220 MONATSBEITRAG 08/10 FREELANCER VERSION VIELEN DANK IHRE SALESKING GMBH00000000                         0013                                                              0                                                   000256Z000000000000220000000000000001                                                                                                                                                                                                                             "
+    str.should == out
+  end
 
-  # TODO
-  # it "should create the whole dta string with a lot of bookings" do
-  #   @dtaus.default_text = 'Default Verwendungszweck'
-  #   6.times { @dtaus.add(@booking) }
-  #   str = @dtaus.create
-  #   str.length.should == 1792
-  #   str.should include(@kto1.name.upcase)
-  #   str.should include(@kto2.name.upcase)
-  #   str.should include(@dtaus.default_text.upcase)
-  #   out = "0128ALK3704004400000000GIMME YOUR MONEY AG        #{Date.today.strftime("%d%m%y")}    78289700370000000000               #{Date.today.strftime("%d%m%Y")}                        1"+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
-  #         "0128E     0000006000000000000000000000016726662000000002222402640000000132150                                                   "
-  #   str.should == out
-  # end
+  it "should create the whole dta string with a lot of bookings" do
+    6.times { @dtazv.add(@dalai_lamas_booking) }
+    str = @dtazv.create
+    str.length.should == 5120
+    str.should include(@dalai_lamas_account.client_name.upcase)
+    str.should include(@dudes_konto.client_name.upcase)
+    out = "0256Q370502991326049634JAN KUS                                                               MEINE EINE STRASSE 2               51063 MEINE KOELN                  11082801110828N0000000000                                                                    0768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000256Z000000000001320000000000000006                                                                                                                                                                                                                             "
+    str.should == out
+  end
 
 end
 
