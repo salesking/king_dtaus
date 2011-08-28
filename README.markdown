@@ -1,4 +1,4 @@
-= DTAUS & DTAZV always comes together
+# DTAUS & DTAZV always comes together
 
 DTAUS & DTAZV are formats for German bank transfers and is short for
 "Datenträgeraustausch". The format itself totally sucks because it was
@@ -10,24 +10,24 @@ This gem saves you all the trouble when generating DTAUS- or DTAZV-text.
 
 We love building payment applications
 
-== Install
+## Install
 
   gem install king_dtaus
 
-== Features
+## Features
 
 * create DTAUS debit advice (Lastschrift)
 * create DTAUS credit advice (Gutschrift)
 * create DTAZV debit advice
-* High Test coverage to ensure our Software Quality http://travis-ci.org/#!/salesking/king_dtaus
+* High Test coverage to ensure our Software Quality: [![Build Status](https://secure.travis-ci.org/salesking/king_dtaus.png)](http://travis-ci.org/salesking/king_dtaus)
 
 
-== TODOs
+## TODOs
 
 * first gem with no todo's - never seen it, huh? - just kidding
 * some more edge-case tests needed
 
-== Resources
+## Resources
 
 * DTAZV-Viewer: http://www.meta-evolutions.de/pages/artikel-20070630-dtazv-datei-betrachter.html
 * DTA/DTAZV PHP Pear: http://pear.php.net/package/Payment_DTA
@@ -37,11 +37,11 @@ We love building payment applications
 * StarMoney: http://www.starmoney.de/index.php?id=starmoneybusiness_testen
 * SalesKing: http://salesking.eu
 
-== Examples
+## Examples
 
 Here are some examples how to create a DTA- or DTAZV-File. Also check out the spec/dtazv_test.rb to have a running Example of an Export.
 
-=== DTA
+##= DTA
 
   # create a new dtaus object
   dta = KingDta::Dtaus.new('LK')
@@ -66,7 +66,7 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
   # create datausstring and do with it whatever fits your workflow
   my_str = dta.create
 
-=== DTAZV
+### DTAZV
 
   @date = Date.today
   @dudes_dtazv_export = KingDta::Dtazv.new(@date)
@@ -111,7 +111,7 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
 
 also make sure to read the specs
 
-== Credits
+## Credits
 
 Bugfixes and enhancements by
 
