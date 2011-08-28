@@ -19,6 +19,8 @@ We love building payment applications
 * create DTAUS debit advice (Lastschrift)
 * create DTAUS credit advice (Gutschrift)
 * create DTAZV debit advice
+* High Test coverage to ensure our Software Quality http://travis-ci.org/#!/salesking/king_dtaus
+
 
 == TODOs
 
@@ -43,15 +45,20 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
 
   # create a new dtaus object
   dta = KingDta::Dtaus.new('LK')
+  
   # set sender account
   dta.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
+  
   # the following should be done in a loop to add multiple bookings
   # create receiving account
   rec_acnt = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
+  
   # create booking
   booking = KingDta::Booking.new(rec_acnt, 100.00 )
+  
   # set booking text if you want to
   booking.text = "Thanks for your purchase"
+ 
   # add booking
   dta.add( booking )
   # end loop
