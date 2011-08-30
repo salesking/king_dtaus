@@ -34,24 +34,22 @@ end
 #      bankplz:0815
 #      bankort:Felsblock
 
-def dudes_konto
-  opts = {
-            :account_number => '1326049634',
-            :bank_number => '37050299',
-            :bank_name => 'Kreissparkasse Köln',
-            :zweck => 'Monatsbeitrag',
-            :account_street => "Bank Eine Straße 2",
-            :account_city => "Bank Köln",
-            :account_zip_code => "51063",
-            :client_number => "",
-            :client_name =>'Jan Kus',
-            :client_street => "Meine Eine Straße 2",
-            :client_city => "Meine Köln",
-            :client_zip_code => "51063",
-            :bank_country_code => "DE",
-            :client_country_code => "DE"
-          }
-  TestKonto.new(opts)
+def dudes_account_opts
+  {
+    :account_number => '1326049634',
+    :bank_number => '37050299',
+    :bank_name => 'Kreissparkasse Köln',
+    :bank_street => "Bank Eine Straße 2",
+    :bank_city => "Bank Köln",
+    :bank_zip_code => "51063",
+    :client_number => "",
+    :client_name =>'Jan Kus',
+    :client_street => "Meine Eine Straße 2",
+    :client_city => "Meine Köln",
+    :client_zip_code => "51063",
+    :bank_country_code => "DE",
+    :client_country_code => "DE"
+  }
 end
 
 def dalai_lamas_account
@@ -59,10 +57,9 @@ def dalai_lamas_account
             :account_number => 'GR1601101250000000012300695',
             :bank_number => 'MARKF1100',
             :bank_name => 'Dalai Lamas Bank',
-            :zweck => 'Lama Fee',
             :account_street => "5th avenue",
             :account_city => "los angeles",
-            :account_zip_code => "55323",
+            :bank_zip_code => "55323",
             :client_number => "",
             :client_name =>'Dalai Lama',
             :client_street => "Bush-Avenue 55",

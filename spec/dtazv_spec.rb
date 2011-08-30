@@ -7,26 +7,10 @@ describe KingDta::Dtazv do
 
   before :each do
     @dtazv = KingDta::Dtazv.new(Date.parse('2011-08-28'))
-    @sender_acnt = dudes_konto
     @receiver_acnt = dalai_lamas_account
 
-    @dtazv.account = KingDta::Account.new(
-      :account_number =>      @sender_acnt.account_number,
-      :bank_number =>         @sender_acnt.bank_number,
-      :client_name =>         @sender_acnt.client_name,
-      :client_number =>       @sender_acnt.client_number,
-      :bank_street =>         @sender_acnt.account_street,
-      :bank_city =>           @sender_acnt.account_city,
-      :bank_zip_code =>       @sender_acnt.account_zip_code,
-      :bank_name =>           @sender_acnt.bank_name,
-      :client_street =>       @sender_acnt.client_street,
-      :client_city =>         @sender_acnt.client_city,
-      :client_zip_code =>     @sender_acnt.client_zip_code,
-      :bank_country_code =>   @sender_acnt.bank_country_code,
-      :client_country_code => @sender_acnt.client_country_code
-    )
-
-   
+    @dtazv.account = KingDta::Account.new dudes_account_opts
+    
     receiver_acnt = KingDta::Account.new(
       :account_number =>      @receiver_acnt.account_number,
       :bank_number =>         @receiver_acnt.bank_number,
@@ -130,7 +114,7 @@ describe KingDta::Dtazv do
     str = @dtazv.create
     str.length.should == 5120
     str.should include(@receiver_acnt.client_name.upcase)
-    str.should include(@sender_acnt.client_name.upcase)
+    str.should include(dudes_account_opts[:client_name].upcase)
     out = "0256Q370502991326049634JAN KUS                                                               MEINE EINE STRASSE 2               51063 MEINE KOELN                  11082801110828N0000000000                                                                    0768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000768T37050299EUR132604963411082800000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   000256Z000000000001320000000000000006                                                                                                                                                                                                                             "
     str.should == out
   end
@@ -142,23 +126,8 @@ describe "KingDta::DtazvSegments" do
   before :each do
     @date = Date.today
     @dudes_dtazv_export = KingDta::Dtazv.new(@date)
-    @sender_acnt = dudes_konto
     @receiver_acnt = dalai_lamas_account
-    @dudes_dtazv_export.account = KingDta::Account.new(
-      :account_number =>      @sender_acnt.account_number,
-      :bank_number =>         @sender_acnt.bank_number,
-      :client_name =>         @sender_acnt.client_name,
-      :bank_name =>           @sender_acnt.bank_name,
-      :client_number =>       @sender_acnt.client_number,
-      :bank_street =>         @sender_acnt.account_street,
-      :bank_city =>           @sender_acnt.account_city,
-      :bank_zip_code =>       @sender_acnt.account_zip_code,
-      :client_street =>       @sender_acnt.client_street,
-      :client_city =>         @sender_acnt.client_city,
-      :client_zip_code =>     @sender_acnt.client_zip_code,
-      :bank_country_code =>   @sender_acnt.bank_country_code,
-      :client_country_code => @sender_acnt.client_country_code
-    )
+    @dudes_dtazv_export.account = KingDta::Account.new( dudes_account_opts)
 
     @booking = KingDta::Booking.new(KingDta::Account.new(
       :account_number =>      @receiver_acnt.account_number,
@@ -200,8 +169,6 @@ describe "KingDta::DtazvSegments" do
 
   it "should return the proper T segment" do
     @dudes_dtazv_export.add_t(@booking).should == "0768T37050299EUR1326049634#{@date.strftime("%y%m%d")}00000000   0000000000MARKF1100                                                                                                                                                 DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /GR1601101250000000012300695       EUR00000000000220250                                                                                                                                            00000000                         0013                                                              0                                                   00"
-
-
   end
 
   it "should return the proper length of T segment" do

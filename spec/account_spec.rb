@@ -5,7 +5,6 @@ describe KingDta::Account do
 
   before :each do
     @ba = test_kto2 # BankAccount mocked as open struct
-    @dudes_konto = dudes_konto
   end
 
   it "should initialize a new account" do
@@ -13,19 +12,9 @@ describe KingDta::Account do
   end
 
   it "should initialize a new dtazv account" do
-    lambda{ KingDta::Account.new(
-              :account_number =>    @dudes_konto.account_number,
-              :bank_number =>       @dudes_konto.bank_number,
-              :client_name =>       @dudes_konto.client_name,
-              :client_number =>     @dudes_konto.client_number,
-              :bank_street =>       @dudes_konto.account_street,
-              :bank_city =>         @dudes_konto.account_city,
-              :bank_zip_code =>     @dudes_konto.account_zip_code,
-              :bank_name =>         @dudes_konto.bank_name,
-              :client_street =>     @dudes_konto.client_street,
-              :client_city =>       @dudes_konto.client_city,
-              :client_zip_code =>   @dudes_konto.client_zip_code
-          )}.should_not raise_error
+    lambda{ 
+      KingDta::Account.new(dudes_account_opts)
+    }.should_not raise_error
   end
 
   it "should fail if bank account number is invalid" do
@@ -42,119 +31,48 @@ describe KingDta::Account do
     lambda{ KingDta::Account.new(:account_number => @ba.account_number, :bank_number => @ba.bank_number, :client_name => @ba.client_name, :client_number => 12345678901) }.should raise_error(ArgumentError, 'Client number too long, max 10 allowed')
   end
 
-  it "should fail if street and/or Zip Code is too long" do
-    lambda{ KingDta::Account.new(
-            :account_number =>    @dudes_konto.account_number,
-            :bank_number =>       @dudes_konto.bank_number,
-            :client_name =>       @dudes_konto.client_name,
-            :client_number =>     @dudes_konto.client_number,
-            :bank_street =>       "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            :bank_city =>         @dudes_konto.account_city,
-            :bank_zip_code =>     @dudes_konto.account_zip_code,
-            :bank_name =>         @dudes_konto.bank_name,
-            :client_street =>     @dudes_konto.client_street,
-            :client_city =>       @dudes_konto.client_city,
-            :client_zip_code =>   @dudes_konto.client_zip_code
-          )}.should raise_error(ArgumentError, 'Street and/or Zip Code too long, max 35 allowed')
+  it "should fail if street and/or Zip Code is too long" do    
+    opts = dudes_account_opts.merge( :bank_street => "Lorem ipsum dolor sit amet, consectetur")
+    lambda{
+      KingDta::Account.new(opts)
+    }.should raise_error(ArgumentError, 'Bank Street too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
-    lambda{ KingDta::Account.new(
-            :account_number =>    @dudes_konto.account_number,
-            :bank_number =>       @dudes_konto.bank_number,
-            :client_name =>       @dudes_konto.client_name,
-            :client_number =>     @dudes_konto.client_number,
-            :bank_street =>       @dudes_konto.account_street,
-            :bank_city =>         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            :bank_zip_code =>     @dudes_konto.account_zip_code,
-            :bank_name =>         @dudes_konto.account_bank_name,
-            :client_street =>     @dudes_konto.client_street,
-            :client_city =>       @dudes_konto.client_city,
-            :client_zip_code =>   @dudes_konto.client_zip_code
-          )}.should raise_error(ArgumentError, 'City too long, max 35 allowed')
+    opts = dudes_account_opts.merge( :bank_city => "Lorem ipsum dolor sit amet, consecte")
+    lambda{ 
+      KingDta::Account.new opts
+    }.should raise_error(ArgumentError, 'Bank City too long, max 35 allowed')
   end
 
   it "should fail if bank name is too long" do
-    lambda{ KingDta::Account.new(
-            :account_number =>    @dudes_konto.account_number,
-            :bank_number =>       @dudes_konto.bank_number,
-            :client_name =>       @dudes_konto.client_name,
-            :client_number =>     @dudes_konto.client_number,
-            :bank_street =>       @dudes_konto.account_street,
-            :bank_city =>         @dudes_konto.account_city,
-            :bank_zip_code =>     @dudes_konto.account_zip_code,
-            :bank_name =>         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            :client_street =>     @dudes_konto.client_street,
-            :client_city =>       @dudes_konto.client_city,
-            :client_zip_code =>   @dudes_konto.client_zip_code
-          )}.should raise_error(ArgumentError, 'Bank Name too long, max 35 allowed')
+    opts = dudes_account_opts.merge( :bank_name => "Lorem ipsum dolor sit amet, consecte")
+    lambda{
+      KingDta::Account.new opts
+    }.should raise_error(ArgumentError, 'Bank Name too long, max 35 allowed')
   end
 
-  it "should fail if sender street and/or zipcode is too long" do
-    lambda{ KingDta::Account.new(
-            :account_number =>    @dudes_konto.account_number,
-            :bank_number =>       @dudes_konto.bank_number,
-            :client_name =>       @dudes_konto.client_name,
-            :client_number =>     @dudes_konto.client_number,
-            :bank_street =>       @dudes_konto.account_street,
-            :bank_city =>         @dudes_konto.account_city,
-            :bank_zip_code =>     @dudes_konto.account_zip_code,
-            :bank_name =>         @dudes_konto.bank_name,
-            :client_street =>     "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            :client_city =>       @dudes_konto.client_city,
-            :client_zip_code =>   @dudes_konto.client_zip_code
-          )}.should raise_error(ArgumentError, 'Client Street and/or Zip Code too long, max 35 allowed')
+  it "should fail if client street is too long" do
+    opts = dudes_account_opts.merge( :client_street => "Lorem ipsum dolor sit amet, consecte")
+    lambda{
+      KingDta::Account.new opts
+    }.should raise_error(ArgumentError, 'Client Street too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
-    lambda{ KingDta::Account.new(
-            :account_number =>    @dudes_konto.account_number,
-            :bank_number =>       @dudes_konto.bank_number,
-            :client_name =>       @dudes_konto.client_name,
-            :client_number =>     @dudes_konto.client_number,
-            :bank_street =>       @dudes_konto.account_street,
-            :bank_city =>         @dudes_konto.account_city,
-            :bank_zip_code =>     @dudes_konto.account_zip_code,
-            :bank_name =>         @dudes_konto.bank_name,
-            :client_street =>     @dudes_konto.client_street,
-            :client_city =>       "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            :client_zip_code =>   @dudes_konto.client_zip_code
-          )}.should raise_error(ArgumentError, 'Client City too long, max 35 allowed')
+    opts = dudes_account_opts.merge( :client_city => "Lorem ipsum dolor sit amet, consecte")
+    lambda{
+      KingDta::Account.new opts
+    }.should raise_error(ArgumentError, 'Client City too long, max 35 allowed')
   end
 
   it "should return account street and zip" do
-    konto = KingDta::Account.new(
-      :account_number =>    @dudes_konto.account_number,
-      :bank_number =>       @dudes_konto.bank_number,
-      :client_name =>       @dudes_konto.client_name,
-      :client_number =>     @dudes_konto.client_number,
-      :bank_street =>       @dudes_konto.account_street,
-      :bank_city =>         @dudes_konto.account_city,
-      :bank_zip_code =>     @dudes_konto.account_zip_code,
-      :bank_name =>         @dudes_konto.bank_name,
-      :client_street =>     @dudes_konto.client_street,
-      :client_city =>       @dudes_konto.client_city,
-      :client_zip_code =>   @dudes_konto.client_zip_code
-    )
+    konto = KingDta::Account.new( dudes_account_opts )
     konto.zip_city.should == "51063 BANK KOELN"
   end
 
   it "should return sender street and zip" do
-    konto = KingDta::Account.new(
-      :account_number =>    @dudes_konto.account_number,
-      :bank_number =>       @dudes_konto.bank_number,
-      :client_name =>       @dudes_konto.client_name,
-      :client_number =>     @dudes_konto.client_number,
-      :bank_street =>       @dudes_konto.account_street,
-      :bank_city =>         @dudes_konto.account_city,
-      :bank_zip_code =>     @dudes_konto.account_zip_code,
-      :bank_name =>         @dudes_konto.bank_name,
-      :client_street =>     @dudes_konto.client_street,
-      :client_city =>       @dudes_konto.client_city,
-      :client_zip_code =>   @dudes_konto.client_zip_code
-    )
+    konto = KingDta::Account.new( dudes_account_opts )
     konto.client_zip_city.should == "51063 MEINE KOELN"
   end
-
-
 end
