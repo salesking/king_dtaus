@@ -178,15 +178,15 @@ module KingDta
 
       # 2. Satzabschnitt
       data2 = "%27.27s" % @account.client_name
-      zweck = booking.text || default_text
+      booking_txt = booking.text || default_text
       #Erste 27 Zeichen
       #Wenn text < 26 Zeichen, dann mit spaces auffüllen.
-      data2 +=  zweck[0..26].ljust(27)
-      zweck = zweck[27..999]
+      data2 +=  booking_txt[0..26].ljust(27)
+      booking_txt = booking_txt[27..999]
       # cur text into 27 long pieces
-      while zweck && zweck.size > 0 && exts.size < 13
-        exts << ['02', zweck.ljust(27) ]
-        zweck = zweck[27..999]
+      while booking_txt && booking_txt.size > 0 && exts.size < 13
+        exts << ['02', booking_txt.ljust(27) ]
+        booking_txt = booking_txt[27..999]
       end
       exts << ['03', @account.client_name[27..999] ] if @account.client_name.size > 27
 

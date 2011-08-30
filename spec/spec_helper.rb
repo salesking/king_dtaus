@@ -67,7 +67,6 @@ def dalai_lamas_account
             :client_name =>'Dalai Lama',
             :client_street => "Bush-Avenue 55",
             :client_city => "India",
-            :client_zip_code => "066600",
             :client_zip_code => "445555",
             :bank_country_code => "DE",
             :client_country_code => "DE"

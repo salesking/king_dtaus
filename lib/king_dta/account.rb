@@ -1,11 +1,14 @@
 # encoding: utf-8
 module KingDta
-  #Kontodaten verwalten mit Name des Inhabers und Bank, Bankleitzahl und Kontonummer.
+  # A bank account with name of the account owner,
+  # Kontodaten verwalten mit Name des Inhabers und Bank, Bankleitzahl und Kontonummer.
   class Account
     include KingDta::Helper
-    # dta~ jeweilige Feld in DTAUS-Norm
-    attr_accessor :account_number, :bank_number, :client_number, :bank_street, :bank_city, :bank_zip_code, :bank_name,
-:client_name, :client_street, :client_city, :client_zip_code, :bank_country_code, :client_country_code
+    
+    attr_accessor :account_number, :bank_number, :bank_street, :bank_city,
+                  :bank_zip_code, :bank_name, :bank_country_code,
+                  :client_name, :client_number, :client_street, :client_city,
+                  :client_zip_code, :client_country_code
 
     # TODO test
     def initialize(args={})
@@ -34,14 +37,6 @@ module KingDta
       raise ArgumentError.new("Bank Country code too long, max 2 allowed") if @bank_country_code && @bank_country_code.length > 2
       raise ArgumentError.new("Client Country code too long, max 2 allowed") if @client_country_code && @client_country_code.length > 2
 
-    end
-
-    def client_name_1
-      @client_name.split(" ", 2)[0]
-    end
-
-    def client_name_2
-      @client_name.split(" ", 2)[1]
     end
 
     def zip_city

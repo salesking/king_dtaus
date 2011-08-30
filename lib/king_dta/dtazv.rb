@@ -113,10 +113,10 @@ module KingDta
       data1 += 'Q'                                     # Satzart, PFLICHT
       data1 += '%08i'   %  @account.bank_number        # BLZ des Einreichinstituts, PFLICHT
       data1 += '%010i'  %  @account.account_number     # Kundennummer, PFLICHT
-      data1 += '%-035s'  %  @account.client_name_1      # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
-      data1 += '%-035s'  %  @account.client_name_2      # Einreichinstitut  Zeile 1 u. 2: Name, PFLICHT
-      data1 += '%-035s'  %  @account.client_street        # Einreichinstitut  Zeile 3: Straße Postfach, PFLICHT
-      data1 += '%-035s'  %  @account.client_zip_city           # Einreichinstitut  Zeile 4: Ort, PFLICHT
+      data1 += '%-035s'  %  @account.client_name[0..34]     # Sender Name, PFLICHT
+      data1 += '%-035s'  %  @account.client_name[25..69]
+      data1 += '%-035s'  %  @account.client_street     # Sender 3: Straße Postfach, PFLICHT
+      data1 += '%-035s'  %  @account.client_zip_city   # Sender  Zeile 4: Ort, PFLICHT
       data1 += @date.strftime("%y%m%d")                # Erstellungsdatum  In der Form JJMMTT, PFLICHT
       data1 += '01'                                    # laufende Nummer   Laufende Tagesnummer, PFLICHT
       data1 += @date.strftime("%y%m%d")                # (erster) Ausführungstermin Datei, PFLICHT
@@ -131,7 +131,7 @@ module KingDta
     #Erstellen T-Segment der DTAZV-Datei
     # - T Einzelzahlungssatz mit 768 oder 572 Bytes
     # === Parameter
-    # booking<Object>::Booking object to be written to c-sektion
+    # booking<Object>::Booking object to be written to c-section
     #
     # === Returns
     # <String>:: The current dta_string
@@ -296,10 +296,10 @@ module KingDta
       data2 += '%035.35s' % ''  #booking.account.street                      # KANN/PFLICHT 9b Name Zeile 3	: Straße Zeile
       data2 += '%035.35s' % ''  #booking.account.zip_city                    # KANN/PFLICHT 9b 4	: Ort
       data2 += '%-03s' % booking.account.client_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers bzw. Scheckempfängers
-      data2 += '%-035.35s' % booking.account.client_name_1                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%-035.35s' % booking.account.client_name_2                 # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%-035.35s' % booking.account.client_street               # KANN/PFLICHT 10b Name Zeile 3	: Straße Zeile
-      data2 += '%-035.35s' % booking.account.client_zip_city             # KANN/PFLICHT 10b 4	: Ort
+      data2 += '%-035.35s' % booking.account.client_name[0..34]      # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data2 += '%-035.35s' % booking.account.client_name[35..69]
+      data2 += '%-035.35s' % booking.account.client_street
+      data2 += '%-035.35s' % booking.account.client_zip_city
       data2 += '%070s' % ''                                          # KANN/PFLICHT 11 Ordervermerk
       data2 += '/%-034s' % booking.account.account_number              # PFLICHT 12 35 IBAN bzw. Kontonummer des
       data2 += 'EUR'                                                 # KANN/PFLICHT 13 3 Auftragswährung "EUR"
