@@ -6,7 +6,4 @@ pkg/*
 .DS_Store
 DTAUS0.TXT
 dta.txt
-<<<<<<< HEAD
 Gemfile.lock
-=======
->>>>>>> 0d2ddf147584a3c7d571599a8ec91f178b8da9b3
