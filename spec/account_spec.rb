@@ -13,7 +13,7 @@ describe KingDta::Account do
 
   it "should initialize a new dtazv account" do
     lambda{ 
-      KingDta::Account.new(dudes_account_opts)
+      KingDta::Account.new(sender_opts)
     }.should_not raise_error
   end
 
@@ -32,47 +32,47 @@ describe KingDta::Account do
   end
 
   it "should fail if street and/or Zip Code is too long" do    
-    opts = dudes_account_opts.merge( :bank_street => "Lorem ipsum dolor sit amet, consectetur")
+    opts = sender_opts.merge( :bank_street => "Lorem ipsum dolor sit amet, consectetur")
     lambda{
       KingDta::Account.new(opts)
     }.should raise_error(ArgumentError, 'Bank Street too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
-    opts = dudes_account_opts.merge( :bank_city => "Lorem ipsum dolor sit amet, consecte")
+    opts = sender_opts.merge( :bank_city => "Lorem ipsum dolor sit amet, consecte")
     lambda{ 
       KingDta::Account.new opts
     }.should raise_error(ArgumentError, 'Bank City too long, max 35 allowed')
   end
 
   it "should fail if bank name is too long" do
-    opts = dudes_account_opts.merge( :bank_name => "Lorem ipsum dolor sit amet, consecte")
+    opts = sender_opts.merge( :bank_name => "Lorem ipsum dolor sit amet, consecte")
     lambda{
       KingDta::Account.new opts
     }.should raise_error(ArgumentError, 'Bank Name too long, max 35 allowed')
   end
 
   it "should fail if client street is too long" do
-    opts = dudes_account_opts.merge( :client_street => "Lorem ipsum dolor sit amet, consecte")
+    opts = sender_opts.merge( :client_street => "Lorem ipsum dolor sit amet, consecte")
     lambda{
       KingDta::Account.new opts
     }.should raise_error(ArgumentError, 'Client Street too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
-    opts = dudes_account_opts.merge( :client_city => "Lorem ipsum dolor sit amet, consecte")
+    opts = sender_opts.merge( :client_city => "Lorem ipsum dolor sit amet, consecte")
     lambda{
       KingDta::Account.new opts
     }.should raise_error(ArgumentError, 'Client City too long, max 35 allowed')
   end
 
   it "should return account street and zip" do
-    konto = KingDta::Account.new( dudes_account_opts )
+    konto = KingDta::Account.new( sender_opts )
     konto.zip_city.should == "51063 BANK KOELN"
   end
 
   it "should return sender street and zip" do
-    konto = KingDta::Account.new( dudes_account_opts )
+    konto = KingDta::Account.new( sender_opts )
     konto.client_zip_city.should == "51063 MEINE KOELN"
   end
 end

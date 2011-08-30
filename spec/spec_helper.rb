@@ -16,25 +16,7 @@ RSpec.configure do |config|
 end
 
 
-#Filename der eigenen Kontodaten
-#    Beispiel:
-#      typ:LK
-#      blz:99988811
-#      konto:123456
-#      bank:Nord-Ostschwaebische Sandbank
-#
-#      name:Jodelverein Holladrioe 1863 e.V.
-#      zweck:Mitgliedsbeitrag 2003
-#    Der Typ ist LK oder GK. Siehe Option -t
-#    zweck ist ein optionaler Default-Text, der verwendet wird,
-#    falls eine Buchung keinen Text hat.
-#    Die Adressdaten der Bank sind optional und werdezum erzeugen
-#    des Begleitblatts verwendet
-#     bankstrasse:Kieselweg 3
-#      bankplz:0815
-#      bankort:Felsblock
-
-def dudes_account_opts
+def sender_opts
   {
     :account_number => '1326049634',
     :bank_number => '37050299',
@@ -52,23 +34,22 @@ def dudes_account_opts
   }
 end
 
-def dalai_lamas_account
-  opts = {
-            :account_number => 'GR1601101250000000012300695',
-            :bank_number => 'MARKF1100',
-            :bank_name => 'Dalai Lamas Bank',
-            :account_street => "5th avenue",
-            :account_city => "los angeles",
-            :bank_zip_code => "55323",
-            :client_number => "",
-            :client_name =>'Dalai Lama',
-            :client_street => "Bush-Avenue 55",
-            :client_city => "India",
-            :client_zip_code => "445555",
-            :bank_country_code => "DE",
-            :client_country_code => "DE"
-          }
-  TestKonto.new(opts)
+def receiver_opts
+  {
+    :account_number => 'GR1601101250000000012300695',
+    :bank_number => 'MARKF1100',
+    :bank_name => 'Dalai Lamas Bank',
+    :bank_street => "5th avenue",
+    :bank_city => "los angeles",
+    :bank_zip_code => "55323",
+    :client_number => "",
+    :client_name =>'Dalai Lama',
+    :client_street => "Bush-Avenue 55",
+    :client_city => "India",
+    :client_zip_code => "445555",
+    :bank_country_code => "DE",
+    :client_country_code => "DE"
+  }
 end
 
 def test_kto1
