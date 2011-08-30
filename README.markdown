@@ -1,5 +1,7 @@
 # DTAUS & DTAZV always comes together
 
+[![Build Status](https://secure.travis-ci.org/salesking/king_dtaus.png)](http://travis-ci.org/salesking/king_dtaus)
+
 DTAUS & DTAZV are formats for German bank transfers and is short for
 "Datenträgeraustausch". The format itself totally sucks because it was
 established in the last century, to be used on floppy disks. Still almost
@@ -12,15 +14,14 @@ We love building payment applications
 
 ## Install
 
-  gem install king_dtaus
+    gem install king_dtaus
 
 ## Features
 
-* create DTAUS debit advice (Lastschrift)
-* create DTAUS credit advice (Gutschrift)
-* create DTAZV debit advice
-* High Test coverage to ensure our Software Quality: [![Build Status](https://secure.travis-ci.org/salesking/king_dtaus.png)](http://travis-ci.org/salesking/king_dtaus)
-
+* Create DTAUS debit advice (Lastschrift)
+* Create DTAUS credit advice (Gutschrift)
+* Create DTAZV debit advice
+* High test coverage to ensure software quality
 
 ## TODOs
 
@@ -39,75 +40,75 @@ We love building payment applications
 
 ## Examples
 
-Here are some examples how to create a DTA- or DTAZV-File. Also check out the spec/dtazv_test.rb to have a running Example of an Export.
+Here are some examples how to create a DTA- or DTAZV-File. Also check out the spec/dtazv_test.rb to have a running example of an export.
 
-##= DTA
+### DTA
 
-  # create a new dtaus object
-  dta = KingDta::Dtaus.new('LK')
+    # create a new dtaus object
+    dta = KingDta::Dtaus.new('LK')
   
-  # set sender account
-  dta.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
+    # set sender account
+    dta.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
   
-  # the following should be done in a loop to add multiple bookings
-  # create receiving account
-  rec_acnt = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
+    # the following should be done in a loop to add multiple bookings
+    # create receiving account
+    rec_acnt = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
   
-  # create booking
-  booking = KingDta::Booking.new(rec_acnt, 100.00 )
+    # create booking
+    booking = KingDta::Booking.new(rec_acnt, 100.00 )
   
-  # set booking text if you want to
-  booking.text = "Thanks for your purchase"
+    # set booking text if you want to
+    booking.text = "Thanks for your purchase"
  
-  # add booking
-  dta.add( booking )
-  # end loop
+    # add booking
+    dta.add( booking )
+    # end loop
 
-  # create datausstring and do with it whatever fits your workflow
-  my_str = dta.create
+    # create datausstring and do with it whatever fits your workflow
+    my_str = dta.create
 
 ### DTAZV
 
-  @date = Date.today
-  @dudes_dtazv_export = KingDta::Dtazv.new(@date)
-  @dudes_konto = self.dudes_konto
-  @dalai_lamas_account = self.dalai_lamas_account
-  @dudes_dtazv_export.account = KingDta::Account.new(
-    :account_number =>      @dudes_konto.account_number,
-    :bank_number =>         @dudes_konto.bank_number,
-    :client_name =>         @dudes_konto.client_name,
-    :client_number =>       @dudes_konto.client_number,
-    :bank_street =>         @dudes_konto.account_street,
-    :bank_city =>           @dudes_konto.account_city,
-    :bank_zip_code =>       @dudes_konto.account_zip_code,
-    :bank_name =>           @dudes_konto.bank_name,
-    :client_street =>       @dudes_konto.client_street,
-    :client_city =>         @dudes_konto.client_city,
-    :client_zip_code =>     @dudes_konto.client_zip_code,
-    :bank_country_code =>   @dudes_konto.bank_country_code,
-    :client_country_code => @dudes_konto.client_country_code
-  )
+    @date = Date.today
+    @dudes_dtazv_export = KingDta::Dtazv.new(@date)
+    @dudes_konto = self.dudes_konto
+    @dalai_lamas_account = self.dalai_lamas_account
+    @dudes_dtazv_export.account = KingDta::Account.new(
+      :account_number =>      @dudes_konto.account_number,
+      :bank_number =>         @dudes_konto.bank_number,
+      :client_name =>         @dudes_konto.client_name,
+      :client_number =>       @dudes_konto.client_number,
+      :bank_street =>         @dudes_konto.account_street,
+      :bank_city =>           @dudes_konto.account_city,
+      :bank_zip_code =>       @dudes_konto.account_zip_code,
+      :bank_name =>           @dudes_konto.bank_name,
+      :client_street =>       @dudes_konto.client_street,
+      :client_city =>         @dudes_konto.client_city,
+      :client_zip_code =>     @dudes_konto.client_zip_code,
+      :bank_country_code =>   @dudes_konto.bank_country_code,
+      :client_country_code => @dudes_konto.client_country_code
+    )
 
-  @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
-    :account_number =>      @dalai_lamas_account.account_number,
-    :bank_number =>         @dalai_lamas_account.bank_number,
-    :client_name =>         @dalai_lamas_account.client_name,
-    :client_number =>       @dalai_lamas_account.bank_name,
-    :bank_street =>         @dalai_lamas_account.account_street,
-    :bank_city =>           @dalai_lamas_account.account_city,
-    :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
-    :bank_name =>           @dalai_lamas_account.bank_name,
-    :client_street =>       @dalai_lamas_account.client_street,
-    :client_city =>         @dalai_lamas_account.client_city,
-    :client_zip_code =>     @dalai_lamas_account.client_zip_code,
-    :bank_country_code =>   @dalai_lamas_account.bank_country_code,
-    :client_country_code => @dalai_lamas_account.client_country_code
-  ), 220.25)
+    @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
+      :account_number =>      @dalai_lamas_account.account_number,
+      :bank_number =>         @dalai_lamas_account.bank_number,
+      :client_name =>         @dalai_lamas_account.client_name,
+      :client_number =>       @dalai_lamas_account.bank_name,
+      :bank_street =>         @dalai_lamas_account.account_street,
+      :bank_city =>           @dalai_lamas_account.account_city,
+      :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
+      :bank_name =>           @dalai_lamas_account.bank_name,
+      :client_street =>       @dalai_lamas_account.client_street,
+      :client_city =>         @dalai_lamas_account.client_city,
+      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+      :bank_country_code =>   @dalai_lamas_account.bank_country_code,
+      :client_country_code => @dalai_lamas_account.client_country_code
+    ), 220.25)
 
-  @dudes_dtazv_export.add(@dalai_lamas_booking)
-  @dudes_dtazv_export.create_file
+    @dudes_dtazv_export.add(@dalai_lamas_booking)
+    @dudes_dtazv_export.create_file
 
-  # Output is DTAZV0.TXT
+    # Output is DTAZV0.TXT
 
 also make sure to read the specs
 
@@ -121,7 +122,7 @@ Bugfixes and enhancements by
 * Jan Kus - https://github.com/koos
 
 This gem used https://rubygems.org/gems/DTAUS as a starting point.
-It was disected, turned into a real class structure, bugs where fixed and
+It was disected, turned into a real class structure, bugs were fixed and
 of course a full test suite ensures its functionality.
 
 Copyright (c) 2009-2011 Georg Leciejewski (SalesKing), Jan Kus (Railslove), released under the MIT license
