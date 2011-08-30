@@ -6,7 +6,7 @@ require 'spec_helper'
 describe KingDta::Dtazv do
 
   before :each do
-    @dtazv = KingDta::Dtazv.new(Date.today)
+    @dtazv = KingDta::Dtazv.new(Date.parse('2011-08-28'))
     @dudes_konto = dudes_konto
     @dalai_lamas_account = dalai_lamas_account
 
