@@ -36,11 +36,11 @@ end
 
 def receiver_opts
   {
-    :bank_account_number => 'GR1601101250000000012300695',
-    :bank_number => 'MARKF1100',
+    :bank_iban => 'PL10105013151000002308622378',
+    :bank_bic => 'COBADEFF366',
     :bank_name => 'Dalai Lamas Bank',
     :bank_street => "5th avenue",
-    :bank_city => "los angeles",
+    :bank_city => "Pulheim",
     :bank_zip_code => "55323",
     :owner_number => "",
     :owner_name =>'Dalai Lama',

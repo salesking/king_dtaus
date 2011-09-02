@@ -12,7 +12,7 @@ class Dtazv
 
   def dudes_konto
     opts = {
-              :account_number => '1326049634',
+              :bank_account_number => '1326049634',
               :bank_number => '37050299',
               :bank_name => 'Kreissparkasse Köln',
               :zweck => 'Monatsbeitrag',
@@ -32,7 +32,7 @@ class Dtazv
 
   def dalai_lamas_account
     opts = {
-              :account_number => 'GR1601101250000000012300695',
+              :bank_account_number => 'GR1601101250000000012300695',
               :bank_number => 'MARKF1100',
               :bank_name => 'Dalai Lamas Bank',
               :zweck => 'Lama Fee',
@@ -61,7 +61,7 @@ class Dtazv
     @dalai_lamas_account = dalai_lamas_account
 
     @dtazv.account = KingDta::Account.new(
-      :account_number =>      @dudes_konto.account_number,
+      :bank_account_number =>      @dudes_konto.bank_account_number,
       :bank_number =>         @dudes_konto.bank_number,
       :owner_name =>         @dudes_konto.owner_name,
       :owner_number =>       @dudes_konto.owner_number,
@@ -77,7 +77,7 @@ class Dtazv
     )
 
     @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
-      :account_number =>      @dalai_lamas_account.account_number,
+      :bank_account_number =>      @dalai_lamas_account.bank_account_number,
       :bank_number =>         @dalai_lamas_account.bank_number,
       :owner_name =>         @dalai_lamas_account.owner_name,
       :owner_number =>       @dalai_lamas_account.owner_number,
