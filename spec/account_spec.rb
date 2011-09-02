@@ -8,7 +8,7 @@ describe KingDta::Account do
   end
 
   it "should initialize a new account" do
-    lambda{ KingDta::Account.new(:account_number => @ba.account_number, :bank_number => @ba.bank_number, :client_name => @ba.client_name) }.should_not raise_error
+    lambda{ KingDta::Account.new(:bank_account_number => @ba.bank_account_number, :bank_number => @ba.bank_number, :owner_name => @ba.owner_name) }.should_not raise_error
   end
 
   it "should initialize a new dtazv account" do
@@ -18,17 +18,17 @@ describe KingDta::Account do
   end
 
   it "should fail if bank account number is invalid" do
-    # lambda{ KingDta::Account.new(0, @ba.bank_number, @ba.client_name) }.should raise_error(ArgumentError)
-    lambda{ KingDta::Account.new(:account_number => 123456789011123456789011123456789011123456789011123456789011123456789011, :bank_number => @ba.bank_number, :client_name => @ba.client_name) }.should raise_error(ArgumentError, 'Account number too long, max 35 allowed')
+    # lambda{ KingDta::Account.new(0, @ba.bank_number, @ba.owner_name) }.should raise_error(ArgumentError)
+    lambda{ KingDta::Account.new(:bank_account_number => 123456789011123456789011123456789011123456789011123456789011123456789011, :bank_number => @ba.bank_number, :owner_name => @ba.owner_name) }.should raise_error(ArgumentError, 'Account number too long, max 35 allowed')
   end
 
   it "should fail if bank number is invalid" do
-    lambda{ KingDta::Account.new(:account_number => @ba.account_number, :bank_number => 0, :client_name => @ba.client_name) }.should raise_error(ArgumentError)
-    lambda{ KingDta::Account.new(:account_number => @ba.account_number, :bank_number => 123456789101112, :client_name => @ba.client_name) }.should raise_error(ArgumentError, 'Bank number too long, max 11 allowed')
+    lambda{ KingDta::Account.new(:bank_account_number => @ba.bank_account_number, :bank_number => 0, :owner_name => @ba.owner_name) }.should raise_error(ArgumentError)
+    lambda{ KingDta::Account.new(:bank_account_number => @ba.bank_account_number, :bank_number => 123456789101112, :owner_name => @ba.owner_name) }.should raise_error(ArgumentError, 'Bank number too long, max 11 allowed')
   end
 
   it "should fail if clent number is too long" do
-    lambda{ KingDta::Account.new(:account_number => @ba.account_number, :bank_number => @ba.bank_number, :client_name => @ba.client_name, :client_number => 12345678901) }.should raise_error(ArgumentError, 'Client number too long, max 10 allowed')
+    lambda{ KingDta::Account.new(:bank_account_number => @ba.bank_account_number, :bank_number => @ba.bank_number, :owner_name => @ba.owner_name, :owner_number => 12345678901) }.should raise_error(ArgumentError, 'Client number too long, max 10 allowed')
   end
 
   it "should fail if street and/or Zip Code is too long" do    
@@ -53,14 +53,14 @@ describe KingDta::Account do
   end
 
   it "should fail if client street is too long" do
-    opts = sender_opts.merge( :client_street => "Lorem ipsum dolor sit amet, consecte")
+    opts = sender_opts.merge( :owner_street => "Lorem ipsum dolor sit amet, consecte")
     lambda{
       KingDta::Account.new opts
     }.should raise_error(ArgumentError, 'Client Street too long, max 35 allowed')
   end
 
   it "should fail if city is too long" do
-    opts = sender_opts.merge( :client_city => "Lorem ipsum dolor sit amet, consecte")
+    opts = sender_opts.merge( :owner_city => "Lorem ipsum dolor sit amet, consecte")
     lambda{
       KingDta::Account.new opts
     }.should raise_error(ArgumentError, 'Client City too long, max 35 allowed')
@@ -73,6 +73,6 @@ describe KingDta::Account do
 
   it "should return sender street and zip" do
     konto = KingDta::Account.new( sender_opts )
-    konto.client_zip_city.should == "51063 MEINE KOELN"
+    konto.owner_zip_city.should == "51063 MEINE KOELN"
   end
 end

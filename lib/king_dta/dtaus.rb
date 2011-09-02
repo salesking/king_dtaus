@@ -41,7 +41,7 @@ module KingDta
     def set_checksums
       @sum_bank_account_numbers, @sum_bank_numbers, @sum_values  = 0,0,0
       bookings.each do |b|
-        @sum_bank_account_numbers  += b.account.account_number.to_i
+        @sum_bank_account_numbers  += b.account.bank_account_number.to_i
         @sum_bank_numbers += b.account.bank_number.to_i
         @sum_values += b.value
       end
@@ -77,10 +77,10 @@ module KingDta
       data += @typ        #Lastschriften Kunde
       data += '%8i' % @account.bank_number #.rjust(8)  #bank_number
       data += '%08i' % 0                 #belegt, wenn Bank
-      data += '%-27.27s' % @account.client_name
+      data += '%-27.27s' % @account.owner_name
       data += @date.strftime("%d%m%y")  #aktuelles Datum im Format DDMMJJ
       data += ' ' * 4  #bankinternes Feld
-      data += '%010i' % @account.account_number.to_i
+      data += '%010i' % @account.bank_account_number.to_i
       data += '%010i' % 0 #Referenznummer
       data += ' '  * 15  #Reserve
       data += '%8s' % @date.strftime("%d%m%Y")     #Ausführungsdatum (ja hier 8 Stellen, Erzeugungsdat. hat 6 Stellen)
@@ -159,25 +159,25 @@ module KingDta
       data1 = 'C'
       data1 +=  '%08i' % 0  #freigestellt
       data1 +=  '%08i' % booking.account.bank_number
-      data1 +=  '%010i' % booking.account.account_number.to_i
+      data1 +=  '%010i' % booking.account.bank_account_number.to_i
       # RUBY 1.9 workaround => || 0
       # Ruby 1.9 '0%011i0' % nil => Exception
       # Ruby 1.8 '0%011i0' % nil => "00000000000"
-      data1 +=  '0%011i0' % (booking.account.client_number || 0)   #interne Kundennummer
+      data1 +=  '0%011i0' % (booking.account.owner_number || 0)   #interne Kundennummer
       data1 +=  zahlungsart
       data1 +=  ' ' #bankintern
       data1 +=  '0' * 11   #Reserve
       data1 +=  '%08i' % @account.bank_number
-      data1 +=  '%010i' % @account.account_number.to_i
+      data1 +=  '%010i' % @account.bank_account_number.to_i
       data1 +=  '%011i' % booking.value #Betrag in Euro einschl. Nachkomma
       data1 +=  ' ' * 3
-      data1 +=  '%-27.27s' % booking.account.client_name #Name Begünstigter/Zahlungspflichtiger
-      exts << ['01', booking.account.client_name[27..999] ] if booking.account.client_name.size > 27
+      data1 +=  '%-27.27s' % booking.account.owner_name #Name Begünstigter/Zahlungspflichtiger
+      exts << ['01', booking.account.owner_name[27..999] ] if booking.account.owner_name.size > 27
       data1 +=  ' ' * 8
       #Einfügen erst möglich, wenn Satzlänge bekannt
 
       # 2. Satzabschnitt
-      data2 = "%27.27s" % @account.client_name
+      data2 = "%27.27s" % @account.owner_name
       booking_txt = booking.text || default_text
       #Erste 27 Zeichen
       #Wenn text < 26 Zeichen, dann mit spaces auffüllen.
@@ -188,13 +188,13 @@ module KingDta
         exts << ['02', booking_txt.ljust(27) ]
         booking_txt = booking_txt[27..999]
       end
-      exts << ['03', @account.client_name[27..999] ] if @account.client_name.size > 27
+      exts << ['03', @account.owner_name[27..999] ] if @account.owner_name.size > 27
 
       data2 +=  '1'     #Währungskennzeichen
       data2 +=  ' ' * 2
       # Gesamte Satzlänge ermitteln ( data1(+4) + data2 + Erweiterungen )
       data1 = "%04i#{data1}" % ( data1.size + 4 + data2.size+ 2 + exts.size * 29 )
-      raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.client_name}" unless data1.size == 128
+      raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.owner_name}" unless data1.size == 128
       dta_string << data1
       #Anzahl Erweiterungen anfügen
       data2 +=  '%02i' % exts.size  #Anzahl Erweiterungsteile
@@ -205,7 +205,7 @@ module KingDta
       exts[0..1].each{|e| data2 +=  "%2.2s%-27.27s" % format_ext(e[0], e[1]) }
       data2 +=  ' ' * 11
       # add the final piece of the second C section
-      raise "DTAUS: Längenfehler C/2 #{data2.size} nicht 128, #{booking.account.client_name}" unless data2.size == 128
+      raise "DTAUS: Längenfehler C/2 #{data2.size} nicht 128, #{booking.account.owner_name}" unless data2.size == 128
       dta_string << data2
       #Erstellen der Texterweiterungen à vier Stück
       add_ext( exts[2..5] )

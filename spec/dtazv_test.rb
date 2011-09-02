@@ -19,13 +19,13 @@ class Dtazv
               :account_street => "Bank Eine Straße 2",
               :account_city => "Bank Köln",
               :account_zip_code => "51063",
-              :client_number => "",
-              :client_name =>'Jan Kus',
-              :client_street => "Meine Eine Straße 2",
-              :client_city => "Meine Köln",
-              :client_zip_code => "51063",
+              :owner_number => "",
+              :owner_name =>'Jan Kus',
+              :owner_street => "Meine Eine Straße 2",
+              :owner_city => "Meine Köln",
+              :owner_zip_code => "51063",
               :bank_country_code => "DE",
-              :client_country_code => "DE"
+              :owner_country_code => "DE"
             }
     TestKonto.new(opts)
   end
@@ -39,14 +39,14 @@ class Dtazv
               :account_street => "5th avenue",
               :account_city => "los angeles",
               :account_zip_code => "55323",
-              :client_number => "",
-              :client_name =>'Dalai Lama',
-              :client_street => "Bush-Avenue 55",
-              :client_city => "India",
-              :client_zip_code => "066600",
-              :client_zip_code => "445555",
+              :owner_number => "",
+              :owner_name =>'Dalai Lama',
+              :owner_street => "Bush-Avenue 55",
+              :owner_city => "India",
+              :owner_zip_code => "066600",
+              :owner_zip_code => "445555",
               :bank_country_code => "DE",
-              :client_country_code => "DE"
+              :owner_country_code => "DE"
             }
     TestKonto.new(opts)
   end
@@ -63,33 +63,33 @@ class Dtazv
     @dtazv.account = KingDta::Account.new(
       :account_number =>      @dudes_konto.account_number,
       :bank_number =>         @dudes_konto.bank_number,
-      :client_name =>         @dudes_konto.client_name,
-      :client_number =>       @dudes_konto.client_number,
+      :owner_name =>         @dudes_konto.owner_name,
+      :owner_number =>       @dudes_konto.owner_number,
       :bank_street =>         @dudes_konto.account_street,
       :bank_city =>           @dudes_konto.account_city,
       :bank_zip_code =>       @dudes_konto.account_zip_code,
       :bank_name =>           @dudes_konto.bank_name,
-      :client_street =>       @dudes_konto.client_street,
-      :client_city =>         @dudes_konto.client_city,
-      :client_zip_code =>     @dudes_konto.client_zip_code,
+      :owner_street =>       @dudes_konto.owner_street,
+      :owner_city =>         @dudes_konto.owner_city,
+      :owner_zip_code =>     @dudes_konto.owner_zip_code,
       :bank_country_code =>   @dudes_konto.bank_country_code,
-      :client_country_code => @dudes_konto.client_country_code
+      :owner_country_code => @dudes_konto.owner_country_code
     )
 
     @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
       :account_number =>      @dalai_lamas_account.account_number,
       :bank_number =>         @dalai_lamas_account.bank_number,
-      :client_name =>         @dalai_lamas_account.client_name,
-      :client_number =>       @dalai_lamas_account.client_number,
+      :owner_name =>         @dalai_lamas_account.owner_name,
+      :owner_number =>       @dalai_lamas_account.owner_number,
       :bank_street =>         @dalai_lamas_account.account_street,
       :bank_city =>           @dalai_lamas_account.account_city,
       :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
       :bank_name =>           @dalai_lamas_account.bank_name,
-      :client_street =>       @dalai_lamas_account.client_street,
-      :client_city =>         @dalai_lamas_account.client_city,
-      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
+      :owner_street =>       @dalai_lamas_account.owner_street,
+      :owner_city =>         @dalai_lamas_account.owner_city,
+      :owner_zip_code =>     @dalai_lamas_account.owner_zip_code,
       :bank_country_code =>   @dalai_lamas_account.bank_country_code,
-      :client_country_code => @dalai_lamas_account.client_country_code
+      :owner_country_code => @dalai_lamas_account.owner_country_code
     ), 220.25)
 
     @dtazv.add(@dalai_lamas_booking)
