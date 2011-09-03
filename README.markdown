@@ -34,6 +34,7 @@ We are working on version 2 of the gem with some breaking changes!
 * DTAZV added
 
 Go for it:
+
     gem install king_dtaus --pre
     # or add a pre version to your Gemfile
     gem 'king_dtaus', '2.0.3.pre'
