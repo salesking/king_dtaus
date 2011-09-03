@@ -2,17 +2,6 @@
 module KingDta
   class Dtazv < Dta
 
-    # Create a new dtazv file/string.
-    # ===Parameter
-    # typ<Date>:: date when the the transfer is to be created
-    def initialize(date=Date.today)
-      raise ArgumentError.new("Wrong date format. Make it a Time or Date object with yyyy-mm-dd") unless date.respond_to?(:strftime)
-      @date = date
-      @value_pos  = true  #all values are positive by default. Variable changes with first booking entry
-      @closed     = false
-      @default_text = 'Want some? Come, get some!' # default verwendungzweck
-    end
-
     # Creates the whole dta string(in the right order) and returns it
     # === Raises
     # error if there are no bookings
@@ -209,44 +198,44 @@ module KingDta
     # 27  2                 767               num             Erweiterungskennzeichen           00 = es folgt kein Meldeteil                        P               N                 -                                         P               -
     #
     def add_t(booking)
-      data2  = '0768'                                                # PFLICHT, 1 Länge des Datensatzes
-      data2 += 'T'                                                   # PFLICHT, 2 Satzart
-      data2 += '%08i' % @account.bank_number                         # PFLICHT, 3 BLZ des Einreichinstituts
-      data2 += 'EUR'                                                 # PFLICHT, 4a ISO-Währungscode
-      data2 += '%010i'  % @account.bank_account_number                    # PFLICHT, 4b Kontonummer
-      data2 += @date.strftime("%y%m%d")                              # KANN, 5 Ausführungstermin Einzelzahlung, wenn abweichend von Feld Q8
-      data2 += '%08i'  % 0                                           # KANN/PFLICHT 6 BLZ
-      data2 += '%03s' % ''                                           # KANN/PFLICHT 7a ISO-Währungscode
-      data2 += '%010i' % 0                                           # KANN/PFLICHT 7b BLZ
-      data2 += '%-011s' % booking.account.bank_bic                 # KANN/PFLICHT 8 11 Bank Identifier Code (BIC) des Zahlungsdienstleisters des Zahlungsempfängers (AUCH BLZ denke ich)
-      data2 += '%-03s'  % '' #booking.account.bank_country_code           # KANN/PFLICHT 9a 3 Ländercode für den Zahlungsdienstleister des Zahlungsempfängers
-      data2 += '%070s' % ''  #booking.account.bank_name                   # KANN/PFLICHT 9b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
-      data2 += '%035.35s' % ''  #booking.account.street                      # KANN/PFLICHT 9b Name Zeile 3	: Straße Zeile
-      data2 += '%035.35s' % ''  #booking.account.zip_city                    # KANN/PFLICHT 9b 4	: Ort
-      data2 += '%-03s' % booking.account.owner_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers bzw. Scheckempfängers
-      data2 += '%-035.35s' % booking.account.owner_name[0..34]      # KANN/PFLICHT 10b 4x35 Anschrift des Zahlungsdienstleisters des Zahlungsempfängers - Pflichtfeld wenn T8 nich belegt Zeile 1 und 2:
+      data2  = '0768'
+      data2 += 'T'
+      data2 += '%08i' % @account.bank_number
+      data2 += 'EUR'
+      data2 += '%010i'  % @account.bank_account_number
+      data2 += @date.strftime("%y%m%d")                             # KANN, 5 Ausführungstermin Einzelzahlung, wenn abweichend von Q8
+      data2 += '%08i'  % 0                                          # KANN/PFLICHT 6 BLZ
+      data2 += '%03s' % ''                                          # KANN/PFLICHT 7a ISO-Währungscode
+      data2 += '%010i' % 0                                          # KANN/PFLICHT 7b BLZ
+      data2 += '%-011s' % booking.account.bank_bic                   
+      data2 += '%-03s'  % booking.account.bank_country_code         # Pflichtfelder wenn T8 leer
+      data2 += '%070s' % booking.account.bank_name                   
+      data2 += '%035.35s' % booking.account.bank_street
+      data2 += '%035.35s' % booking.account.bank_zip_city
+      data2 += '%-03s' % booking.account.owner_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers
+      data2 += '%-035.35s' % booking.account.owner_name[0..34]      # Zahlungsempfänger
       data2 += '%-035.35s' % booking.account.owner_name[35..69]
       data2 += '%-035.35s' % booking.account.owner_street
       data2 += '%-035.35s' % booking.account.owner_zip_city
-      data2 += '%070s' % ''                                          # KANN/PFLICHT 11 Ordervermerk
-      data2 += '/%-034s' % booking.account.bank_iban              # PFLICHT 12 35 IBAN bzw. Kontonummer des
-      data2 += 'EUR'                                                 # KANN/PFLICHT 13 3 Auftragswährung "EUR"
-      data2 += '%014i' % booking.value.divmod(100)[0]                # PFLICHT 14a 14 Betrag (Vorkommastellen) Rechtsbündig
-      data2 += '%02i0' % booking.value.divmod(100)[1]                # PFLICHT 14b 3 Betrag (Nachkommastellen) Linksbündig
-      data2 += '%0140s' % booking.text || default_text                          # KANN 15 4x35 Verwendungszweck
+      data2 += '%070s' % ''                                         # KANN/PFLICHT 11 Ordervermerk
+      data2 += '/%-034s' % booking.account.bank_iban                # PFLICHT 12 35 IBAN bzw. Kontonummer des
+      data2 += 'EUR'                                                # KANN/PFLICHT 13 3 Auftragswährung "EUR"
+      data2 += '%014i' % booking.value.divmod(100)[0]               # PFLICHT 14a 14 Betrag (Vorkommastellen) Rechtsbündig
+      data2 += '%02i0' % booking.value.divmod(100)[1]               # PFLICHT 14b 3 Betrag (Nachkommastellen) Linksbündig
+      data2 += '%-0140s' % (booking.text || default_text)
       data2 += "%02i" % 0                                           # N 16 Weisungsschlüssel 1 (gem. Anhang 2)
       data2 += "%02i" % 0                                           # N 17 Weisungsschlüssel 2 (gem. Anhang 2)
       data2 += "%02i" % 0                                           # N 18 Weisungsschlüssel 3 (gem. Anhang 2)
       data2 += "%02i" % 0                                           # N 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
       data2 += '%025s' % ''                                         # N 20 Zusatzinformationen zum Weisungsschlüssel
-      data2 += "%02i" % 0                                            # PFLICHT 21 Entgeltregelung
-      data2 += "%02i" % 13                                            # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
-      data2 += '%027s' % ''                                          # KANN 23 Variabler Text nur für Auftraggeberabrechnung
+      data2 += "%02i" % 0                                           # PFLICHT 21 Entgeltregelung
+      data2 += "%02i" % 13                                          # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
+      data2 += '%027s' % ''                                         # KANN 23 Variabler Text nur für Auftraggeberabrechnung
       # i dont know what to do.
-      data2 += '%035s' % ''                                          # KANN/PFLICHT 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
-      data2 += '%01i' % 0                                            # KANN/NICHT 25 Meldeschlüssel
-      data2 += '%051s' % ''                                           # N 26 Reserve
-      data2 += '%02i' % 0                                            # PFLICHT/NICHT 27 2 Erweiterungskennzeichen           00 = es folgt kein Meldeteil
+      data2 += '%035s' % ''                                         # KANN/PFLICHT 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
+      data2 += '%01i' % 0                                           # KANN/NICHT 25 Meldeschlüssel
+      data2 += '%051s' % ''
+      data2 += '%02i' % 0                                            # Erweiterungskennzeichen  00 = es folgt kein Meldeteil
       raise "DTAUS: Längenfehler T (#{data2.size} <> 768)\n" if data2.size != 768
       dta_string << data2
     end
@@ -272,15 +261,15 @@ module KingDta
     # 8     6               72                P       num         Anzahl der Datensätze   Anzahl Datensätze T
     # 9     179             78                P       alpha       Leerzeichen             Reserve
     def add_y(bookings)
-      data3  = '0256'                        # 1 Länge des Datensatzes
-      data3 += 'Y'                           # 2 Satzart
-      data3 += '%015i'   % 0                 # 3 Betragssumme
-      data3 += '%015i'   % 0                 # 4 Betragssumme
-      data3 += '%015i'   % 0                 # 5 Betragssumme
-      data3 += '%015i'   % 0                 # 6 Betragssumme
+      data3  = '0256'
+      data3 += 'Y'
+      data3 += '%015i'   % 0
+      data3 += '%015i'   % 0
+      data3 += '%015i'   % 0
+      data3 += '%015i'   % 0
       data3 += '%06i'    % 0                 # 7 Anzahl der Datensätze
       data3 += '%06i'    % bookings.count    # 8 Anzahl der Datensätze
-      data3 += '%0179s'  % ''                 # 9 Leerzeichen Reserve
+      data3 += '%0179s'  % ''
       raise "DTAUS: Längenfehler T (#{data3.size} <> 256)\n" if data3.size != 256
       dta_string << data3
     end

@@ -38,17 +38,18 @@ def receiver_opts
   {
     :bank_iban => 'PL10105013151000002308622378',
     :bank_bic => 'COBADEFF366',
-    :bank_name => 'Dalai Lamas Bank',
-    :bank_street => "5th avenue",
-    :bank_city => "Pulheim",
-    :bank_zip_code => "55323",
-    :owner_number => "",
     :owner_name =>'Dalai Lama',
     :owner_street => "Bush-Avenue 55",
     :owner_city => "India",
     :owner_zip_code => "445555",
-    :bank_country_code => "DE",
     :owner_country_code => "DE"
+#    only needed if no bic present
+#    :bank_name => 'Dalai Lamas Bank',
+#    :bank_street => "5th avenue",
+#    :bank_city => "Pulheim",
+#    :bank_zip_code => "55323",
+#    :owner_number => "",
+#    :bank_country_code => "DE",
   }
 end
 

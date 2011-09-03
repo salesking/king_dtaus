@@ -9,7 +9,6 @@ describe KingDta::Dtazv do
     @dtazv = KingDta::Dtazv.new(Date.parse('2011-08-28'))
     @dtazv.account = KingDta::Account.new sender_opts
     @booking = KingDta::Booking.new( KingDta::Account.new( receiver_opts ), 220.25)
-
   end
 
   it "should init without values" do
@@ -74,7 +73,7 @@ describe KingDta::Dtazv do
     str = @dtazv.create
     str.length.should == 1280
     str.should include(receiver_opts[:owner_name].upcase)
-    out = "0256Q370502991326049634JAN KUS                                                               MEINE EINE STRASSE 2               51063 MEINE KOELN                  11082801110828N0000000000                                                                    0768T37050299EUR132604963411082800000000   0000000000COBADEFF366                                                                                                                                               DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /PL10105013151000002308622378      EUR00000000000220250                                                   RGN R-3456-0102220 MONATSBEITRAG 08/10 FREELANCER VERSION VIELEN DANK IHRE SALESKING GMBH00000000                         0013                                                              0                                                   000256Z000000000000220000000000000001                                                                                                                                                                                                                             "
+    out = "0256Q370502991326049634JAN KUS                                                               MEINE EINE STRASSE 2               51063 MEINE KOELN                  11082801110828N0000000000                                                                    0768T37050299EUR132604963411082800000000   0000000000COBADEFF366                                                                                                                                               DE DALAI LAMA                                                            BUSH-AVENUE 55                     445555 INDIA                                                                                             /PL10105013151000002308622378      EUR00000000000220250RGN R-3456-0102220 MONATSBEITRAG 08/10 FREELANCER VERSION VIELEN DANK IHRE SALESKING GMBH                                                   00000000                         0013                                                              0                                                   000256Z000000000000220000000000000001                                                                                                                                                                                                                             "
     str.should == out
   end
 

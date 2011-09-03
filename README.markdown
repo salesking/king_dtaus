@@ -10,7 +10,7 @@ therefore supported in common banking programs too.
 
 This gem saves you all the trouble when generating DTAUS- or DTAZV-text.
 
-We love building payment applications
+We love building payment applications.
 
 ## Install
 
@@ -23,6 +23,16 @@ We love building payment applications
 * Create DTAZV debit advice
 * High test coverage to ensure software quality
 
+## Beta Version Info
+
+We are working on version 2 of the gem with some breaking changes!
+
+* account attributes now passed in as hash
+* renamed of account attributes client_xy => owner_xy
+* renamed account.account_number to bank_account_number
+* added iban/bic to account
+* DTAZV added
+
 ## TODOs
 
 * first gem with no todo's - never seen it, huh? - just kidding
@@ -30,13 +40,13 @@ We love building payment applications
 
 ## Resources
 
+* SalesKing: http://salesking.eu
 * DTAZV-Viewer: http://www.meta-evolutions.de/pages/artikel-20070630-dtazv-datei-betrachter.html
 * DTA/DTAZV PHP Pear: http://pear.php.net/package/Payment_DTA
 * Ruby Kernel Module: http://www.ruby-doc.org/core/classes/Kernel.html
 * Windata ZV-Tools: http://www.windata.de/Site/2Produkte2/ZVTools.aspx
 * The Swift Codes: http://www.theswiftcodes.com/
 * StarMoney: http://www.starmoney.de/index.php?id=starmoneybusiness_testen
-* SalesKing: http://salesking.eu
 
 ## Examples
 
@@ -48,14 +58,21 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
     dta = KingDta::Dtaus.new('LK')
   
     # set sender account
-    dta.account = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
+    dta.account = KingDta::Account.new(
+                    :bank_account_number => "123456789",
+                    :bank_number => "69069096",
+                    :owner_name => "Return to Sender",
+                    :bank_name => "Money Burner Bank")
   
-    # the following should be done in a loop to add multiple bookings
+    # following should be done in a loop to add multiple bookings
     # create receiving account
-    rec_acnt = KingDta::Account.new(:account_number => @kto1.account_number, :bank_number => @kto1.bank_number, :client_name => @kto1.client_name, :bank_name => @kto1.bank_name)
-  
+    receiver = KingDta::Account.new(
+                    :bank_account_number => "987456123",
+                    :bank_number => "99099096",
+                    :owner_name => "Gimme More Lt.",
+                    :bank_name => "Banking Bandits")
     # create booking
-    booking = KingDta::Booking.new(rec_acnt, 100.00 )
+    booking = KingDta::Booking.new(receiver, 100.00 )
   
     # set booking text if you want to
     booking.text = "Thanks for your purchase"
@@ -69,46 +86,29 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
 
 ### DTAZV
 
-    @date = Date.today
-    @dudes_dtazv_export = KingDta::Dtazv.new(@date)
-    @dudes_konto = self.dudes_konto
-    @dalai_lamas_account = self.dalai_lamas_account
-    @dudes_dtazv_export.account = KingDta::Account.new(
-      :account_number =>      @dudes_konto.account_number,
-      :bank_number =>         @dudes_konto.bank_number,
-      :client_name =>         @dudes_konto.client_name,
-      :client_number =>       @dudes_konto.client_number,
-      :bank_street =>         @dudes_konto.account_street,
-      :bank_city =>           @dudes_konto.account_city,
-      :bank_zip_code =>       @dudes_konto.account_zip_code,
-      :bank_name =>           @dudes_konto.bank_name,
-      :client_street =>       @dudes_konto.client_street,
-      :client_city =>         @dudes_konto.client_city,
-      :client_zip_code =>     @dudes_konto.client_zip_code,
-      :bank_country_code =>   @dudes_konto.bank_country_code,
-      :client_country_code => @dudes_konto.client_country_code
+    @dtazv = KingDta::Dtazv.new(Date.today)
+
+    # sender account
+    @dtazv.account = KingDta::Account.new(
+      :bank_account_number => "123456789",
+      :bank_number => "40050100",
+      :bank_name => "Greedy Fuckers Bank",
+      :owner_name => "Sender name"
     )
 
-    @dalai_lamas_booking = KingDta::Booking.new(KingDta::Account.new(
-      :account_number =>      @dalai_lamas_account.account_number,
-      :bank_number =>         @dalai_lamas_account.bank_number,
-      :client_name =>         @dalai_lamas_account.client_name,
-      :client_number =>       @dalai_lamas_account.bank_name,
-      :bank_street =>         @dalai_lamas_account.account_street,
-      :bank_city =>           @dalai_lamas_account.account_city,
-      :bank_zip_code =>       @dalai_lamas_account.account_zip_code,
-      :bank_name =>           @dalai_lamas_account.bank_name,
-      :client_street =>       @dalai_lamas_account.client_street,
-      :client_city =>         @dalai_lamas_account.client_city,
-      :client_zip_code =>     @dalai_lamas_account.client_zip_code,
-      :bank_country_code =>   @dalai_lamas_account.bank_country_code,
-      :client_country_code => @dalai_lamas_account.client_country_code
-    ), 220.25)
+    # receiver account
+    receiver = KingDta::Account.new(
+      :bank_account_number => "987654321",
+      :bank_iban => "PLsome-long-Iban",
+      :bank_bic => "BicCode",
+      :owner_name => "receivers name"
+    )
+    # add bookings, probably in a loop
+    booking = KingDta::Booking.new(receiver, 220.25)
+    @dtazv.add(booking)
 
-    @dudes_dtazv_export.add(@dalai_lamas_booking)
-    @dudes_dtazv_export.create_file
-
-    # Output is DTAZV0.TXT
+    # get output as string
+    @dtazv.create
 
 also make sure to read the specs
 

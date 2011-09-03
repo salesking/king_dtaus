@@ -45,7 +45,7 @@ module KingDta
 
     end
 
-    def zip_city
+    def bank_zip_city
       "#{@bank_zip_code} #{@bank_city}"
     end
 

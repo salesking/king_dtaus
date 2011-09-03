@@ -4,6 +4,16 @@ module KingDta
     include KingDta::Helper
     attr_reader :default_text
 
+    # Create a new dta string.
+    # === Parameter    # 
+    # typ<Date>:: date when the the transfer is to be created
+    def initialize(date=Date.today )
+      raise ArgumentError.new("Wrong date format. Make it a Time or Date object with yyyy-mm-dd") unless date.respond_to?(:strftime)
+      @date         = date
+      @value_pos    = true  #values are positive by default changed by first booking
+      @closed       = false
+      @default_text = ''
+    end
     #  Set the sending account(you own)
     # === Parameter
     # account<Account>:: the sending account, must be an instance of class

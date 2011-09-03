@@ -1,10 +1,8 @@
 # encoding: utf-8
-#Erstelle eine DTAUS-Datei.
-#Typ ist 'LK' (Lastschrift Kunde) oder 'GK' (Gutschrift Kunde)
-#
-#Infos zu DTAUS: http://www.infodrom.org/projects/dtaus/dtaus.php3
-
 module KingDta
+  #Create a DTAUS string.
+  #
+  #Infos DTAUS: http://www.infodrom.org/projects/dtaus/dtaus.php3
   class Dtaus < KingDta::Dta
     attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values
 
@@ -13,13 +11,9 @@ module KingDta
     # typ<String>:: valid strings are 'LK' (Lastschrift Kunde) and 'GK' (Gutschrift Kunde)
     # typ<Date>:: date when the the transfer is to be created
     def initialize( typ, date=Date.today )
-      raise ArgumentError.new("Wrong date format. Make it a Time or Date object with yyyy-mm-dd") unless date.respond_to?(:strftime)
       raise ArgumentError.new("Unknown order type: #{typ}. Allowed Values are LK, GK") unless ['LK','GK'].include?(typ)
-      @date = date
-      @typ  = typ
-      @value_pos  = true  #all values are positive by default. Variable changes with first booking entry
-      @closed     = false
-      @default_text = '' # default verwendungzweck
+      @typ = typ
+      super(date)
     end
 
     # Creates the whole dta string(in the right order) and returns it
@@ -152,7 +146,7 @@ module KingDta
                       booking.account_key || Booking::UEBERWEISUNG_GUTSCHRIFT
                     end
       #Extended segments Long name & booking texts
-      exts = []  #('xx', 'inhalt') xx: 01=Name 02=Verwendung 03=Name
+      exts = []
       # 1. Part
       #data1 = '%4i' % ?? #Satzlänge kommt später
       data1 = 'C'

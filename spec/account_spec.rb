@@ -91,7 +91,7 @@ describe KingDta::Account do
 
   it "should return account street and zip" do
     konto = KingDta::Account.new( sender_opts )
-    konto.zip_city.should == "51063 BANK KOELN"
+    konto.bank_zip_city.should == "51063 BANK KOELN"
   end
 
   it "should return sender street and zip" do
