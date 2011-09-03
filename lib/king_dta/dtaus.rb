@@ -1,8 +1,9 @@
 # encoding: utf-8
 module KingDta
   #Create a DTAUS string.
-  #
-  #Infos DTAUS: http://www.infodrom.org/projects/dtaus/dtaus.php3
+  # == infos
+  # https://www.ksk-koeln.de/formatbeschreibung_datentraegeraustausch.pdfx
+  # http://www.infodrom.org/projects/dtaus/dtaus.html
   class Dtaus < KingDta::Dta
     attr_reader :sum_bank_account_numbers, :sum_bank_numbers, :sum_values
 
@@ -150,8 +151,8 @@ module KingDta
       # 1. Part
       #data1 = '%4i' % ?? #Satzlänge kommt später
       data1 = 'C'
-      data1 +=  '%08i' % 0  #freigestellt
-      data1 +=  '%08i' % booking.account.bank_number
+      data1 +=  '%08i' % 0
+      data1 +=  '%-08i' % booking.account.bank_number
       data1 +=  '%010i' % booking.account.bank_account_number.to_i
       data1 +=  '0%011i0' % (booking.account.owner_number || 0)   #interne Kundennummer
       data1 +=  zahlungsart

@@ -209,9 +209,9 @@ module KingDta
       data2 += '%010i' % 0                                          # KANN/PFLICHT 7b BLZ
       data2 += '%-011s' % booking.account.bank_bic                   
       data2 += '%-03s'  % booking.account.bank_country_code         # Pflichtfelder wenn T8 leer
-      data2 += '%070s' % booking.account.bank_name                   
-      data2 += '%035.35s' % booking.account.bank_street
-      data2 += '%035.35s' % booking.account.bank_zip_city
+      data2 += '%-070s' % booking.account.bank_name
+      data2 += '%-035.35s' % booking.account.bank_street
+      data2 += '%-035.35s' % booking.account.bank_zip_city
       data2 += '%-03s' % booking.account.owner_country_code         # PFLICHT 10a Ländercode für Land des Zahlungsempfängers
       data2 += '%-035.35s' % booking.account.owner_name[0..34]      # Zahlungsempfänger
       data2 += '%-035.35s' % booking.account.owner_name[35..69]
