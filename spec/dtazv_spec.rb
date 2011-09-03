@@ -34,9 +34,7 @@ describe KingDta::Dtazv do
     filename = File.join(File.dirname(__FILE__), 'test_output.dta')
     @dtazv.create_file(filename)
     str = ''
-    File.open(filename, 'r').each do |ln|
-      str << ln
-    end
+    File.open(filename, 'r').each { |ln| str << ln }
     str.length.should == 5120
     #remove testfile
     File.delete(filename)

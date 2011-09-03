@@ -33,6 +33,11 @@ We are working on version 2 of the gem with some breaking changes!
 * added iban/bic to account
 * DTAZV added
 
+To try it use:
+  gem install king_dtaus --pre
+  # or add a pre version to your Gemfile
+  gem 'king_dtaus', '2.0.3.pre'
+
 ## TODOs
 
 * first gem with no todo's - never seen it, huh? - just kidding

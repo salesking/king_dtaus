@@ -15,7 +15,7 @@ require 'date'
 RSpec.configure do |config|
 end
 
-
+# a full account, address infos are only needed if BIC or IBAN is unknown
 def sender_opts
   {
     :bank_account_number => '1326049634',
@@ -23,13 +23,13 @@ def sender_opts
     :bank_name => 'Kreissparkasse Köln',
     :bank_street => "Bank Eine Straße 2",
     :bank_city => "Bank Köln",
-    :bank_zip_code => "51063",
+    :bank_zip => "51063",
+    :bank_country_code => "DE",
     :owner_number => "",
     :owner_name =>'Jan Kus',
     :owner_street => "Meine Eine Straße 2",
     :owner_city => "Meine Köln",
     :owner_zip_code => "51063",
-    :bank_country_code => "DE",
     :owner_country_code => "DE"
   }
 end
@@ -47,7 +47,7 @@ def receiver_opts
 #    :bank_name => 'Dalai Lamas Bank',
 #    :bank_street => "5th avenue",
 #    :bank_city => "Pulheim",
-#    :bank_zip_code => "55323",
+#    :bank_zip => "55323",
 #    :owner_number => "",
 #    :bank_country_code => "DE",
   }

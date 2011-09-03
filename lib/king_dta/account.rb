@@ -6,7 +6,7 @@ module KingDta
     include KingDta::Helper
     
     attr_accessor :bank_account_number, :bank_number, :bank_street, :bank_city,
-                  :bank_zip_code, :bank_name, :bank_country_code, :bank_iban,
+                  :bank_zip, :bank_name, :bank_country_code, :bank_iban,
                   :bank_bic,
                   :owner_name, :owner_number, :owner_street, :owner_city,
                   :owner_zip_code, :owner_country_code
@@ -46,7 +46,7 @@ module KingDta
     end
 
     def bank_zip_city
-      "#{@bank_zip_code} #{@bank_city}"
+      "#{@bank_zip} #{@bank_city}"
     end
 
     def owner_zip_city
