@@ -26,104 +26,62 @@ module KingDta
       add_z(bookings)
     end
 
-    #Erstellen P-Segment der DTAZV-Datei
-    # - P Datei-Vorsatz mit 256 Bytes
-    # === Parameter
-    # booking<Object>::Booking object to be written to c-sektion
-    #
-    # === Returns
-    # <String>:: The current dta_string
-    # Aufbau und Erläuterungen der Datei
-    # Datensatz P (Datei-Vorsatz)
 
-    # Der Vorsatz enthält Informationen über ein Institut, das Kundendatensätze Q, T, V und W als Meldung
-    # nach §§ 59 ff. der AWV weiterleitet. Der Vorsatz bezieht sich auf alle unmittelbar folgen­ den
-    # Kundendatensätze, deren Folge mit einem Datei-Nachsatz Y abgeschlossen wird.
-
-    # Legende:
-    # K = Kannfeld
-    # P = Pflichtfeld
-    # K/P = Pflichtfeld in Abhängigkeit von bestimmten Kriterien
-    # N = nicht belegbares Feld
-    # alpha = alphanumerische Daten (linksbündig, nicht belegte Stellen: Leerzeichen)
-    # num = numerische Daten (rechtsbündig, nicht belegte Stellen Nullen)
-
-    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt            Erläuterungen
-    # 1     4               1                 P       binär/num   Satzlänge         Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern 3, numerisch bei Disketten und DFÜ)
-    # 2     1               5                 P       alpha       Satzart           Konstante 'P'
-    # 3     8               6                 K/P     num         Bankleitzahl      BLZ des Einreichinstituts
-    # 4     4x35            14                P       alpha       Einreichinstitut  Zeile 1 u. 2: Name; Zeile 3: Straße Postfach; Zeile 4: Ort
-    # 5     6               154               P       num         Erstellungsdatum  In der Form JJMMTT
-    # 6     2               160               P       num         laufende Nummer   Laufende Tagesnummer
-    # 7     95              162               N       alpha                         Reserve
-    def add_p
-      # data  = '0256'                                    # Länge des Datensatzes, PFLICHT
-      # data += 'P'                                       # Satzart, PFLICHT
-      # data += '%8i'   %  @account.bank_number           # BLZ des Einreichinstituts, KANN
-      # data += '%70s'  %  @account.bank_name             # Einreichinstitut  Zeile 1 u. 2: Name; PFLICHT
-      # data += '%35s'  %  @account.account_street_zip    # Einreichinstitut Straße Postfach; Ort PFLICHT
-      # data += '%35s'  %  @account.city                  # Einreichinstitut  Zeile 4: Ort PFLICHT
-      # data += @date.strftime("%y%m%d")                  # Erstellungsdatum  In der Form JJMMTT, PFLICHT
-      # data += '01'                                      # laufende Nummer Laufende Tagesnummer, PFLICHT
-      # data += '%095s' % ''                               # Reserve
-      # raise "DTAUS: Längenfehler P (#{data.size} <> 256)\n" if data.size != 256
-      # dta_string << data
-    end
-
-    #Erstellen Q-Segment der DTAZV-Datei
+    # Erstellen Q-Segment der DTAZV-Datei
     # - Q Auftraggebersatz mit 256 oder 246 Bytes (= Datei-Vorsatz aus dem Datenaustausch zwischen Kunde und Bank)
+    #
     # === Parameter
     # booking<Object>::Booking object to be written to c-sektion
     #
     # === Returns
     # <String>:: The current dta_string
-
+    #
+    # === Info
     # 5.2	Datensatz Q - lange Variante - (Identifikation des Auftraggebers)
     # Die Bundesbank nimmt Q-Sätze in 2 Varianten entgegen. Die lange Variante ist identisch mit den von
     # den Auftraggebern gelieferten Q-Sätzen. In der kurzen Variante sind nur die Felder enthalten,
     # die von der Bundesbank bei der Bearbeitung der Meldungen benötigt werden (siehe 5.3).
     # Beide Varianten dürfen in einer Datei vorkommen.
-
+    #
     # Datensatz Q - kurze Variante
     # Die Bundesbank nimmt Q-Sätze in 2 Varianten entgegen. Die lange Variante ist identisch mit
     # den von den Auftraggebern gelieferten Q-Sätzen. In der kurzen Variante sind nur die Felder
     # enthalten, die von der Bundesbank bei der Bearbeitung der Meldungen benötigt werden; das in der
     # kurzen Variante nicht enthaltene Feld ist in der folgenden Tabelle durch Schattierung und Kursivschrift
     # kenntlich gemacht. Beide Varianten dürfen in einer Datei vorkommen.
-
     # [ Anmerk.: Bei der Kurzen Variante entfällt die Kundennummer ]
-
-    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                                Erläuterungen
-    # 1     4               1                 P       binär/num   Satzlänge                             Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
-    # 2     1               5                 P       alpha       Satzart                               Konstante "Q"
-    # 3     8               6                 P       num         BLZ                                   Erstbeauftragtes Kreditinstitut
-    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN --------------------------------------------------------------------------------------------------------
-    # 4     10              14                P       num         Kundennummer                          Ordnungsnummer gemäß Vereinbarung mit dem erstbeauftragten Kreditinstitut (ggf. Kontonummer)
-    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
-    # 5     4x35            24                P       alpha       Auftraggeberdaten                     Zeile 1 und 2: Name; Zeile 3: Straße / Postfach; Zeile 4: Ort
-    # 6     6               164               P       num         Erstellungsdatum                      Format: JJMMTT
-    # 7     2               170               P       num         laufende Nummer                       Laufende Tagesnummer
-    # 8     6               172               P       num         (erster) Ausführungstermin Datei      Format: JJMMTT; gleich oder bis zu höchstens 15 Kalendertage nach dem Datum aus Feld Q6
-    # 9     1               178               P       alpha       Weiterleitung an die Meldebehörde     Soll das erstbeauftragte Kreditinstitut Meldedaten zu den nachfolgenden Zahlungen an die Bundesbank weiterleiten ? (siehe Erläuterungen im Anhang 3). 'J'	Ja 'N'	Nein
-    # 10    2               179               K/P     num         Bundeslandschlüssel                   Zwingend belegt, wenn Meldedaten zu den Zahlungen an die Bundesbank weitergeleitet wer­ den sollen. ('J' in Feld Q9)
-    # 11    8               181               K/P     num         Firmennummer / BLZ des Auftraggebers  Siehe Erläuterungen Feld Q10
-    # 12    68              189               N       alpha                                             Reserve
+    #
+    # === Fields
+    # Nr  Start Länge  Inhalt
+    # 1   1     4      Satzlänge numerisch bei Disketten und DFÜ
+    # 2   5     1      Satzart Konstante "Q"
+    # 3   6     8      BLZ  Erstbeauftragtes Kreditinstitut
+    # 4   14    10     Kundennummer Entfällt bei der kurzen Variante
+    # 5   24    4x35   Auftraggeberdaten Zeile 1 und 2: Name;
+    #                    Zeile 3: Straße/Postfach; Zeile 4: Ort
+    # 6   164   6      Erstellungsdatum Format: JJMMTT
+    # 7   170   2      Laufende Tagesnummer bei mehreren Überweisungen/Tag
+    # 8   172   6      Ausführungstermin Datei, Format: JJMMTT; max  Feld Q6 + 15 Tage
+    # 9   178   1      Weiterleitung an die Meldebehörde, 'N'	Nein, 'J'	Ja
+    # 10  179   2      optional Bundeslandschlüssel  Zwingend bei 'J' in Feld Q9
+    # 11  181   8      optional Firmennummer / BLZ des Auftraggebers  Siehe Feld Q10
+    # 12  189   68     Reserve
     def add_q
-      data1  = '0256'                                  # Länge des Datensatzes, PFLICHT
-      data1 += 'Q'                                     # Satzart, PFLICHT
-      data1 += '%08i'   %  @account.bank_number        # BLZ des Einreichinstituts, PFLICHT
-      data1 += '%010i'  %  @account.bank_account_number     # Kundennummer, PFLICHT
-      data1 += '%-035s'  %  @account.owner_name[0..34]     # Sender Name, PFLICHT
-      data1 += '%-035s'  %  @account.owner_name[25..69]
-      data1 += '%-035s'  %  @account.owner_street     # Sender 3: Straße Postfach, PFLICHT
-      data1 += '%-035s'  %  @account.owner_zip_city   # Sender  Zeile 4: Ort, PFLICHT
-      data1 += @date.strftime("%y%m%d")                # Erstellungsdatum  In der Form JJMMTT, PFLICHT
-      data1 += '01'                                    # laufende Nummer   Laufende Tagesnummer, PFLICHT
-      data1 += @date.strftime("%y%m%d")                # (erster) Ausführungstermin Datei, PFLICHT
-      data1 += "N"                                     # Weiterleitung an die Meldebehörde, PFLICHT
-      data1 += "%02i"    % 0                           # Bundeslandschlüssel, KANN, NICHT BELEGT, KEINE MELDUNG
-      data1 += '%08i'    % 0                           # @account.bank_number # Firmennummer / BLZ des Auftraggebers, KANN, NICHT BELEGT, KEINE MELDUNG
-      data1 += '%068s'   % ''                           # Reserve
+      data1  = '0256'
+      data1 += 'Q'
+      data1 += '%08i'   %  @account.bank_number
+      data1 += '%010i'  %  @account.bank_account_number
+      data1 += '%-035s' %  @account.owner_name[0..34]
+      data1 += '%-035s' %  @account.owner_name[25..69]
+      data1 += '%-035s' %  @account.owner_street
+      data1 += '%-035s' %  @account.owner_zip_city
+      data1 += @date.strftime("%y%m%d")                # Erstellungsdatum
+      data1 += '01'
+      data1 += @date.strftime("%y%m%d")                # Ausführungstermin
+      data1 += "N"                                     
+      data1 += "%02i" % 0
+      data1 += '%08i' % 0
+      data1 += '%068s' % ''
       raise "DTAUS: Längenfehler Q (#{data.size} <> 256)\n" if data1.size != 256
       dta_string << data1
     end
@@ -148,57 +106,27 @@ module KingDta
     # die Felder enthalten, die von der Bundesbank bei der Bearbeitung der Meldungen benötigt
     # werden. Die in der kurzen Variante nicht enthaltenen Felder sind in der folgenden Tabelle
     # durch Schattierung und Kursivschrift kenntlich gemacht. Beide Varianten dürfen in einer Datei vorkommen.
-
-    # Feld  Länge in Bytes  1. Stelle im Satz Datenformat       Inhalt                          Erläuterungen allg.                                 Feldart allg.   EU-Std.Ü. Feldart EU-Std.Ü. Besondere Belegungsvorschriften EUE-Ü. Feldart  EUE-Ü. Besondere Belegungsvorschriften
-    # 1     4               1                 binär/num         Satzlänge                       Längenangabe des Satzes nach den Kon­ ventionen     P               P                 -                                         P               -
-      #                                                                                         für variable Satzlänge (binär bei Bändern
-    #                                                                                           numerisch bei Disketten und DFÜ)
-    # 2     1               5                 alpha             Satzart                         Konstante "T"                                       P               P                 -                                         P               -
-    # 3     8               6                 num               BLZ                             BLZ der kontoführenden Stelle des mit dem
-    #                                                                                           Auftragswert zu belastenden Kontos (Feld T4b)       P               P                 -                                         P               -
-    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
-    # 4a    3               14                alpha             ISO-Währungscode                Für mit Auftragswert zu belastendes Konto.          P               P                 Nur "EUR" zulälssig                       P               Nur "EUR" zulässig
-    # 4b    10              17                num               Kontonummer                     Mit Auftragswert zu belastendes Konto               P               P                 -                                         P               -
-    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
-    # 5     6               27                num               Ausführungstermin               Format: JJMMTT; gleich oder nach dem Datum aus      K               K                 -                                         K               -
-    #                                                           Einzelzahlung, wenn             Feld Q8, jedoch bis zu höchstens 15 Kalendertage
-    #                                                           abweichend von Feld Q8          nach dem Datum aus Feld Q6; fehlt der Termin in
-    #                                                                                           T5, so wird das Datum in Q8 als Ausführungstermin
-    #                                                                                           angenommen.
-    # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
-    # 6     8               33                num               BLZ                             BLZ der kontoführenden Stelle des mit Entgelten     K/P             N                 -                                         K/P             -
-    #                                                                                           und Auslagen zu belastenden Kontos. (belegt,
-    #                                                                                           wenn dieses Konto abweicht von Auftragswertkonto)
-    # 7a    3               41                alpha             ISO-Währungscode                Währungscode des mit Entgelten und Aus­ lagen zu    K/P             N                 -                                         K/P             Nur 'EUR' zulässig
-    #                                                                                           belastenden Kontos. (belegt, wenn dieses Konto
-    #                                                                                           abweicht von Auftragswertkonto)
-    # 7b    10              44                num               Kontonummer                     Kontonummer des mit Entgelten und Auslagen zu       K/P             N                 -                                         K/P             Nur 'EUR' zulässig
-    #                                                                                           belastenden Kontos. (belegt, wenn dieses Konto
-    #                                                                                           abweicht von Auftragswertkonto)
-    # /Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
-    # 8     11              54                alpha             Bank Identifier Code (BIC)      Sofern die Zahlung an einen deutschen
-    #                                                           des Zahlungsdienstleisters      Zahlungsdienstleister erfolgt, alternativ auch      K/P             P                 Bank Identifier Code	P (BIC)             P               Bank Identifier Code (BIC) ist Pflicht.
-    #                                                           des Zahlungsempfängers oder     die BLZ des Zahlungsdienstleisters des                                                ist Pflicht. Zahlungsdienstleister
-    #                                                           sonstige Identifikation, z.B.   Zahlungsempfängers, wobei dieser drei                                                 des Zahlungsempfängers muss in
-    #                                                           CHIPS-ID                        Schrägstriche voranzustellen sind.                                                    einem der Län­ der gemäß Anhang
-    #                                                                                           (Nicht zu belegen bei Scheckziehungen,                                                4 ansässig sein.
-    #                                                                                           d.h. bei den Zahlungsartschlüsseln
-    #                                                                                           20-23 und 30-33 in Feld T22)
-    # 9a    3               65                alpha             Ländercode für den              2-stelliger ISO-alpha-Ländercode gemäß
-    #                                                           Zahlungsdienstleister des       Länderverzeichnis für die Zahlungsbilanzstatistik;  K/P             N                 -                                         N               -
-    #                                                           Zahlungsempfängers              linksbündig zu belegen; 3. Stelle Leerzeichen
-    #                                                                                           (Pflichtfeld, wenn Feld T8 nicht belegt; nicht zu
-    #                                                                                           belegen bei Scheckziehungen, d.h. bei den
-    #                                                                                           Zahlungsartschlüsseln 20-23 und 30-33 in Feld T22)
-    # 9b    4x35            68                alpha             Anschrift des                   Pflichtfeld, wenn Feld T8 nicht mit BIC- Adresse
-    #                                                           Zahlungsdienstleisters          bzw. - bei Zahlungen an einen deutschen             K/P             N                 -                                         N               -
-    #                                                           des Zahlungsempfängers          Zahlungsdienstleister - nicht mit BLZ belegt;
-    #                                                                                           sofern Anschrift nicht bekannt, Konstante
-    #                                                                                           „UNBEKANNT" Zeile 1 und 2: Name Zeile 3	:
-    #                                                                                           Straße Zeile 4	: Ort (Nicht zu belegen
-    #                                                                                           bei Scheckziehungen, d.h. bei den
-    #                                                                                           Zahlungsartschlüsseln 20-23 und 30-33 in Feld T22)
-    # 10a   3               208               alpha           Ländercode für Land des           2-stelliger ISO-alpha-Ländercode gemäß              P               P                 -                                         P
+    #
+    # Nr Start Länge  Inhalt
+    # 1   1    4     Satzlänge
+    # 2   5    1     Konstante "T"
+    # 3   6    8     BLZ des zu belastenden Kontos
+    # 4a  14   3     Währungscode nur EUR - Entfällt bei der kurzen Variante
+    # 4b  17   10    Kontonummer des zu belastenden Konto - Entfällt bei der kurzen Variante
+    # 5   27   6     Ausführungstermin Format: JJMMTT; Q6 + max 15 Tage; default: Q8
+    # 6   33   8     BLZ des zu belastenden Kontos - wenn Konto abweicht von Auftragswertkonto - Entfällt bei der kurzen Variante
+    # 7a  41   3     ISO-Währungscode EUR, wenn Konto abweicht von Auftragswertkonto - Entfällt bei der kurzen Variante
+    # 7b  44   10    Kontonummer, wenn Konto abweicht von Auftragswertkonto - Entfällt bei der kurzen Variante
+    # 8   54   11    BIC des Zahlungsempfängers Wenn BLZ(DE only) sind drei Schrägstriche voranzustellen
+    #                 Nicht zu belegen bei Scheckziehungen,d.h. bei den Zahlungsartschlüsseln 20-23 und 30-33 in Feld T22)
+    # 9a  65   3     2-stelliger ISO-alpha-Ländercode Zahlungsempfängers, siehe Länderverzeichnis für die Zahlungsbilanzstatistik;
+    #                Pflicht, wenn T8 nicht belegt; nicht zu belegen bei Scheckziehungen,
+    # 9b  68   4x35  Anschrift Bank des Zahlungsempfängers. Pflicht wenn T8 nicht belegt
+    #                Wenn Anschrift nicht bekannt„UNBEKANNT"
+    #                Zeile 1 und 2: Name Zeile 3: Straße Zeile 4: Ort 
+    #                Nicht zu belegen bei Scheckziehungen
+    #
+    #  10a   3               208               alpha           Ländercode für Land des           2-stelliger ISO-alpha-Ländercode gemäß              P               P                 -                                         P
     #                                                         Zahlungsempfängers bzw.           Länderverzeichnis für die Zahlungsbilanzstatistik;
     #                                                         Scheckempfängers                  linksbündig zu belegen; 3. Stelle Leerzeichen
     # 10b   4x35            211               alpha           Zahlungsempfänger bzw.            Bei Zahlungsauftrag: Zahlungsempfänger Bei          P               P                 Angabe eines Scheckempfängers nicht       P               Angabe eines Scheck­ empfängers nicht möglich
@@ -323,6 +251,99 @@ module KingDta
       dta_string << data2
     end
 
+
+
+    #Erstellen Y-Segment der DTAZV-Datei
+    # - Y Datei-Nachsatz mit 256 Bytes
+    # === Parameter
+    # booking<Object>::Booking object to be written to c-sektion
+    #
+    # === Returns
+    # <String>:: The current dta_string
+    #Aufbau des Segments:
+    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                  Erläuterungen
+    # 1     4               1                 P       binär/num   Satzlänge               Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
+    # 2     1               5                 P       alpha       Satzart                 Konstante Y
+    # 3     15              6                 P       num         Betragssumme            Aus Datensätzen U Feld 5 ( = 0, falls keine U-Sätze vorhanden)
+    # 4     15              21                P       num         Betragssumme            Aus Datensätzen V Feld 7
+    # 5     15              36                P       num         Betragssumme            Aus Datensätzen V Feld 17
+    # 6     15              51                P       num         Betragssumme            Aus Datensätzen W Feld 9
+    # 7     6               66                P       num         Anzahl der Datensätze   Anzahl Datensätze U, V, W
+    # 8     6               72                P       num         Anzahl der Datensätze   Anzahl Datensätze T
+    # 9     179             78                P       alpha       Leerzeichen             Reserve
+    def add_y(bookings)
+      data3  = '0256'                        # 1 Länge des Datensatzes
+      data3 += 'Y'                           # 2 Satzart
+      data3 += '%015i'   % 0                 # 3 Betragssumme
+      data3 += '%015i'   % 0                 # 4 Betragssumme
+      data3 += '%015i'   % 0                 # 5 Betragssumme
+      data3 += '%015i'   % 0                 # 6 Betragssumme
+      data3 += '%06i'    % 0                 # 7 Anzahl der Datensätze
+      data3 += '%06i'    % bookings.count    # 8 Anzahl der Datensätze
+      data3 += '%0179s'  % ''                 # 9 Leerzeichen Reserve
+      raise "DTAUS: Längenfehler T (#{data3.size} <> 256)\n" if data3.size != 256
+      dta_string << data3
+    end
+
+    # THE MAGICAL Z SEGMENT
+    def add_z(bookings)
+      data3  = '0256'
+      data3 += 'Z'
+      sum = 0
+      bookings.each do |b|
+        sum += b.value.divmod(100)[0]
+      end
+      data3 += '%015i'   % sum
+      data3 += '%015i'   % bookings.count
+      data3 += '%0221s'  % ''
+      raise "DTAUS: Längenfehler Z (#{data3.size} <> 256)\n" if data3.size != 256
+      dta_string << data3
+    end
+
+    # Erstellen P-Segment der DTAZV-Datei
+    # - P Datei-Vorsatz mit 256 Bytes
+    #
+    # === Parameter
+    # booking<Object>::Booking object to be written to c-sektion
+    #
+    # === Returns
+    # <String>:: The current dta_string
+    # Aufbau und Erläuterungen der Datei
+    # Datensatz P (Datei-Vorsatz)
+
+    # Der Vorsatz enthält Informationen über ein Institut, das Kundendatensätze Q, T, V und W als Meldung
+    # nach §§ 59 ff. der AWV weiterleitet. Der Vorsatz bezieht sich auf alle unmittelbar folgen­ den
+    # Kundendatensätze, deren Folge mit einem Datei-Nachsatz Y abgeschlossen wird.
+
+    # Legende:
+    # K = Kannfeld
+    # P = Pflichtfeld
+    # K/P = Pflichtfeld in Abhängigkeit von bestimmten Kriterien
+    # N = nicht belegbares Feld
+    # alpha = alphanumerische Daten (linksbündig, nicht belegte Stellen: Leerzeichen)
+    # num = numerische Daten (rechtsbündig, nicht belegte Stellen Nullen)
+
+    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt            Erläuterungen
+    # 1     4               1                 P       binär/num   Satzlänge         Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern 3, numerisch bei Disketten und DFÜ)
+    # 2     1               5                 P       alpha       Satzart           Konstante 'P'
+    # 3     8               6                 K/P     num         Bankleitzahl      BLZ des Einreichinstituts
+    # 4     4x35            14                P       alpha       Einreichinstitut  Zeile 1 u. 2: Name; Zeile 3: Straße Postfach; Zeile 4: Ort
+    # 5     6               154               P       num         Erstellungsdatum  In der Form JJMMTT
+    # 6     2               160               P       num         laufende Nummer   Laufende Tagesnummer
+    # 7     95              162               N       alpha                         Reserve
+    def add_p
+      # data  = '0256'                                    # Länge des Datensatzes, PFLICHT
+      # data += 'P'                                       # Satzart, PFLICHT
+      # data += '%8i'   %  @account.bank_number           # BLZ des Einreichinstituts, KANN
+      # data += '%70s'  %  @account.bank_name             # Einreichinstitut  Zeile 1 u. 2: Name; PFLICHT
+      # data += '%35s'  %  @account.account_street_zip    # Einreichinstitut Straße Postfach; Ort PFLICHT
+      # data += '%35s'  %  @account.city                  # Einreichinstitut  Zeile 4: Ort PFLICHT
+      # data += @date.strftime("%y%m%d")                  # Erstellungsdatum  In der Form JJMMTT, PFLICHT
+      # data += '01'                                      # laufende Nummer Laufende Tagesnummer, PFLICHT
+      # data += '%095s' % ''                               # Reserve
+      # raise "DTAUS: Längenfehler P (#{data.size} <> 256)\n" if data.size != 256
+      # dta_string << data
+    end
     #Erstellen V-Segment der DTAZV-Datei
     # - V Meldedatensatz zum Transithandel mit 256 Bytes
     # === Parameter
@@ -418,53 +439,5 @@ module KingDta
       # data += '%0140s' # 10 nähere Angaben zur zugrunde liegenden Leistung
       # data += '%075s' # 11 Reserve
     end
-
-    #Erstellen Y-Segment der DTAZV-Datei
-    # - Y Datei-Nachsatz mit 256 Bytes
-    # === Parameter
-    # booking<Object>::Booking object to be written to c-sektion
-    #
-    # === Returns
-    # <String>:: The current dta_string
-    #Aufbau des Segments:
-    # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                  Erläuterungen
-    # 1     4               1                 P       binär/num   Satzlänge               Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
-    # 2     1               5                 P       alpha       Satzart                 Konstante Y
-    # 3     15              6                 P       num         Betragssumme            Aus Datensätzen U Feld 5 ( = 0, falls keine U-Sätze vorhanden)
-    # 4     15              21                P       num         Betragssumme            Aus Datensätzen V Feld 7
-    # 5     15              36                P       num         Betragssumme            Aus Datensätzen V Feld 17
-    # 6     15              51                P       num         Betragssumme            Aus Datensätzen W Feld 9
-    # 7     6               66                P       num         Anzahl der Datensätze   Anzahl Datensätze U, V, W
-    # 8     6               72                P       num         Anzahl der Datensätze   Anzahl Datensätze T
-    # 9     179             78                P       alpha       Leerzeichen             Reserve
-    def add_y(bookings)
-      data3  = '0256'                        # 1 Länge des Datensatzes
-      data3 += 'Y'                           # 2 Satzart
-      data3 += '%015i'   % 0                 # 3 Betragssumme
-      data3 += '%015i'   % 0                 # 4 Betragssumme
-      data3 += '%015i'   % 0                 # 5 Betragssumme
-      data3 += '%015i'   % 0                 # 6 Betragssumme
-      data3 += '%06i'    % 0                 # 7 Anzahl der Datensätze
-      data3 += '%06i'    % bookings.count    # 8 Anzahl der Datensätze
-      data3 += '%0179s'  % ''                 # 9 Leerzeichen Reserve
-      raise "DTAUS: Längenfehler T (#{data3.size} <> 256)\n" if data3.size != 256
-      dta_string << data3
-    end
-
-    # THE MAGICAL Z SEGMENT
-    def add_z(bookings)
-      data3  = '0256'
-      data3 += 'Z'
-      sum = 0
-      bookings.each do |b|
-        sum += b.value.divmod(100)[0]
-      end
-      data3 += '%015i'   % sum
-      data3 += '%015i'   % bookings.count
-      data3 += '%0221s'  % ''
-      raise "DTAUS: Längenfehler Z (#{data3.size} <> 256)\n" if data3.size != 256
-      dta_string << data3
-    end
-
   end
 end
