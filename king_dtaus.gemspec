@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{king_dtaus}
-  s.version = "2.0.3.pre"
+  s.version = "2.0.4.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Georg Leciejewski", "Georg Ledermann", "Jan Kus"]
-  s.date = %q{2011-09-03}
+  s.date = %q{2011-09-19}
   s.description = %q{DTAUS is a text-based format, to create bank transfers for german banks. This gem helps with the creation of those transfer files.}
   s.email = %q{gl@salesking.eu}
   s.extra_rdoc_files = [
