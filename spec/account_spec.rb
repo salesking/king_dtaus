@@ -90,12 +90,19 @@ describe KingDta::Account do
   end
 
   it "should return account street and zip" do
-    konto = KingDta::Account.new( sender_opts )
-    konto.bank_zip_city.should == "51063 BANK KOELN"
+    acnt = KingDta::Account.new( sender_opts )
+    acnt.bank_zip_city.should == "51063 BANK KOELN"
   end
 
   it "should return sender street and zip" do
-    konto = KingDta::Account.new( sender_opts )
-    konto.owner_zip_city.should == "51063 MEINE KOELN"
+    acnt = KingDta::Account.new( sender_opts )
+    acnt.owner_zip_city.should == "51063 MEINE KOELN"
+  end
+
+  it "should set owner country code from iban" do
+    opts = receiver_opts
+    opts[:owner_country_code] = nil
+    acnt = KingDta::Account.new( opts )
+    acnt.owner_country_code.should == "PL"
   end
 end

@@ -42,7 +42,7 @@ def receiver_opts
     :owner_street => "Bush-Avenue 55",
     :owner_city => "India",
     :owner_zip_code => "445555",
-    :owner_country_code => "DE"
+    :owner_country_code => "DE" # actually wrong since iban is in poland
 #    only needed if no bic present
 #    :bank_name => 'Dalai Lamas Bank',
 #    :bank_street => "5th avenue",
