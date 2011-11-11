@@ -172,7 +172,7 @@ module KingDta
       booking_txt = booking.text || default_text
       #Erste 27 Zeichen
       #if text < 26  fill with spaces
-      data2 +=  booking_txt[0..26].ljust(27)
+      data2 += booking_txt[0..26].ljust(27)
       booking_txt = booking_txt[27..999]
       # cut text into 27 long pieces
       while booking_txt && booking_txt.size > 0 && exts.size < 13
@@ -184,7 +184,7 @@ module KingDta
       data2 +=  '1' #EUR
       data2 +=  ' ' * 2
       # Gesamte Satzlänge ermitteln ( data1(+4) + data2 + Erweiterungen )
-      data1 = "%04i#{data1}" % ( data1.size + 4 + data2.size+ 2 + exts.size * 29 )
+      data1 = "%04i#{data1}" % ( data1.size + 4 + data2.size + 2 + exts.size * 29 )
       raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.owner_name}" unless data1.size == 128
       dta_string << data1
       #Anzahl Erweiterungen anfügen

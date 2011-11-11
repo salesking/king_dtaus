@@ -30,11 +30,11 @@ module KingDta
       raise ArgumentError.new("Owner city too long, max 35 allowed") if @owner_city && @owner_city.length > 35
       raise ArgumentError.new("Owner country code too long, max 2 allowed") if @owner_country_code && @owner_country_code.length > 2
 
-      raise ArgumentError.new('Bank account number too long, max 35 allowed') if @bank_account_number && "#{@bank_account_number}".length > 35
+      raise ArgumentError.new('Bank account number too long, max 10 allowed') if @bank_account_number && "#{@bank_account_number}".length > 10
       raise ArgumentError.new("Bank account number cannot be 0")  if @bank_account_number && @bank_account_number == 0
       raise ArgumentError.new("Bank iban wrong length: #{@bank_iban.length}, must be between 15-34") if @bank_iban && !@bank_iban.length.between?(15,34)
       raise ArgumentError.new("Bank bic wrong length: #{@bank_bic.length} must be between 8-11") if @bank_bic && !@bank_bic.length.between?(8,11)
-      raise ArgumentError.new('Bank number too long, max 11 allowed') if @bank_number && "#{@bank_number}".length > 11
+      raise ArgumentError.new('Bank number too long, max 8 allowed') if @bank_number && "#{@bank_number}".length > 8
       raise ArgumentError.new("Bank number cannot be 0")   if @bank_number && @bank_number == 0
       raise ArgumentError.new("Bank street too long, max 35 allowed") if @bank_street && @bank_street.length > 35
       raise ArgumentError.new("Bank city too long, max 35 allowed") if @bank_city && @bank_city.length > 35

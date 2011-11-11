@@ -22,13 +22,12 @@ describe KingDta::Account do
   end
 
   it "should fail if bank account number is invalid" do
-    # lambda{ KingDta::Account.new(0, @ba.bank_number, @ba.owner_name) }.should raise_error(ArgumentError)
     lambda{ 
       KingDta::Account.new(:bank_account_number => 123456789011123456789011123456789011,
                            :bank_number => @ba.bank_number,
                            :owner_name => @ba.owner_name)
 
-    }.should raise_error(ArgumentError, 'Bank account number too long, max 35 allowed')
+    }.should raise_error(ArgumentError, 'Bank account number too long, max 10 allowed')
   end
 
   it "should fail if bank number is invalid" do
@@ -42,7 +41,7 @@ describe KingDta::Account do
       KingDta::Account.new( :bank_account_number => @ba.bank_account_number,
                             :bank_number => 123456789101112,
                             :owner_name => @ba.owner_name)
-    }.should raise_error(ArgumentError, 'Bank number too long, max 11 allowed')
+    }.should raise_error(ArgumentError, 'Bank number too long, max 8 allowed')
   end
 
   it "should fail if owner number is too long" do

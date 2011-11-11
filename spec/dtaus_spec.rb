@@ -90,6 +90,20 @@ describe KingDta::Dtaus do
     str.should == out
   end
 
+  it "should create c-sektion with long account owner name in extension" do
+    @dtaus.account = KingDta::Account.new(:bank_account_number => @kto1.bank_account_number, :bank_number => @kto1.bank_number, 
+                                          :owner_name =>  'A very long name exeeding 27 characters even longer 54 chars', :bank_name => @kto1.bank_name)
+
+    @dtaus.add(@booking)
+    @dtaus.bookings.first.text = 'SalesKing Monatsbeitrag 08/10 Freelancer Version'
+    @dtaus.add_c(@booking)
+    str = @dtaus.dta_string
+    str.length.should == 256
+    str.should include(@kto2.owner_name.upcase)
+    out = "0245C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                   A VERY LONG NAME EXEEDING 2SALESKING MONATSBEITRAG 08/1  020210 FREELANCER VERSION      037 CHARACTERS EVEN LONGER 54           "
+    str.should == out
+  end
+
   it "should create c-sektion with default booking text" do
     @dtaus.default_text = 'Default verwendungszweck'
     @dtaus.add_c(@booking)
@@ -112,6 +126,15 @@ describe KingDta::Dtaus do
           "0187C00000000370400440002787777000000000000005000 0000000000037040044782897003700000022025   PETER & MAY GMBH                           GIMME YOUR MONEY AGDEFAULT VERWENDUNGSZWECK   1  00                                                                     "+
           "0128E     0000001000000000000000000000002787777000000000370400440000000022025                                                   "
     str.should == out
+  end
+
+  it "should create whole dta string with long texts exeeding extension" do
+    @dtaus.account = KingDta::Account.new(:bank_account_number => @kto1.bank_account_number, :bank_number => @kto1.bank_number,
+                                          :owner_name =>  'A very long name exeeding 27 characters even longer 54 chars', :bank_name => @kto1.bank_name)
+    @dtaus.add(@booking)
+    @dtaus.bookings.first.text = 'Rgn R-3456-0102220 Monatsbeitrag 08/10 Freelancer Version Vielen Dank Ihre SalesKing GmbH' * 20
+    @dtaus.bookings.first.account.owner_name =  'A very long name exeeding 27 characters even longer 54 chars'
+    str = @dtaus.create ## should not raise error
   end
 
   it "should create whole dta string with long booking text in extension" do
