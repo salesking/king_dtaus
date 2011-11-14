@@ -23,21 +23,15 @@ We love building payment applications.
 * Create DTAZV debit advice
 * High test coverage to ensure software quality
 
-## Beta Version Info
+## Version Info
 
-We are working on version 2 of the gem with some breaking changes!
+Version 2 of the gem has some breaking changes!
 
 * account attributes now passed in as hash
 * renamed of account attributes client_xy => owner_xy
 * renamed account.account_number to bank_account_number
 * added iban/bic to account
 * DTAZV added
-
-Go for it:
-
-    gem install king_dtaus --pre
-    # or add a pre version to your Gemfile
-    gem 'king_dtaus', '2.0.3.pre'
 
 ## TODOs
 
@@ -92,7 +86,7 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
 
 ### DTAZV
 
-    @dtazv = KingDta::Dtazv.new(Date.today)
+    @dtazv = KingDta::Dtazv.new()
 
     # sender account
     @dtazv.account = KingDta::Account.new(
@@ -116,7 +110,7 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
     # get output as string
     @dtazv.create
 
-also make sure to read the specs
+also make sure to read the code and the specs
 
 ## Credits
 
