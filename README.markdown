@@ -18,32 +18,35 @@ We love building payment applications.
 
 ## Features
 
-* Create DTAUS debit advice (Lastschrift)
-* Create DTAUS credit advice (Gutschrift)
-* Create DTAZV debit advice
-* High test coverage to ensure software quality
+* Create DTAUS debit transfer (Lastschrift)
+* Create DTAUS credit transfer (Gutschrift)
+* Create DTAZV debit transfer
+* 100% test coverage to ensure software quality
+* works with ruby 1.8 & 1.9.2
 
 ## Version Info
 
-Version 2 of the gem has some breaking changes!
+Version 2 has breaking changes!
 
 * account attributes now passed in as hash
-* renamed of account attributes client_xy => owner_xy
-* renamed account.account_number to bank_account_number
+* renamed account.client_xy => owner_xy
+* renamed account.account_number => bank_account_number
 * added iban/bic to account
 * DTAZV added
 
+If you want to stay with v1 just pin it in your Gemfile:
+    
+    gem "king_dtaus", "<2"
+
 ## TODOs
 
-* first gem with no todo's - never seen it, huh? - just kidding
-* some more edge-case tests needed
+* some more edge-case tests needed, we need your feedback here!
 
 ## Resources
 
 * SalesKing: http://salesking.eu
 * DTAZV-Viewer: http://www.meta-evolutions.de/pages/artikel-20070630-dtazv-datei-betrachter.html
 * DTA/DTAZV PHP Pear: http://pear.php.net/package/Payment_DTA
-* Ruby Kernel Module: http://www.ruby-doc.org/core/classes/Kernel.html
 * Windata ZV-Tools: http://www.windata.de/Site/2Produkte2/ZVTools.aspx
 * The Swift Codes: http://www.theswiftcodes.com/
 * StarMoney: http://www.starmoney.de/index.php?id=starmoneybusiness_testen
@@ -120,9 +123,6 @@ Bugfixes and enhancements by
 * Kim Rudolph - https://github.com/krudolph
 * Thorsten Böttger - https://github.com/alto
 * Jan Kus - https://github.com/koos
-
-This gem used https://rubygems.org/gems/DTAUS as a starting point.
-It was disected, turned into a real class structure, bugs were fixed and
-of course a full test suite ensures its functionality.
+* used https://rubygems.org/gems/DTAUS as a starting point
 
 Copyright (c) 2009-2011 Georg Leciejewski (SalesKing), Jan Kus (Railslove), released under the MIT license
