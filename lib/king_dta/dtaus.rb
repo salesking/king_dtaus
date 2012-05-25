@@ -36,8 +36,8 @@ module KingDta
     def set_checksums
       @sum_bank_account_numbers, @sum_bank_numbers, @sum_values  = 0,0,0
       bookings.each do |b|
-        @sum_bank_account_numbers  += b.account.bank_account_number.to_i
-        @sum_bank_numbers += b.account.bank_number.to_i
+        @sum_bank_account_numbers  += b.account.bank_account_number
+        @sum_bank_numbers += b.account.bank_number
         @sum_values += b.value
       end
     end
@@ -63,7 +63,7 @@ module KingDta
     # 11b 95    8      Ausführungsdatum Format DDMMJJJJ. max A7 + 15 Tage. Default Blanks.
     # 11c 103   24     Reserviert, 24 Blanks
     # 12  127   1      Währungskennzeichen  "1" = Euro
-    #                  
+    #
     #    Insgesamt 128 Zeichen
     def add_a
       data = '0128'
@@ -74,7 +74,7 @@ module KingDta
       data += '%-27.27s' % @account.owner_name
       data += @date.strftime("%d%m%y")              # creation date - today
       data += ' ' * 4
-      data += '%010i' % @account.bank_account_number.to_i
+      data += '%010i' % @account.bank_account_number
       data += '%010i' % 0
       data += ' '  * 15
       data += '%8s' % @date.strftime("%d%m%Y")     #Ausführungsdatum - ja hier 8 Stellen
@@ -153,13 +153,13 @@ module KingDta
       data1 = 'C'
       data1 +=  '%08i' % 0
       data1 +=  '%-08i' % booking.account.bank_number
-      data1 +=  '%010i' % booking.account.bank_account_number.to_i
+      data1 +=  '%010i' % booking.account.bank_account_number
       data1 +=  '0%011i0' % (booking.account.owner_number || 0)   #interne Kundennummer
       data1 +=  zahlungsart
       data1 +=  ' '
       data1 +=  '0' * 11
       data1 +=  '%08i' % @account.bank_number
-      data1 +=  '%010i' % @account.bank_account_number.to_i
+      data1 +=  '%010i' % @account.bank_account_number
       data1 +=  '%011i' % booking.value #Betrag in Euro einschl. Nachkomma
       data1 +=  ' ' * 3
       data1 +=  '%-27.27s' % booking.account.owner_name

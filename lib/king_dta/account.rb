@@ -1,17 +1,16 @@
 # encoding: utf-8
 module KingDta
-  # A bank account with name of the account owner,
-  # Kontodaten verwalten mit Name des Inhabers und Bank, Bankleitzahl und Kontonummer.
+  # Bank account and owner information
   class Account
     include KingDta::Helper
-    
-    attr_accessor :bank_account_number, :bank_number, :bank_street, :bank_city,
+
+    attr_accessor :bank_street, :bank_city,
                   :bank_zip, :bank_name, :bank_country_code, :bank_iban,
                   :bank_bic,
                   :owner_name, :owner_number, :owner_street, :owner_city,
                   :owner_zip_code, :owner_country_code
+    attr_reader :bank_account_number, :bank_number
 
-    # TODO test
     def initialize(args={})
 
       @bank_street = convert_text(args.delete(:bank_street))
@@ -26,23 +25,42 @@ module KingDta
       end
 
       raise ArgumentError.new('Owner number too long, max 10 allowed') if @owner_number && "#{@owner_number}".length > 10
-      raise ArgumentError.new("Owner street too long, max 35 allowed") if @owner_street && @owner_street.length > 35
-      raise ArgumentError.new("Owner city too long, max 35 allowed") if @owner_city && @owner_city.length > 35
-      raise ArgumentError.new("Owner country code too long, max 2 allowed") if @owner_country_code && @owner_country_code.length > 2
+      raise ArgumentError.new('Owner street too long, max 35 allowed') if @owner_street && @owner_street.length > 35
+      raise ArgumentError.new('Owner city too long, max 35 allowed') if @owner_city && @owner_city.length > 35
+      raise ArgumentError.new('Owner country code too long, max 2 allowed') if @owner_country_code && @owner_country_code.length > 2
 
-      raise ArgumentError.new('Bank account number too long, max 10 allowed') if @bank_account_number && "#{@bank_account_number}".length > 10
-      raise ArgumentError.new("Bank account number cannot be 0")  if @bank_account_number && @bank_account_number == 0
+
       raise ArgumentError.new("Bank iban wrong length: #{@bank_iban.length}, must be between 15-34") if @bank_iban && !@bank_iban.length.between?(15,34)
       raise ArgumentError.new("Bank bic wrong length: #{@bank_bic.length} must be between 8-11") if @bank_bic && !@bank_bic.length.between?(8,11)
-      raise ArgumentError.new('Bank number too long, max 8 allowed') if @bank_number && "#{@bank_number}".length > 8
-      raise ArgumentError.new("Bank number cannot be 0")   if @bank_number && @bank_number == 0
-      raise ArgumentError.new("Bank street too long, max 35 allowed") if @bank_street && @bank_street.length > 35
-      raise ArgumentError.new("Bank city too long, max 35 allowed") if @bank_city && @bank_city.length > 35
-      raise ArgumentError.new("Bank name too long, max 35 allowed") if @bank_name && @bank_name.length > 35
-      raise ArgumentError.new("Bank country code too long, max 2 allowed") if @bank_country_code && @bank_country_code.length > 2
+
+      raise ArgumentError.new('Bank street too long, max 35 allowed') if @bank_street && @bank_street.length > 35
+      raise ArgumentError.new('Bank city too long, max 35 allowed') if @bank_city && @bank_city.length > 35
+      raise ArgumentError.new('Bank name too long, max 35 allowed') if @bank_name && @bank_name.length > 35
+      raise ArgumentError.new('Bank country code too long, max 2 allowed') if @bank_country_code && @bank_country_code.length > 2
 
       @owner_country_code = @bank_iban[0..1 ] if @bank_iban && !@owner_country_code
+    end
 
+    # Cast given account number to integer. Strips spaces and leading zeros
+    # from the bank account number.
+    # DTA relies on integers for checksums and field values.
+    # @param [String|Integer] number
+    def bank_account_number=(number)
+      raise ArgumentError.new('Bank account number too long, max 10 allowed') if "#{number}".length > 10
+      raise ArgumentError.new('Bank account number cannot be 0') if number == 0
+
+      @bank_account_number = number.is_a?(String) ? number.gsub(/\s/,'').to_i : number
+    end
+
+    # Cast given bank number to integer. Strips spaces and leading zeros
+    # from the bank account number.
+    # DTA relies on integers for checksums and field values.
+    # @param [String|Integer] number
+    def bank_number=(number)
+      raise ArgumentError.new('Bank number too long, max 8 allowed') if "#{number}".length > 8
+      raise ArgumentError.new('Bank number cannot be 0') if number == 0
+
+      @bank_number = number.is_a?(String) ? number.gsub(/\s/,'').to_i : number
     end
 
     def bank_zip_city

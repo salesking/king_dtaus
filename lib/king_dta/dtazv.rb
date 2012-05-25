@@ -35,9 +35,8 @@ module KingDta
     # Datensatz Q - kurze Variante
     # Die Bundesbank nimmt Q-Sätze in 2 Varianten entgegen. Die lange Variante ist identisch mit
     # den von den Auftraggebern gelieferten Q-Sätzen. In der kurzen Variante sind nur die Felder
-    # enthalten, die von der Bundesbank bei der Bearbeitung der Meldungen benötigt werden; das in der
-    # kurzen Variante nicht enthaltene Feld ist in der folgenden Tabelle durch Schattierung und Kursivschrift
-    # kenntlich gemacht. Beide Varianten dürfen in einer Datei vorkommen.
+    # enthalten, die von der Bundesbank bei der Bearbeitung der Meldungen benötigt werden.
+    # Beide Varianten dürfen in einer Datei vorkommen.
     # [ Anmerk.: Bei der Kurzen Variante entfällt die Kundennummer ]
     #
     # === Fields
@@ -45,7 +44,7 @@ module KingDta
     # 1   1     4      Satzlänge numerisch bei Disketten und DFÜ
     # 2   5     1      Satzart Konstante "Q"
     # 3   6     8      BLZ  Erstbeauftragtes Kreditinstitut
-    # 4   14    10     Kundennummer Entfällt bei der kurzen Variante
+    # 4   14    10     Kontonummer Auftraggeber Entfällt bei der kurzen Variante
     # 5   24    4x35   Auftraggeberdaten Zeile 1 und 2: Name;
     #                    Zeile 3: Straße/Postfach; Zeile 4: Ort
     # 6   164   6      Erstellungsdatum Format: JJMMTT
@@ -67,7 +66,7 @@ module KingDta
       data1 += @date.strftime("%y%m%d")                # Erstellungsdatum
       data1 += '01'
       data1 += @date.strftime("%y%m%d")                # Ausführungstermin
-      data1 += "N"                                     
+      data1 += "N"
       data1 += "%02i" % 0
       data1 += '%08i' % 0
       data1 += '%068s' % ''
@@ -112,13 +111,11 @@ module KingDta
     #                Pflicht, wenn T8 nicht belegt; nicht zu belegen bei Scheckziehungen,
     # 9b  68   4x35  Anschrift Bank des Zahlungsempfängers. Pflicht wenn T8 nicht belegt
     #                Wenn Anschrift nicht bekannt„UNBEKANNT"
-    #                Zeile 1 und 2: Name Zeile 3: Straße Zeile 4: Ort 
+    #                Zeile 1 und 2: Name Zeile 3: Straße Zeile 4: Ort
     #                Nicht zu belegen bei Scheckziehungen
     #
-    #  10a   3               208               alpha           Ländercode für Land des           2-stelliger ISO-alpha-Ländercode gemäß              P               P                 -                                         P
-    #                                                         Zahlungsempfängers bzw.           Länderverzeichnis für die Zahlungsbilanzstatistik;
-    #                                                         Scheckempfängers                  linksbündig zu belegen; 3. Stelle Leerzeichen
-    # 10b   4x35            211               alpha           Zahlungsempfänger bzw.            Bei Zahlungsauftrag: Zahlungsempfänger Bei          P               P                 Angabe eines Scheckempfängers nicht       P               Angabe eines Scheck­ empfängers nicht möglich
+    # 10a 208  3  2-stelliger ISO-alpha-Ländercode des Zahlungsempfänger gemäß Länderverzeichnis für die Zahlungsbilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
+    # 10b 211  4x35                           alpha           Zahlungsempfänger bzw.            Bei Zahlungsauftrag: Zahlungsempfänger Bei          P               P                 Angabe eines Scheckempfängers nicht       P               Angabe eines Scheck­ empfängers nicht möglich
     #                                                         Scheckempfänger                   Scheckziehung:	Scheckempfänger Zeile 1 und 2:                                        möglich
     #                                                                                           Name Zeile 3	: Straße Zeile 4	: Ort/Land.
     # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
@@ -207,7 +204,7 @@ module KingDta
       data2 += '%08i'  % 0                                          # KANN/PFLICHT 6 BLZ
       data2 += '%03s' % ''                                          # KANN/PFLICHT 7a ISO-Währungscode
       data2 += '%010i' % 0                                          # KANN/PFLICHT 7b BLZ
-      data2 += '%-011s' % booking.account.bank_bic                   
+      data2 += '%-011s' % booking.account.bank_bic
       data2 += '%-03s'  % booking.account.bank_country_code         # Pflichtfelder wenn T8 leer
       data2 += '%-070s' % booking.account.bank_name
       data2 += '%-035.35s' % booking.account.bank_street

@@ -4,7 +4,7 @@ $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'simplecov'
 SimpleCov.start 'rails'
-SimpleCov.coverage_dir 'coverage/rspec'
+SimpleCov.coverage_dir 'coverage'
 
 require 'rubygems'
 require "king_dtaus"
