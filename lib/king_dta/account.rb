@@ -46,10 +46,11 @@ module KingDta
     # DTA relies on integers for checksums and field values.
     # @param [String|Integer] number
     def bank_account_number=(number)
-      raise ArgumentError.new('Bank account number too long, max 10 allowed') if "#{number}".length > 10
-      raise ArgumentError.new('Bank account number cannot be 0') if number == 0
+      nr_str = "#{number}".gsub(/\s/,'')
+      raise ArgumentError.new('Bank account number too long, max 10 allowed') if nr_str.length > 10
+      raise ArgumentError.new('Bank account number cannot be 0') if nr_str == '0'
 
-      @bank_account_number = number.is_a?(String) ? number.gsub(/\s/,'').to_i : number
+      @bank_account_number = nr_str.to_i
     end
 
     # Cast given bank number to integer. Strips spaces and leading zeros
@@ -57,10 +58,11 @@ module KingDta
     # DTA relies on integers for checksums and field values.
     # @param [String|Integer] number
     def bank_number=(number)
-      raise ArgumentError.new('Bank number too long, max 8 allowed') if "#{number}".length > 8
-      raise ArgumentError.new('Bank number cannot be 0') if number == 0
+      nr_str = "#{number}".gsub(/\s/,'')
+      raise ArgumentError.new('Bank number too long, max 8 allowed') if nr_str.length > 8
+      raise ArgumentError.new('Bank number cannot be 0') if nr_str == '0'
 
-      @bank_number = number.is_a?(String) ? number.gsub(/\s/,'').to_i : number
+      @bank_number = nr_str.to_i
     end
 
     def bank_zip_city
