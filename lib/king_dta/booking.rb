@@ -14,10 +14,13 @@ module KingDta
     #- Betrag
     #  Der Betrag kann , oder . als Dezimaltrenner enthalten.
     #- optional Buchungstext
-    def initialize( account, value, text=nil, account_key=nil )
+    def initialize( account, value, text=[], account_key=nil )
       raise Exception.new("Hey, a booking should have an Account") unless account.kind_of?( Account )
       @account = account
-      @text = text ? convert_text( text ) : text
+      @text = text.each{ |t| 
+        raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if t.size > 128
+        convert_text(t)
+      }
       @account_key = account_key
       if value.is_a?(String)
         value = BigDecimal.new value.sub(',', '.')
@@ -39,7 +42,10 @@ module KingDta
     end
 
     def text=(text)
-       @text = convert_text( text )
+       @text = text.each { |t| 
+         raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if t.size > 128
+         convert_text( t ) 
+       }
     end
 
     def pos?; @pos end
