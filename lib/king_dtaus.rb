@@ -1,5 +1,7 @@
 require "i18n"
+require "unf"
 require "bigdecimal"
+require "active_support/inflector"
 require "king_dta/helper"
 require "king_dta/dta"
 require "king_dta/account"

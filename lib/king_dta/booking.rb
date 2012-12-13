@@ -8,7 +8,7 @@ module KingDta
     LASTSCHRIFT_EINZUGSERMAECHTIGUNG = '05000'
     UEBERWEISUNG_GUTSCHRIFT          = '51000'
 
-    attr_accessor :value, :account, :text, :account_key
+    attr_accessor :value, :account, :text, :account_key, :customer_bill_text
     #Eine Buchung ist definiert durch:
     #- Konto (siehe Klasse Konto
     #- Betrag
@@ -43,9 +43,16 @@ module KingDta
 
     def text=(text)
        @text = text.each { |t| 
+         # TODO: Add some configuration because this should be specific to DTAUS but it is taken into consideration for DTAZV
          raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if t.size > 128
          convert_text( t ) 
        }
+    end
+
+    def customer_bill_text=(text)
+      # TODO This is specific for DTAZV should be really...........
+      raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if text.length > 27
+      @customer_bill_text = convert_text(text)
     end
 
     def pos?; @pos end

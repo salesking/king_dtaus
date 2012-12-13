@@ -226,8 +226,9 @@ module KingDta
       data2 += "%02i" % 0                                           # N 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
       data2 += '%025s' % ''                                         # N 20 Zusatzinformationen zum Weisungsschlüssel
       data2 += "%02i" % 0                                           # PFLICHT 21 Entgeltregelung
+      #TODO: Need to edit this 13 because 13 is only for EUR we need 00 for GBP
       data2 += "%02i" % 13                                          # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
-      data2 += '%027s' % ''                                         # KANN 23 Variabler Text nur für Auftraggeberabrechnung
+      data2 += '%-027s' % (booking.customer_bill_text || '')                                         # KANN 23 Variabler Text nur für Auftraggeberabrechnung
       # i dont know what to do.
       data2 += '%035s' % ''                                         # KANN/PFLICHT 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
       data2 += '%01i' % 0                                           # KANN/NICHT 25 Meldeschlüssel
