@@ -147,10 +147,10 @@ module KingDta
                       booking.account_key || Booking::UEBERWEISUNG_GUTSCHRIFT
                     end
       #Extended segments Long name & booking texts
+      exts = []
       # 1. Part
       #data1 = '%4i' % ?? #Satzlänge kommt später
-      data1 = '0216' 
-      data1 += 'C'
+      data1 = 'C'
       data1 +=  '%08i' % 0
       data1 +=  '%-08i' % booking.account.bank_number
       data1 +=  '%010i' % booking.account.bank_account_number
@@ -163,30 +163,45 @@ module KingDta
       data1 +=  '%011i' % booking.value #Betrag in Euro einschl. Nachkomma
       data1 +=  ' ' * 3
       data1 +=  '%-27.27s' % booking.account.owner_name
+      exts << ['01', booking.account.owner_name[27..999] ] if booking.account.owner_name.size > 27
       data1 +=  ' ' * 8
       #Einfügen erst möglich, wenn Satzlänge bekannt
 
       # 2. Part
-      data2 = "%-27.27s" % @account.owner_name
+      data2 = "%27.27s" % @account.owner_name
+      booking_txt = booking.text || default_text
       #Erste 27 Zeichen
       #if text < 26  fill with spaces
-      data2 += booking.text[0].ljust(27)
+      data2 += booking_txt[0..26].ljust(27)
+      booking_txt = booking_txt[27..999]
+      # cut text into 27 long pieces
+      while booking_txt && booking_txt.size > 0 && exts.size < 13
+        exts << ['02', booking_txt.ljust(27) ]
+        booking_txt = booking_txt[27..999]
+      end
+      exts << ['03', @account.owner_name[27..999] ] if @account.owner_name.size > 27
+
       data2 +=  '1' #EUR
       data2 +=  ' ' * 2
-      # cut text into 27 long pieces
-      data2 += '01' # Number of extensions
-      data2 += '02'
-      data2 += booking.text[1].ljust(27) 
-      data2 +=  ' ' * 2
-      data2 +=  ' ' * 27
-      data2 +=  ' ' * 11
-
       # Gesamte Satzlänge ermitteln ( data1(+4) + data2 + Erweiterungen )
+      data1 = "%04i#{data1}" % ( data1.size + 4 + data2.size + 2 + exts.size * 29 )
       raise "DTAUS: Längenfehler C/1 #{data1.size} nicht 128, #{booking.account.owner_name}" unless data1.size == 128
       dta_string << data1
-            # add the final piece of the second C section
+      #Anzahl Erweiterungen anfügen
+      data2 +=  '%02i' % exts.size  #Anzahl Erweiterungsteile
+      #Die ersten zwei Erweiterungen gehen in data2,
+      #Satz 3/4/5 à 4 Erweiterungen  -> max. 14 Erweiterungen (ich ignoriere möglichen Satz 6)
+      exts  += [ ['00', "" ]  ] * (14 - exts.size)
+      #Die ersten zwei Erweiterungen gehen in data2,  wenn leer nur mit blanks als füllung
+      exts[0..1].each{|e| data2 +=  "%2.2s%-27.27s" % format_ext(e[0], e[1]) }
+      data2 +=  ' ' * 11
+      # add the final piece of the second C section
       raise "DTAUS: Längenfehler C/2 #{data2.size} nicht 128, #{booking.account.owner_name}" unless data2.size == 128
       dta_string << data2
+      #Create 4 text extensions
+      add_ext( exts[2..5] )
+      add_ext( exts[6..9] )
+      add_ext( exts[10..13] )
       dta_string
     end  #dataC
 
