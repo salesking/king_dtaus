@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 module KingDta
-  class SumupBooking
+  class SumupBooking < Booking
     attr_accessor :customer_bill_text
 
     def initialize( account, value, text=[], account_key=nil )
