@@ -6,8 +6,8 @@ describe KingDta::DtausBooking do
   
   before :each do
     @account = KingDta::Account.new(receiver_opts)
-    @text_pass = ["PASS TEXT AAA", "PASS TEXT BBB"]
-    @text_fails = ["A"*28, "B"*28]
+    @text_pass = {pid: "PASS TEXT AAA", email: "PASS TEXT BBB", mid: "1243"}
+    @text_fails = {pid: "A"*28, email: "B"*28, mid: "1"*28}
   end
 
   it "should raise an exception if the text parameter is not an array when assigning text" do
