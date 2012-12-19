@@ -14,7 +14,7 @@ module KingDta
     end
 
     def customer_bill_text=(text)
-      raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if text.length > 27
+      raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if text.length > 140
       @customer_bill_text = convert_text(text)
     end
   end
