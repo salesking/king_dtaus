@@ -31,15 +31,15 @@ module KingDta
       data2 = "%-27.27s" % @account.owner_name
       #Erste 27 Zeichen
       #if text < 26  fill with spaces
-      data2 += !booking.text.nil? ? booking.text[0].ljust(27) : default_text[0..26].ljust(27) # Just take the first 27 chars of the default text for now.
+      data2 += !booking.text.nil? ? booking.text[:pid].ljust(27) : default_text[0..26].ljust(27) # Just take the first 27 chars of the default text for now.
       data2 +=  '1' #EUR
       data2 +=  ' ' * 2
       # cut text into 27 long pieces
       data2 += '01' # Number of extensions
       data2 += '02'
-      data2 += !booking.text.nil? ? booking.text[1].ljust(27) : default_text[27..53].to_s.ljust(27) 
+      data2 += !booking.text.nil? ? booking.text[:email].ljust(27) : default_text[27..53].to_s.ljust(27) 
       data2 +=  ' ' * 2
-      data2 +=  ' ' * 27
+      data2 += !booking.text.nil? ? booking.text[:mid].ljust(27) : default_text[54..107].to_s.ljust(27)
       data2 +=  ' ' * 11
 
       # Gesamte Satzlänge ermitteln ( data1(+4) + data2 + Erweiterungen )
