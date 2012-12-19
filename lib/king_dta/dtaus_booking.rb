@@ -8,9 +8,9 @@ module KingDta
     end
 
     def text=(text)
-      raise Exception.new("The text parameter must be passed as an array") if !text.kind_of?(Array)
+      raise Exception.new("The text parameter must be passed as a hash") if !text.kind_of?(Hash)
       
-      @text = text.each{ |t| 
+      @text = text.each{ |key, t| 
         raise Exception.new("The length of your text is too long. It must be at most 27 chars long.") if t.size > 27
         convert_text(t)
       }
