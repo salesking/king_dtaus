@@ -13,6 +13,10 @@ module KingDta
       text.gsub!('ü', 'UE')
       text.gsub!('ö', 'OE')
       text.gsub!('ß', 'SS')
+      text.gsub(/[àáâãå]/,'A')
+      text.gsub(/æ/,'AE')
+      text.gsub(/ç/, 'C')
+      text.gsub(/[èéêë]/,'E')
 
       text = I18n.transliterate(text)
 
