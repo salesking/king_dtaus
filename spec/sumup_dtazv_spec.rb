@@ -5,7 +5,7 @@ require 'spec_helper'
 describe KingDta::SumupDtazv do
 
   before :each do
-    @sumup_dtazv = KingDta::SumupDtazv.new(Date.parse('2011-08-28'))
+    @sumup_dtazv = KingDta::SumupDtazv.new('EUR', Date.parse('2011-08-28'))
     @sumup_dtazv.account = KingDta::Account.new sender_opts
     @booking = KingDta::DtazvBooking.new( KingDta::Account.new( receiver_opts ), 220.25)
   end
@@ -22,4 +22,22 @@ describe KingDta::SumupDtazv do
     str.should == out
   end
 
+  it "should raise an error if the currency code is greater than three chatacters long" do
+    lambda { KingDta::SumupDtazv.new('EURX') }.should raise_error(Exception)
+  end
+
+  it "should assign the payment type of 13 for euro transactions" do
+    sumup_dtazv = KingDta::SumupDtazv.new('EUR')
+    sumup_dtazv.payment_type.should == 13
+  end
+
+  it "should assign the payment type of 00 for euro transactions" do
+      sumup_dtazv = KingDta::SumupDtazv.new('GBP')
+      sumup_dtazv.payment_type.should == 00
+  end
+
+  it "should not allow assignment to payment_type instance variable directly" do
+      sumup_dtazv = KingDta::SumupDtazv.new('GBP')
+      lambda { sumup_dtazv.payment_type = 19 }.should raise_error(NoMethodError)
+  end
 end
