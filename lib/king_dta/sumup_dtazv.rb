@@ -2,6 +2,18 @@
 
 module KingDta
   class SumupDtazv < Dtazv
+
+    attr_accessor :currency_code
+    attr_reader :payment_type
+
+    # Class constant.
+    GBP = 'GBP'
+
+    def initialize(currency_code)
+      super(Date.today)
+      # Using self because I want to call the mutator method defined below.
+      self.currency_code = currency_code
+    end
     def add_t(booking)
 
       # Update to the original add_t method in the parent class.
@@ -11,7 +23,7 @@ module KingDta
       data2  = '0768'
       data2 += 'T'
       data2 += '%08i' % @account.bank_number
-      data2 += 'EUR'
+      data2 += @currency_code
       data2 += '%010i'  % @account.bank_account_number
       data2 += @date.strftime("%y%m%d")                             # KANN, 5 Ausführungstermin Einzelzahlung, wenn abweichend von Q8
       data2 += '%08i'  % 0                                          # KANN/PFLICHT 6 BLZ
@@ -29,7 +41,7 @@ module KingDta
       data2 += '%-035.35s' % booking.account.owner_zip_city
       data2 += '%070s' % ''                                         # KANN/PFLICHT 11 Ordervermerk
       data2 += '/%-034s' % booking.account.bank_iban                # PFLICHT 12 35 IBAN bzw. Kontonummer des
-      data2 += 'EUR'                                                # KANN/PFLICHT 13 3 Auftragswährung "EUR"
+      data2 += @currency_code                                                # KANN/PFLICHT 13 3 Auftragswährung "EUR"
       data2 += '%014i' % booking.value.divmod(100)[0]               # PFLICHT 14a 14 Betrag (Vorkommastellen) Rechtsbündig
       data2 += '%02i0' % booking.value.divmod(100)[1]               # PFLICHT 14b 3 Betrag (Nachkommastellen) Linksbündig
       data2 += '%-0140s' % (booking.text || default_text)
@@ -40,7 +52,7 @@ module KingDta
       data2 += '%025s' % ''                                         # N 20 Zusatzinformationen zum Weisungsschlüssel
       data2 += "%02i" % 0                                           # PFLICHT 21 Entgeltregelung
       #TODO: Need to edit this 13 because 13 is only for EUR we need 00 for GBP
-      data2 += "%02i" % 13                                          # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
+      data2 += "%02i" % payment_type                                          # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
       data2 += '%-027s' % (booking.customer_bill_text || '')                                         # KANN 23 Variabler Text nur für Auftraggeberabrechnung
       # i dont know what to do.
       data2 += '%035s' % ''                                         # KANN/PFLICHT 24 35 Name und Telefonnummer sowie ggf. Stellvertretungsmeldung
@@ -50,6 +62,16 @@ module KingDta
       raise "DTAUS: Längenfehler T (#{data2.size} <> 768)\n" if data2.size != 768
       dta_string << data2
 
+    end
+
+    def currency_code=(currency_code)
+      raise Exception.new("Currency code must be of lnegth 3.") if currency_code.size > 3
+      @currency_code = currency_code 
+    end
+
+    private
+    def payment_type
+      @payment_type = (@currency_code == GBP ? 00 : 13)
     end
   end
 end
