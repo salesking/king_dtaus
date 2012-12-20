@@ -9,8 +9,8 @@ module KingDta
     # Class constant.
     GBP = 'GBP'
 
-    def initialize(currency_code)
-      super(Date.today)
+    def initialize(currency_code, date=Date.today)
+      super(date)
       # Using self because I want to call the mutator method defined below.
       self.currency_code = currency_code
     end
@@ -65,11 +65,10 @@ module KingDta
     end
 
     def currency_code=(currency_code)
-      raise Exception.new("Currency code must be of lnegth 3.") if currency_code.size > 3
+      raise Exception.new("Currency code must be of length 3.") if currency_code.size > 3
       @currency_code = currency_code 
     end
 
-    private
     def payment_type
       @payment_type = (@currency_code == GBP ? 00 : 13)
     end
