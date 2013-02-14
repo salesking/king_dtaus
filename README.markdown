@@ -57,61 +57,66 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
 
 ### DTA
 
-    # create a new dtaus object
-    dta = KingDta::Dtaus.new('LK')
+```ruby
+# create a new dtaus object
+dta = KingDta::Dtaus.new('LK')
   
-    # set sender account
-    dta.account = KingDta::Account.new(
+# set sender account
+dta.account = KingDta::Account.new(
                     :bank_account_number => "123456789",
                     :bank_number => "69069096",
                     :owner_name => "Return to Sender",
                     :bank_name => "Money Burner Bank")
   
-    # following should be done in a loop to add multiple bookings
-    # create receiving account
-    receiver = KingDta::Account.new(
+# following should be done in a loop to add multiple bookings
+# create receiving account
+receiver = KingDta::Account.new(
                     :bank_account_number => "987456123",
                     :bank_number => "99099096",
                     :owner_name => "Gimme More Lt.",
                     :bank_name => "Banking Bandits")
-    # create booking
-    booking = KingDta::Booking.new(receiver, 100.00 )
+# create booking
+booking = KingDta::Booking.new(receiver, 100.00 )
   
-    # set booking text if you want to
-    booking.text = "Thanks for your purchase"
+# set booking text if you want to
+booking.text = "Thanks for your purchase"
  
-    # add booking
-    dta.add( booking )
-    # end loop
+# add booking
+dta.add( booking )
+# end loop
 
-    # create datausstring and do with it whatever fits your workflow
-    my_str = dta.create
+# create datausstring and do with it whatever fits your workflow
+my_str = dta.create
 
+```
 ### DTAZV
 
-    @dtazv = KingDta::Dtazv.new()
+```ruby 
+@dtazv = KingDta::Dtazv.new()
 
-    # sender account
-    @dtazv.account = KingDta::Account.new(
+# sender account
+@dtazv.account = KingDta::Account.new(
       :bank_account_number => "123456789",
       :bank_number => "40050100",
       :bank_name => "Greedy Fuckers Bank",
       :owner_name => "Sender name"
-    )
+)
 
-    # receiver account
-    receiver = KingDta::Account.new(
+# receiver account
+receiver = KingDta::Account.new(
       :bank_account_number => "987654321",
       :bank_iban => "PLsome-long-Iban",
       :bank_bic => "BicCode",
       :owner_name => "receivers name"
-    )
-    # add bookings, probably in a loop
-    booking = KingDta::Booking.new(receiver, 220.25)
-    @dtazv.add(booking)
+)
 
-    # get output as string
-    @dtazv.create
+# add bookings, probably in a loop
+booking = KingDta::Booking.new(receiver, 220.25)
+@dtazv.add(booking)
+
+# get output as string
+@dtazv.create
+```
 
 also make sure to read the code and the specs
 
