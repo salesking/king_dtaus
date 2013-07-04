@@ -12,6 +12,7 @@ module KingDta
     attr_reader :bank_account_number, :bank_number
 
     def initialize(args={})
+      args = args.dup
 
       @bank_street = convert_text(args.delete(:bank_street))
       @bank_city = convert_text(args.delete(:bank_city))

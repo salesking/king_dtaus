@@ -15,6 +15,19 @@ describe KingDta::Account do
     }.should_not raise_error
   end
 
+  # KingDta::Acount.new tends to remove keys from supplied hashes, which breaks
+  # things when I create multiple DTAUS files at once.
+  it "should not remove data from hashes" do
+    sender = {:owner_street => "123 Random Street",
+              :bank_account_number => @ba.bank_account_number,
+              :bank_number => @ba.bank_number,
+              :owner_name => @ba.owner_name}
+
+    sender.keys.should include(:owner_street) # => true
+    KingDta::Account.new(sender)
+    sender.keys.should include(:owner_street) # => boom!
+  end
+
   it "should initialize a new dtazv account" do
     lambda{
       KingDta::Account.new(sender_opts)
