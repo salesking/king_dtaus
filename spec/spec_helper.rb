@@ -53,6 +53,19 @@ def receiver_opts
   }
 end
 
+def swiss_receiver
+  # Random data
+  {
+    :bank_iban => "CH6331142389293969079",
+    :bank_bic => "BPPBCHGGXXX",
+    :owner_name => "Muammar al-Gaddafi",
+    :owner_street => "Bitziusstrasse 40",
+    :owner_city => "Bern",
+    :owner_zip_code => "3000",
+    :owner_country_code => "CH"
+  }
+end
+
 def test_kto1
   opts = {
             :bank_account_number => '7828970037',
