@@ -8,7 +8,7 @@ module KingDta
     LASTSCHRIFT_EINZUGSERMAECHTIGUNG = '05000'
     UEBERWEISUNG_GUTSCHRIFT          = '51000'
 
-    attr_accessor :value, :account, :text, :account_key, :currency, :charge_bearer_code
+    attr_accessor :value, :account, :text, :account_key, :currency, :charge_bearer_code, :payment_type
     #Eine Buchung ist definiert durch:
     #- Konto (siehe Klasse Konto
     #- Betrag
