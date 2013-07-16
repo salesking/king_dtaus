@@ -225,7 +225,7 @@ module KingDta
       data2 += "%02i" % 0                                           # N 18 Weisungsschlüssel 3 (gem. Anhang 2)
       data2 += "%02i" % 0                                           # N 19 Weisungsschlüssel 4 (gem. Anhang 2 und 2a)
       data2 += '%025s' % ''                                         # N 20 Zusatzinformationen zum Weisungsschlüssel
-      data2 += "%02i" % 0                                           # PFLICHT 21 Entgeltregelung
+      data2 += "%02i" % (booking.charge_bearer_code || 0)           # PFLICHT 21 Entgeltregelung
       data2 += "%02i" % 13                                          # PFLICHT 22 Kennzeichnung der Zahlungsart     Gemäß Anhang 1; Zahlungen, die weder '11' noch '13' als Zahlungsartschlüssel enthalten
       data2 += '%027s' % ''                                         # KANN 23 Variabler Text nur für Auftraggeberabrechnung
       # i dont know what to do.
