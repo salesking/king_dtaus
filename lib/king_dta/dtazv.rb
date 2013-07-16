@@ -216,7 +216,7 @@ module KingDta
       data2 += '%-035.35s' % booking.account.owner_zip_city
       data2 += '%070s' % ''                                         # KANN/PFLICHT 11 Ordervermerk
       data2 += '/%-034s' % booking.account.bank_iban                # PFLICHT 12 35 IBAN bzw. Kontonummer des
-      data2 += 'EUR'                                                # KANN/PFLICHT 13 3 Auftragswährung "EUR"
+      data2 += booking.currency                                     # KANN/PFLICHT 13 3 Auftragswährung (z.B. "EUR")
       data2 += '%014i' % booking.value.divmod(100)[0]               # PFLICHT 14a 14 Betrag (Vorkommastellen) Rechtsbündig
       data2 += '%02i0' % booking.value.divmod(100)[1]               # PFLICHT 14b 3 Betrag (Nachkommastellen) Linksbündig
       data2 += '%-0140s' % (booking.text || default_text)
