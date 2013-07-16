@@ -4,6 +4,19 @@ require 'spec_helper'
 # All Test DTAZV output strings are validated with sFirm => lokal Sparkassen Software
 
 describe KingDta::Dtazv do
+  context "support for non-EUR currency" do
+    before do
+      @dtazv = KingDta::Dtazv.new(Date.parse('2011-08-28'))
+      @dtazv.account = KingDta::Account.new sender_opts
+      @booking = KingDta::Booking.new(KingDta::Account.new(swiss_receiver), 235.42, nil, nil, "CHF")
+    end
+
+    # FIXME: Write better tests later
+    it "should at least not raise an error" do
+      @dtazv.add(@booking)
+      @dtazv.create
+    end
+  end
 
   before :each do
     @dtazv = KingDta::Dtazv.new(Date.parse('2011-08-28'))
