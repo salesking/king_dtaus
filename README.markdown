@@ -22,7 +22,7 @@ We love building payment applications.
 * Create DTAUS credit transfer (Gutschrift)
 * Create DTAZV debit transfer
 * 100% test coverage to ensure software quality
-* works with ruby 1.8 & 1.9.2
+* works with ruby 1.8 / 1.9 / 2.0
 
 ## Version Info
 
