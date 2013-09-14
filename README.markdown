@@ -35,7 +35,7 @@ Version 2 has breaking changes!
 * DTAZV added
 
 If you want to stay with v1 just pin it in your Gemfile:
-    
+
     gem "king_dtaus", "<2"
 
 ## TODOs
@@ -60,14 +60,14 @@ Here are some examples how to create a DTA- or DTAZV-File. Also check out the sp
 ```ruby
 # create a new dtaus object
 dta = KingDta::Dtaus.new('LK')
-  
+
 # set sender account
 dta.account = KingDta::Account.new(
                     :bank_account_number => "123456789",
                     :bank_number => "69069096",
                     :owner_name => "Return to Sender",
                     :bank_name => "Money Burner Bank")
-  
+
 # following should be done in a loop to add multiple bookings
 # create receiving account
 receiver = KingDta::Account.new(
@@ -77,10 +77,10 @@ receiver = KingDta::Account.new(
                     :bank_name => "Banking Bandits")
 # create booking
 booking = KingDta::Booking.new(receiver, 100.00 )
-  
+
 # set booking text if you want to
 booking.text = "Thanks for your purchase"
- 
+
 # add booking
 dta.add( booking )
 # end loop
@@ -91,7 +91,7 @@ my_str = dta.create
 ```
 ### DTAZV
 
-```ruby 
+```ruby
 @dtazv = KingDta::Dtazv.new()
 
 # sender account

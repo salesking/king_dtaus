@@ -91,7 +91,7 @@ describe KingDta::Dtaus do
   end
 
   it "should create c-sektion with long account owner name in extension" do
-    @dtaus.account = KingDta::Account.new(:bank_account_number => @kto1.bank_account_number, :bank_number => @kto1.bank_number, 
+    @dtaus.account = KingDta::Account.new(:bank_account_number => @kto1.bank_account_number, :bank_number => @kto1.bank_number,
                                           :owner_name =>  'A very long name exeeding 27 characters even longer 54 chars', :bank_name => @kto1.bank_name)
 
     @dtaus.add(@booking)

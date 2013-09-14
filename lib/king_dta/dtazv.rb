@@ -26,7 +26,7 @@ module KingDta
     # <String>:: The current dta_string
     #
     # === Info
-    # 5.2	Datensatz Q - lange Variante - (Identifikation des Auftraggebers)
+    # 5.2 Datensatz Q - lange Variante - (Identifikation des Auftraggebers)
     # Die Bundesbank nimmt Q-Sätze in 2 Varianten entgegen. Die lange Variante ist identisch mit den von
     # den Auftraggebern gelieferten Q-Sätzen. In der kurzen Variante sind nur die Felder enthalten,
     # die von der Bundesbank bei der Bearbeitung der Meldungen benötigt werden (siehe 5.3).
@@ -50,7 +50,7 @@ module KingDta
     # 6   164   6      Erstellungsdatum Format: JJMMTT
     # 7   170   2      Laufende Tagesnummer bei mehreren Überweisungen/Tag
     # 8   172   6      Ausführungstermin Datei, Format: JJMMTT; max  Feld Q6 + 15 Tage
-    # 9   178   1      Weiterleitung an die Meldebehörde, 'N'	Nein, 'J'	Ja
+    # 9   178   1      Weiterleitung an die Meldebehörde, 'N' Nein, 'J' Ja
     # 10  179   2      optional Bundeslandschlüssel  Zwingend bei 'J' in Feld Q9
     # 11  181   8      optional Firmennummer / BLZ des Auftraggebers  Siehe Feld Q10
     # 12  189   68     Reserve
@@ -82,13 +82,13 @@ module KingDta
     # === Returns
     # <String>:: The current dta_string
 
-    # 5.4	Datensatz T - lange Variante - (Einzelzahlungssatz)
+    # 5.4 Datensatz T - lange Variante - (Einzelzahlungssatz)
     # Die Bundesbank nimmt auch T-Sätze in 2 Varianten entgegen. Die lange Variante ist identisch
     # mit den von den Auftraggebern gelieferten T-Sätzen. In der kurzen Variante sind
     # nur die Felder enthalten, die von der Bundesbank bei der Bearbeitung der Meldungen
     # benötigt werden (siehe 5.5). Beide Varianten dürfen in einer Datei vorkommen.
 
-    # 5.5	Datensatz T - kurze Variante
+    # 5.5 Datensatz T - kurze Variante
     # Die Bundesbank nimmt auch T-Sätze in 2 Varianten entgegen. Die lange Variante ist identisch
     # mit den von den Auftraggebern gelieferten T-Sätzen. In der kurzen Variante sind nur
     # die Felder enthalten, die von der Bundesbank bei der Bearbeitung der Meldungen benötigt
@@ -116,8 +116,8 @@ module KingDta
     #
     # 10a 208  3  2-stelliger ISO-alpha-Ländercode des Zahlungsempfänger gemäß Länderverzeichnis für die Zahlungsbilanzstatistik; linksbündig zu belegen; 3. Stelle Leerzeichen
     # 10b 211  4x35                           alpha           Zahlungsempfänger bzw.            Bei Zahlungsauftrag: Zahlungsempfänger Bei          P               P                 Angabe eines Scheckempfängers nicht       P               Angabe eines Scheck­ empfängers nicht möglich
-    #                                                         Scheckempfänger                   Scheckziehung:	Scheckempfänger Zeile 1 und 2:                                        möglich
-    #                                                                                           Name Zeile 3	: Straße Zeile 4	: Ort/Land.
+    #                                                         Scheckempfänger                   Scheckziehung:  Scheckempfänger Zeile 1 und 2:                                        möglich
+    #                                                                                           Name Zeile 3  : Straße Zeile 4  : Ort/Land.
     # Entfällt bei der kurzen Variante NUR FUER DIE BEARBEITUNG DER MELDUNGEN--------------------------------------------------------------------------------------------------------
     # 11    2x35            351               alpha           Ordervermerk                      Nur belegt bei Scheckziehung (d.h. bei den
     #                                                                                           Zahlungsartschlüsseln 20-23 und 30-33 in Feld T22)  K/P             N                 -                                         N               -
@@ -142,7 +142,7 @@ module KingDta
     # 18    2               620               num             Weisungsschlüssel 3               Nicht zu belegen bei Scheckziehungen,               K               N                 -                                         K               Nur Weisungsschlüssel ‚10‘, ‚11‘, und ‚12‘ aus Anhang 2 zulässig
     #                                                         (gem. Anhang 2)                   (d.h. bei den Zahlungsartschlüsseln
     #                                                                                           20-23 und 30-33 in Feld T22)
-    # 19    2               622               num             Weisungsschlüssel 4               Mit	‘91‘	zu belegen im Falle von "Euro-
+    # 19    2               622               num             Weisungsschlüssel 4               Mit ‘91‘  zu belegen im Falle von "Euro-
     #                                                         (gem. Anhang 2 und 2a)            Gegenwertzahlungen“ (vgl. Anhang 2a).               K/P             N                 -                                         K               Nur Weisungsschlüssel ‚10‘, ‚11‘ und ‚12‘ aus Anhang 2 zulässig
     #                                                                                           Bei Scheckziehungen, d.h. bei den
     #                                                                                           Zahlungsartschlüsseln 20-23 und 30-33
@@ -177,7 +177,7 @@ module KingDta
     # 24  35                680               alpha           Name und Telefonnummer sowie       Ansprechpartner beim Auftraggeber für eventuelle
     #                                                          ggf. Stellvertretungsmeldung      Rückfragen der beauftragten Bank oder der           K/P             K                 Ansprechpartner beim Auftraggeber         K/P             -
     #                                                                                            Meldebehörde. Dahinter, wenn Auftraggeber                                             für eventuelle Rückfragen der
-    #                                                                                            nicht Zahlungspflichtiger ist:	‘INVF’,                                               beauftragten Bank
+    #                                                                                            nicht Zahlungspflichtiger ist: ‘INVF’,                                               beauftragten Bank
     #                                                                                            ohne Leerstellen gefolgt von: Bundesland-Nummer
     #                                                                                            (2-stellig) und: Firmennummer bzw. BLZ
     #                                                                                            (8-stellig) des Zahlungspflichtigen
@@ -400,7 +400,7 @@ module KingDta
     # Feld  Länge in Bytes  1. Stelle im Satz Feldart Datenformat Inhalt                          Erläuterungen
     # 1     4               1                 P       binär/num   Satzlänge                       Längenangabe des Satzes nach den Konventionen für variable Satzlänge (binär bei Bändern, numerisch bei Disketten und DFÜ)
     # 2     1               5                 P       alpha       Satzart                         Konstante W
-    # 3     1               6                 P       num         Belegart                        Dienstleistungen, Übertragungen	= ‘2’ Kapitaltransaktionen und Kapitalerträge	= ‘4’
+    # 3     1               6                 P       num         Belegart                        Dienstleistungen, Übertragungen = ‘2’ Kapitaltransaktionen und Kapitalerträge = ‘4’
     # 4     3               7                 P       num         Kennzahl                        Gemäß Leistungsverzeichnis (Anlage LV zur AWV)
     # 5     7               10                P       alpha       Land                            Kurzbezeichnung gemäß Länderverzeichnis für die Zahlungsbilanzstatistik (siehe Anhang 3, Abschnitt E)
     # 6     3               17                P       alpha       Ländercode                      2-stelliger ISO-alpha-Ländercode gemäß Länderverzeichnis für die Zahlungs­ bilanzstatistik (siehe Anhang 3, Abschnitt E); linksbündig zu belegen; 3. Stelle Leerzeichen
