@@ -18,7 +18,7 @@ describe KingDta::Dtaus do
   end
 
   it "should init with valid values" do
-    lambda{ KingDta::Dtaus.new('LK', Date.today) }.should_not raise_error(ArgumentError)
+    lambda{ KingDta::Dtaus.new('LK', Date.today) }.should_not raise_error
   end
 
   it "should not init with an unknown type" do

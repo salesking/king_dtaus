@@ -25,11 +25,11 @@ describe KingDta::Dtazv do
   end
 
   it "should init without values" do
-    lambda{ KingDta::Dtazv.new }.should_not raise_error(ArgumentError)
+    lambda{ KingDta::Dtazv.new }.should_not raise_error
   end
 
   it "should init with valid values" do
-    lambda{ KingDta::Dtazv.new(Date.today) }.should_not raise_error(ArgumentError)
+    lambda{ KingDta::Dtazv.new(Date.today) }.should_not raise_error
   end
 
   it "should not init with an invalid date" do
