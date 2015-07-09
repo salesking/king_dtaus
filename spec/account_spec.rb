@@ -58,11 +58,11 @@ describe KingDta::Account do
 
   it "should fail if bank account number is invalid" do
     lambda{
-      KingDta::Account.new(:bank_account_number => 123456789011123456789011123456789011,
+      KingDta::Account.new(:bank_account_number => ('1' * 36).to_i,
                            :bank_number => @ba.bank_number,
                            :owner_name => @ba.owner_name)
 
-    }.should raise_error(ArgumentError, 'Bank account number too long, max 10 allowed')
+    }.should raise_error(ArgumentError, 'Bank account number too long, max 35 allowed')
   end
 
   it "should fail if bank account number is nil" do
