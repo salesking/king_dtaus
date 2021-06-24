@@ -24,9 +24,9 @@ module KingDta
       end
       @currency = currency
       if value.is_a?(String)
-        value = BigDecimal.new value.sub(',', '.')
+        value = big_decimal value.sub(',', '.')
       elsif value.is_a?(Numeric)
-        value = BigDecimal.new value.to_s
+        value = big_decimal value.to_s
       else
         raise Exception.new("Gimme a value as a String or Numeric. You gave me a #{value.class}")
       end
@@ -44,6 +44,10 @@ module KingDta
 
     def text=(text)
        @text = convert_text( text )
+    end
+
+    def big_decimal(val)
+      BigDecimal.try(:new, val) || BigDecimal(val)
     end
 
     def pos?; @pos end
